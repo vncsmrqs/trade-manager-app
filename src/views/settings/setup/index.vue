@@ -2,7 +2,7 @@
   <div>
     <create-setup @cancel="isShowingCreateSetup = false"></create-setup>
     <ul>
-      <li v-for="(setup, index) in state.items" :key="index">{{ setup.props.name }}</li>
+      <li v-for="(setup, index) in state.items" :key="index">{{ setup.name }}</li>
     </ul>
   </div>
 </template>
@@ -26,15 +26,6 @@ export default class SetupView extends Mixins(StateControllerMixin) {
   state!: SetupListState;
   isShowingCreateSetup = false;
 }
-
-// export default mixins(StateControllerMixin).extend({
-//   name: 'SetupView',
-//   components: {
-//     CreateSetup,
-//   },
-// });
-
-
 </script>
 
 <style scoped>

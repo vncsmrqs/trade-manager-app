@@ -1,7 +1,6 @@
 export type SetupEntityProps = {
   name: string;
   createdAt: string;
-  description: string;
   userId: string;
   active: boolean;
 }
@@ -11,5 +10,9 @@ export class SetupEntity {
 
   constructor(props: SetupEntityProps) {
     this.props = props;
+  }
+
+  get name(): string {
+    return this.props.name;
   }
 }

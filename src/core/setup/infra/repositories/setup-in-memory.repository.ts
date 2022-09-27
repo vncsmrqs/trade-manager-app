@@ -41,7 +41,6 @@ const mapSetupToEntity = (setup: any): SetupEntity => {
     name: setup.name,
     createdAt: setup.createdAt,
     active: setup.active,
-    description: setup.description,
     userId: setup.userId,
   });
 }
