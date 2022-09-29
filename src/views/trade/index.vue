@@ -3,11 +3,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
 })
-export default class TradeView extends Mixins() {
+export default class TradeView extends Vue {
 }
 </script>
 

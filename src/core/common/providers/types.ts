@@ -1,3 +1,6 @@
+import { CreateSetupController } from "@/core/setup/presentation/controllers/setup/create-setup.controller";
+import { NotifierController } from "@/core/setup/presentation/controllers/setup/notifier.controller";
+
 export const TYPES = {
   /* Service Providers */
 
@@ -9,8 +12,10 @@ export const TYPES = {
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
 
-  /* State Controllers */
+  /* View Controllers */
   SetupViewController: Symbol('SetupViewController'),
+  CreateSetupController: Symbol('CreateSetupController'),
+  NotifierController: Symbol('NotifierController'),
 };
 
 

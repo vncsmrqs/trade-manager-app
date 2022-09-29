@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import middlewarePipeline from "@/router/middleware-pipeline";
+import { isAdmin } from "@/router/middlewares/is-authenticated.middleware";
 
 Vue.use(VueRouter);
 
@@ -7,12 +9,15 @@ const routes: Array<RouteConfig> = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: import(/* webpackChunkName: "dashboard" */ '../views/dashboard/index.vue')
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/index.vue'),
+    meta: {
+      middlewares: [isAdmin],
+    }
   },
   {
     path: '/trades',
     name: 'trades',
-    component: import(/* webpackChunkName: "trade" */ '../views/trade/index.vue')
+    component: () => import(/* webpackChunkName: "trade" */ '@/views/trade/index.vue')
   },
   {
     path: '/settings/setup',
@@ -34,7 +39,16 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  },
 });
+
+router.beforeEach(middlewarePipeline);
 
 export default router;

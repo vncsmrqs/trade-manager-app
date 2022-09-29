@@ -29,9 +29,11 @@ export class SetupListInMemoryRepository implements
   }
 
   create(params: CreateSetupRepositoryContract.Params): Promise<ActionResult<SetupEntity, any>> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       setupList.push(params);
-      resolve(ActionResult.success(mapSetupToEntity(params)));
+      setTimeout(() => {
+        resolve(ActionResult.success(mapSetupToEntity(params)));
+      }, 500);
     });
   }
 }

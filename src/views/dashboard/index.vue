@@ -1,13 +1,12 @@
 <template>
-  <div>Dashboard</div>
+  <div><span>VInicus</span></div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
-@Component({
-})
-export default class DashboardView extends Mixins() {
+@Component({})
+export default class DashboardView extends Vue {
 }
 </script>
 

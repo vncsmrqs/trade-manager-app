@@ -5,22 +5,15 @@
         app
     >
       <template v-slot:prepend>
-        <v-list-item two-line>
+        <v-row justify="center" class="my-4">
           <v-avatar
-              class="profile"
+              class="overflow-hidden"
               color="grey"
               size="164"
-              tile
-              rounded
           >
             <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
           </v-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title>Jane Smith</v-list-item-title>
-            <v-list-item-subtitle>Logged In</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+        </v-row>
       </template>
 
       <v-list dense nav>
@@ -29,6 +22,7 @@
               v-if="!item.group"
               :to="{ name: item.routeName }"
               link
+              color="primary"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
@@ -85,15 +79,17 @@
     <v-main>
       <router-view/>
     </v-main>
+    <notifier></notifier>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import Notifier from "@/components/notifier.vue";
 
 @Component({
-  components: {},
+  components: { Notifier },
 })
 export default class App extends Vue {
   drawer = null;
@@ -127,7 +123,7 @@ export default class App extends Vue {
           icon: 'mdi-view-dashboard',
         },
         {
-          title: 'Complemento de Setup',
+          title: 'Gatilhos',
           routeName: 'settings.setup-add-on',
           icon: 'mdi-view-dashboard',
         },

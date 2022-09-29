@@ -18,10 +18,12 @@ export abstract class Controller<S> {
   }
 
   subscribe(listener: Subscription<S>) {
+    console.log('subscribe: ', this.constructor.name);
     this.listeners.push(listener);
   }
 
   unsubscribe(listener: Subscription<S>) {
+    console.log('unsubscribe: ', this.constructor.name);
     const index = this.listeners.indexOf(listener);
     if (index > -1) {
       this.listeners.splice(index, 1);
