@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { install, Ability } from '@/ability/main';
+import { install, Ability } from '@/plugins/ability/main';
 
 Vue.use(install);
 

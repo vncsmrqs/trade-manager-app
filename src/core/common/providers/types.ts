@@ -1,5 +1,5 @@
-import { CreateSetupController } from "@/core/setup/presentation/controllers/setup/create-setup.controller";
-import { NotifierController } from "@/core/setup/presentation/controllers/setup/notifier.controller";
+import { CreateSetupController } from "@/core/setup/presentation/controllers/create-setup.controller";
+import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 export const TYPES = {
   /* Service Providers */
@@ -15,7 +15,7 @@ export const TYPES = {
   /* View Controllers */
   SetupViewController: Symbol('SetupViewController'),
   CreateSetupController: Symbol('CreateSetupController'),
-  NotifierController: Symbol('NotifierController'),
+  NotificationController: Symbol('NotificationController'),
 };
 
 

@@ -1,7 +1,7 @@
-import { Controller } from "@/core/setup/presentation/controllers/common/controller";
+import { Controller } from "@/core/common/domain/controller";
 import { CreateSetupState, initialCreateSetupState } from "@/core/setup/presentation/states/create-setup.state";
 import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
-import { SetupViewController } from "@/core/setup/presentation/controllers/setup/setup-view.controller";
+import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
 import { initialSetupViewState } from "@/core/setup/presentation/states/setup-view.state";
 
 export class CreateSetupController extends Controller<CreateSetupState> {

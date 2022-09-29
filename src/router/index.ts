@@ -17,22 +17,22 @@ const routes: Array<RouteConfig> = [
   {
     path: '/trades',
     name: 'trades',
-    component: () => import(/* webpackChunkName: "trade" */ '@/views/trade/index.vue')
+    component: () => import(/* webpackChunkName: "trades" */ '@/views/trades/index.vue')
   },
   {
-    path: '/settings/setup',
-    name: 'settings.setup',
-    component: () => import(/* webpackChunkName: "settings.setup" */ '../views/settings/setup/index.vue'),
+    path: '/configuracoes/setups',
+    name: 'configuracoes.setups',
+    component: () => import(/* webpackChunkName: "configuracoes.setups" */ '../views/configuracoes/setups/index.vue'),
   },
   {
-    path: '/settings/setup-add-on',
-    name: 'settings.setup-add-on',
-    component: () => import(/* webpackChunkName: "settings.setup-setup-add-on" */ '../views/settings/setup-add-on/index.vue'),
+    path: '/configuracoes/gatilhos',
+    name: 'configuracoes.gatilhos',
+    component: () => import(/* webpackChunkName: "configuracoes.gatilhos" */ '../views/configuracoes/gatilhos/index.vue'),
   },
   {
-    path: '/settings/trade-type',
-    name: 'settings.trade-type',
-    component: () => import(/* webpackChunkName: "settings.trade-type" */ '../views/settings/trade-type/index.vue'),
+    path: '/configuracoes/tipos-entradas',
+    name: 'configuracoes.tipos-entradas',
+    component: () => import(/* webpackChunkName: "configuracoes.tipos-entradas" */ '../views/configuracoes/tipos-entradas/index.vue'),
   },
 ];
 

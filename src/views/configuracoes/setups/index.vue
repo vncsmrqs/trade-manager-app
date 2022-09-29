@@ -9,9 +9,9 @@
 
 <script lang="ts">
 import { app } from "@/core/common/container";
-import { SetupViewController } from "@/core/setup/presentation/controllers/setup/setup-view.controller";
+import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
 import { TYPES } from "@/core/common/providers/types";
-import CreateSetup from "@/views/settings/setup/components/create-setup.vue";
+import CreateSetup from "@/views/configuracoes/setups/components/create-setup.vue";
 import { Component, Vue } from "vue-property-decorator";
 import { SetupViewState } from "@/core/setup/presentation/states/setup-view.state";
 

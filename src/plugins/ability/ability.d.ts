@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Ability } from "@/ability/main";
+import { Ability } from "@/plugins/ability/main";
 
 declare module 'vue/types/vue' {
   interface Vue {

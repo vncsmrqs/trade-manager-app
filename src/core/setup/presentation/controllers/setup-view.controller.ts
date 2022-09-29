@@ -1,4 +1,4 @@
-import { Controller } from "@/core/setup/presentation/controllers/common/controller";
+import { Controller } from "@/core/common/domain/controller";
 import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/list-setup.use-case";
 import { initialSetupViewState, SetupViewState } from "@/core/setup/presentation/states/setup-view.state";

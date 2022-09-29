@@ -90,9 +90,9 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
-import { CreateSetupController } from "@/core/setup/presentation/controllers/setup/create-setup.controller";
+import { CreateSetupController } from "@/core/setup/presentation/controllers/create-setup.controller";
 import { CreateSetupState } from "@/core/setup/presentation/states/create-setup.state";
-import { NotifierController } from "@/core/setup/presentation/controllers/setup/notifier.controller";
+import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 type FormType = {
   name: string;
@@ -109,7 +109,7 @@ const defaultForm = function (): FormType {
 @Component({})
 export default class CreateSetup extends Vue {
   private controller = app.make<CreateSetupController>(TYPES.CreateSetupController);
-  private notifierController = app.make<NotifierController>(TYPES.NotifierController);
+  private notifierController = app.make<NotificationController>(TYPES.NotificationController);
 
   private localState: CreateSetupState = this.controller.state;
 

@@ -1,15 +1,15 @@
 import { v4 as uuid } from 'uuid';
-import { Controller } from "@/core/setup/presentation/controllers/common/controller";
-import { initialNotifierState, NotificationProps, NotifierState } from "@/core/setup/presentation/states/notifier.state";
+import { Controller } from "@/core/common/domain/controller";
+import { initialNotificationState, NotificationProps, NotificationState } from "@/core/notification/presentation/states/notification.state";
 
-export class NotifierController extends Controller<NotifierState> {
+export class NotificationController extends Controller<NotificationState> {
   constructor() {
-    super(initialNotifierState);
+    super(initialNotificationState);
   }
 
   public push(notification: Partial<NotificationProps>) {
     this.changeState({
-      kind: "UpdatedNotifierState",
+      kind: "UpdatedNotificationState",
       notifications: [
         ...this.state.notifications,
         this.parseNotification(notification),
@@ -27,9 +27,9 @@ export class NotifierController extends Controller<NotifierState> {
   }
 
   public remove(notificationId: string) {
-    if (this.state.kind === 'UpdatedNotifierState') {
+    if (this.state.kind === 'UpdatedNotificationState') {
       this.changeState({
-        kind: "UpdatedNotifierState",
+        kind: "UpdatedNotificationState",
         notifications: this.state.notifications.filter(({ id }) => id !== notificationId),
       });
     }

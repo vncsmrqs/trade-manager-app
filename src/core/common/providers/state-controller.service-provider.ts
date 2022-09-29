@@ -3,10 +3,10 @@ import { TYPES } from "@/core/common/providers/types";
 //contracts
 import { ContainerContract, ServiceProviderContract } from "@/core/common/container/contracts";
 import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/list-setup.use-case";
-import { SetupViewController } from "@/core/setup/presentation/controllers/setup/setup-view.controller";
-import { CreateSetupController } from "@/core/setup/presentation/controllers/setup/create-setup.controller";
+import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
+import { CreateSetupController } from "@/core/setup/presentation/controllers/create-setup.controller";
 import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
-import { NotifierController } from "@/core/setup/presentation/controllers/setup/notifier.controller";
+import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -25,8 +25,8 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       );
     });
 
-    container.singleton(TYPES.NotifierController, () => {
-      return new NotifierController();
+    container.singleton(TYPES.NotificationController, () => {
+      return new NotificationController();
     });
   }
 }

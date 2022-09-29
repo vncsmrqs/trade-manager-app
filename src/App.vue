@@ -79,17 +79,17 @@
     <v-main>
       <router-view/>
     </v-main>
-    <notifier></notifier>
+    <notification></notification>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import Notifier from "@/components/notifier.vue";
+import Notification from "@/common/components/notifier.vue";
 
 @Component({
-  components: { Notifier },
+  components: { Notification },
 })
 export default class App extends Vue {
   drawer = null;
@@ -114,22 +114,22 @@ export default class App extends Vue {
     },
     {
       title: 'Configurações',
-      routeName: 'settings',
+      routeName: 'configuracoes',
       icon: 'mdi-cog',
       group: [
         {
           title: 'Setup',
-          routeName: 'settings.setup',
+          routeName: 'configuracoes.setups',
           icon: 'mdi-view-dashboard',
         },
         {
           title: 'Gatilhos',
-          routeName: 'settings.setup-add-on',
+          routeName: 'configuracoes.gatilhos',
           icon: 'mdi-view-dashboard',
         },
         {
           title: 'Tipo de entrada',
-          routeName: 'settings.trade-type',
+          routeName: 'configuracoes.tipos-entradas',
           icon: 'mdi-view-dashboard',
         },
       ],

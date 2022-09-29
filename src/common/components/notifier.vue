@@ -27,13 +27,13 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
 import {app, TYPES} from "@/core/common/container";
-import { NotificationProps, NotifierState } from "@/core/setup/presentation/states/notifier.state";
-import { NotifierController } from "@/core/setup/presentation/controllers/setup/notifier.controller";
+import { NotificationProps, NotificationState } from "@/core/notification/presentation/states/notification.state";
+import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 @Component({})
-export default class Notifier extends Vue {
-  private controller = app.make<NotifierController>(TYPES.NotifierController);
-  private localState: NotifierState = this.controller.state;
+export default class Notification extends Vue {
+  private controller = app.make<NotificationController>(TYPES.NotificationController);
+  private localState: NotificationState = this.controller.state;
 
   closeNotification(notification: NotificationProps) {
     this.controller.remove(notification.id)
