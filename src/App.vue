@@ -1,15 +1,15 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer
-        v-model="drawer"
-        app
+      v-model="systemState.navigationDrawer"
+      app
     >
       <template v-slot:prepend>
         <v-row justify="center" class="my-4">
           <v-avatar
-              class="overflow-hidden"
-              color="grey"
-              size="164"
+            class="overflow-hidden"
+            color="grey"
+            size="164"
           >
             <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
           </v-avatar>
@@ -17,12 +17,12 @@
       </template>
 
       <v-list dense nav>
-        <div v-for="(item, i) in menuItems" :key="i">
+        <div v-for="(item, i) in systemState.menuItems" :key="i">
           <v-list-item
-              v-if="!item.group"
-              :to="{ name: item.routeName }"
-              link
-              color="primary"
+            v-if="!item.group"
+            :to="{ name: item.routeName }"
+            link
+            color="primary"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
@@ -34,19 +34,19 @@
           </v-list-item>
 
           <v-list-group
-              v-else
-              :value="false"
-              :prepend-icon="item.icon"
+            v-else
+            :value="false"
+            :prepend-icon="item.icon"
           >
             <template v-slot:activator>
               <v-list-item-title>Configurações</v-list-item-title>
             </template>
 
             <v-list-item
-                v-for="({ title, routeName }, i) in item.group"
-                :key="i"
-                link
-                :to="{ name: routeName }"
+              v-for="({ title, routeName }, i) in item.group"
+              :key="i"
+              link
+              :to="{ name: routeName }"
             >
               <v-list-item-icon></v-list-item-icon>
               <v-list-item-title v-text="title"></v-list-item-title>
@@ -71,9 +71,9 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar app color="white" elevation="0">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
+    <v-app-bar app color="white">
+      <v-app-bar-nav-icon @click="() => systemController.toggleNavigationDrawer()"></v-app-bar-nav-icon>
+      <v-toolbar-title>{{ systemState.pageTitle }}</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
@@ -87,57 +87,40 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Notification from "@/common/components/notifier.vue";
+import { app, TYPES } from "@/core/common/container";
+import { SystemController } from "@/core/system/presentation/controllers/system.controller";
+import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
 
 @Component({
   components: { Notification },
 })
 export default class App extends Vue {
-  drawer = null;
-  state = {
-    user: {
-      name: 'Vinicius',
-      lastname: 'Marques',
-      image: 'https://randomuser.me/api/portraits/women/81.jpg',
-    },
-  }
+  private systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
+  private authController: AuthController = app.make<AuthController>(TYPES.AuthController);
 
-  menuItems = [
-    {
-      title: 'Dashboard',
-      routeName: 'dashboard',
-      icon: 'mdi-chart-bar',
-    },
-    {
-      title: 'Registros',
-      routeName: 'trades',
-      icon: 'mdi-swap-vertical',
-    },
-    {
-      title: 'Configurações',
-      routeName: 'configuracoes',
-      icon: 'mdi-cog',
-      group: [
-        {
-          title: 'Setup',
-          routeName: 'configuracoes.setups',
-          icon: 'mdi-view-dashboard',
-        },
-        {
-          title: 'Gatilhos',
-          routeName: 'configuracoes.gatilhos',
-          icon: 'mdi-view-dashboard',
-        },
-        {
-          title: 'Tipo de entrada',
-          routeName: 'configuracoes.tipos-entradas',
-          icon: 'mdi-view-dashboard',
-        },
-      ],
-    },
-  ]
+  private systemState = this.systemController.state;
+  private authState = this.authController.state;
 
   logout() {
     //confirmar saída
+  }
+
+  private updateSystemState(newState) {
+    this.systemState = newState;
+  }
+
+  private updateAuthState(newState) {
+    this.authState = newState;
+  }
+
+  private created() {
+    this.systemController.subscribe(this.updateSystemState);
+    this.authController.subscribe(this.updateAuthState);
+  }
+
+  private beforeDestroy() {
+    this.systemController.unsubscribe(this.updateSystemState);
+    this.authController.unsubscribe(this.updateAuthState);
   }
 }
 </script>

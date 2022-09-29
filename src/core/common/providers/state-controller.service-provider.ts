@@ -7,6 +7,8 @@ import { SetupViewController } from "@/core/setup/presentation/controllers/setup
 import { CreateSetupController } from "@/core/setup/presentation/controllers/create-setup.controller";
 import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
+import { SystemController } from "@/core/system/presentation/controllers/system.controller";
+import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -25,8 +27,10 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       );
     });
 
-    container.singleton(TYPES.NotificationController, () => {
-      return new NotificationController();
-    });
+    container.singleton(TYPES.NotificationController, () => new NotificationController());
+
+    container.singleton(TYPES.SystemController, () => new SystemController());
+
+    container.singleton(TYPES.AuthController, () => new AuthController());
   }
 }
