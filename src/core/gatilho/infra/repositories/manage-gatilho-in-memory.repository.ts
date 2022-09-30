@@ -70,7 +70,6 @@ export class ManageGatilhoInMemoryRepository implements
 
   delete(params: DeleteGatilhoRepositoryContract.Params): Promise<ActionResult<void, string>> {
     return new Promise((resolve, reject) => {
-      console.log('DELETE SETUP', params);
       gatilhoList = gatilhoList.filter((s) => s.id !== params.id);
       setTimeout(() => {
         resolve(ActionResult.success());

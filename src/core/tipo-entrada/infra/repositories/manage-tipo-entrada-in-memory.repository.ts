@@ -70,7 +70,6 @@ export class ManageTipoEntradaInMemoryRepository implements
 
   delete(params: DeleteTipoEntradaRepositoryContract.Params): Promise<ActionResult<void, string>> {
     return new Promise((resolve, reject) => {
-      console.log('DELETE SETUP', params);
       tipoEntradaList = tipoEntradaList.filter((s) => s.id !== params.id);
       setTimeout(() => {
         resolve(ActionResult.success());
