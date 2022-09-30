@@ -84,13 +84,17 @@
       </template>
     </v-data-table>
 
-    <v-row v-if="showPagination" justify="end" class="mt-2">
-      <v-col v-if="isLoading">
+    <v-row v-if="showPagination" align="center" class="mt-2">
+      <v-col
+          v-if="isLoading"
+          class="d-flex align-center justify-center justify-sm-start"
+          cols="12" sm="6" md="auto"
+      >
         <v-progress-circular indeterminate color="primary"></v-progress-circular>
         <span class="ml-4">Buscando...</span>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="4">
+      <v-col cols="12" sm="6" md="4">
         <v-pagination
             :value="pagination.page"
             @input="changePage"
