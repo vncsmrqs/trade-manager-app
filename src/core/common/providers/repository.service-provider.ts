@@ -17,7 +17,6 @@ import { DeleteGatilhoRepositoryContract } from "@/core/gatilho/data/contracts/d
 import { ManageSetupInMemoryRepository } from "@/core/setup/infra/repositories/manage-setup-in-memory.repository";
 import { ManageGatilhoInMemoryRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-in-memory.repository";
 
-
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
     const manageSetupRepository = new ManageSetupInMemoryRepository();
