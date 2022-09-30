@@ -1,37 +1,38 @@
 <template>
   <v-container class="pa-8">
 
-    <v-row>
-      <v-col>
-        <v-text-field
-          v-model="searchTerm"
-          outlined
-          dense
-          label="Busca"
-          :disabled="isLoading"
-        ></v-text-field>
-      </v-col>
-      <v-col>
-        <v-btn
-          outlined
-          color="primary"
-          style="height: 40px"
-          @click="search"
-          :disabled="isLoading"
-        >Buscar</v-btn>
-      </v-col>
-      <v-spacer></v-spacer>
-      <v-col>
-        <div class="d-flex">
+    <v-form @submit.prevent="search" :disabled="isLoading">
+      <v-row>
+        <v-col cols="8" sm="6">
+          <v-text-field
+            v-model="searchTerm"
+            outlined
+            dense
+            label="Busca"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="4" sm="2">
+          <v-btn
+            outlined
+            color="primary"
+            style="height: 40px"
+            @click="search"
+            block
+            :disabled="isLoading"
+          >Buscar</v-btn>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col col="12" sm="2" class="d-flex mb-8 mb-sm-0">
           <v-spacer></v-spacer>
           <v-btn
               color="primary"
               style="height: 40px"
               @click="createItem"
+              block
           >Novo</v-btn>
-        </div>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </v-form>
 
     <v-data-table
         :headers="headers"
