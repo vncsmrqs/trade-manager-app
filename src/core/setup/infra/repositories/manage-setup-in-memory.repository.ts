@@ -20,7 +20,7 @@ function generateSetups(num = 501): Record<string, any>[] {
   }));
 }
 
-export class SetupListInMemoryRepository implements
+export class ManageSetupInMemoryRepository implements
   ListSetupRepositoryContract,
   CreateSetupRepositoryContract,
   UpdateSetupRepositoryContract,

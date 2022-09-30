@@ -20,7 +20,7 @@ function generateGatilhos(num = 501): Record<string, any>[] {
   }));
 }
 
-export class GatilhoListInMemoryRepository implements
+export class ManageGatilhoInMemoryRepository implements
   ListGatilhoRepositoryContract,
   CreateGatilhoRepositoryContract,
   UpdateGatilhoRepositoryContract,

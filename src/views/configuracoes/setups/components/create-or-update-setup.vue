@@ -96,7 +96,7 @@ type FormType = {
 
 @Component({})
 export default class CreateOrUpdateSetup extends Vue {
-  private controller = app.make<CreateOrUpdateSetupController>(TYPES.CreateOrSetupController);
+  private controller = app.make<CreateOrUpdateSetupController>(TYPES.CreateOrUpdateSetupController);
   private localState: CreateOrUpdateSetupState = this.controller.state;
 
   @Prop() show!: boolean;

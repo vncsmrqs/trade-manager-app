@@ -10,19 +10,35 @@ export const TYPES = {
   UpdateSetupUseCaseContract: Symbol('UpdateSetupUseCaseContract'),
   DeleteSetupUseCaseContract: Symbol('DeleteSetupUseCaseContract'),
 
+  ListGatilhoUseCaseContract: Symbol('ListGatilhoUseCaseContract'),
+  CreateGatilhoUseCaseContract: Symbol('CreateGatilhoUseCaseContract'),
+  UpdateGatilhoUseCaseContract: Symbol('UpdateGatilhoUseCaseContract'),
+  DeleteGatilhoUseCaseContract: Symbol('DeleteGatilhoUseCaseContract'),
+
   /* Repositories */
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
   UpdateSetupRepositoryContract: Symbol('UpdateSetupRepositoryContract'),
   DeleteSetupRepositoryContract: Symbol('DeleteSetupRepositoryContract'),
 
-  /* View Controllers */
-  ListSetupController: Symbol('ListSetupController'),
-  CreateOrSetupController: Symbol('CreateOrSetupController'),
+  ListGatilhoRepositoryContract: Symbol('ListGatilhoRepositoryContract'),
+  CreateGatilhoRepositoryContract: Symbol('CreateGatilhoRepositoryContract'),
+  UpdateGatilhoRepositoryContract: Symbol('UpdateGatilhoRepositoryContract'),
+  DeleteGatilhoRepositoryContract: Symbol('DeleteGatilhoRepositoryContract'),
+
+  /* State Controllers */
   NotificationController: Symbol('NotificationController'),
   SystemController: Symbol('SystemController'),
   AuthController: Symbol('AuthController'),
+
+  ListSetupController: Symbol('ListSetupController'),
+  CreateOrUpdateSetupController: Symbol('CreateOrUpdateSetupController'),
   DeleteSetupController: Symbol('DeleteSetupController'),
+
+  ListGatilhoController: Symbol('ListSetupController'),
+  CreateOrUpdateGatilhoController: Symbol('CreateOrSetupController'),
+  DeleteGatilhoController: Symbol('DeleteSetupController'),
+
 };
 
 
