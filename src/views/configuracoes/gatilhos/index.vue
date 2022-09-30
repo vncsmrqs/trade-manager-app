@@ -172,23 +172,24 @@ export default class ListGatilho extends Vue {
   get headers() {
     return [
       {
-      text: 'NOME',
+        text: 'NOME',
         align: 'start',
         sortable: false,
         value: 'nome',
-        width: '70%',
+        width: '76%',
       },
       {
         text: 'ATIVO',
         value: 'ativo',
         sortable: false,
-        width: '15%',
+        width: '10%',
       },
       {
         text: '',
         value: 'actions',
         sortable: false,
-        width: '15%',
+        align: 'right',
+        width: '14%',
       },
     ];
   }
