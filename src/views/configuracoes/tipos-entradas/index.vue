@@ -37,7 +37,7 @@
     <v-data-table
         :headers="headers"
         :items="localState.items"
-        class="elevation-1"
+        class="elevation-1 mt-8"
         hide-default-footer
         :loading="isLoading"
         loading-text="Buscando tipos de entradas..."
