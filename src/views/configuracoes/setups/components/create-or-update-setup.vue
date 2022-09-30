@@ -141,14 +141,14 @@ export default class CreateOrUpdateSetup extends Vue {
     this.form = {
       ...this.defaultForm(),
       id: item.id,
-      nome: item.name,
+      nome: item.nome,
       ativo: item.ativo,
     };
   }
 
   @Watch('show')
   changeShow(value: boolean) {
-    this.$refs.form.resetValidation();
+    this.$refs.form?.resetValidation();
     this.controller.resetState();
     this.form = this.defaultForm();
     if (value && this.isUpdateForm) {

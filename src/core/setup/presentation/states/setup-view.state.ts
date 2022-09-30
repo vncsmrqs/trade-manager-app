@@ -2,9 +2,9 @@ import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 
 export type BaseSetupListState = {
   itemsPerPage: number;
-  items?: SetupEntity[];
-  page?: number;
-  pageCount?: number;
+  items: SetupEntity[];
+  page: number;
+  pageCount: number;
   error?: string;
 };
 
@@ -41,4 +41,6 @@ export const initialSetupViewState : SetupViewState = {
   kind: "InitialSetupViewState",
   itemsPerPage: 10,
   items: [],
+  page: 1,
+  pageCount: 0,
 };

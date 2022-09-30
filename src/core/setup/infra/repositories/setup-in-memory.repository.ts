@@ -8,40 +8,12 @@ import { DeleteSetupRepositoryContract } from "@/core/setup/data/contracts/delet
 
 const setupList: Record<any, any>[] = [
   {
-    name: 'Vinicius',
-  },
-  {
-    name: 'Jader',
-  },
-  {
-    name: 'Jayne',
-  },
-  {
-    name: 'Jeovana',
-  },
-  {
-    name: 'Vinicius',
-  },
-  {
-    name: 'Jader',
-  },
-  {
-    name: 'Jayne',
-  },
-  {
-    name: 'Jeovana',
-  },
-  {
-    name: 'Vinicius',
-  },
-  {
-    name: 'Jader',
-  },
-  {
-    name: 'Jayne',
-  },
-  {
-    name: 'Jeovana',
+    id: '',
+    nome: 'Vinicius',
+    ativo: true,
+    createdAt: '2022-01-01T00:00:00-03',
+    updatedAt: '2022-01-01T00:00:00-03',
+    userId: '',
   },
 ];
 
@@ -59,7 +31,7 @@ export class SetupListInMemoryRepository implements
     });
   }
 
-  create(params: CreateSetupRepositoryContract.Params): Promise<ActionResult<SetupEntity, any>> {
+  create(params: CreateSetupRepositoryContract.Params): Promise<ActionResult<SetupEntity, string>> {
     return new Promise((resolve, reject) => {
       setupList.push(params);
       setTimeout(() => {
@@ -68,11 +40,10 @@ export class SetupListInMemoryRepository implements
     });
   }
 
-  update(params: UpdateSetupRepositoryContract.Params): Promise<ActionResult<SetupEntity, string>> {
+  update(params: UpdateSetupRepositoryContract.Params): Promise<ActionResult<void, string>> {
     return new Promise((resolve, reject) => {
-      setupList.push(params);
       setTimeout(() => {
-        resolve(ActionResult.success(mapSetupToEntity(setupList[0])));
+        resolve(ActionResult.success());
       }, 1000);
     });
   }
@@ -90,9 +61,10 @@ export class SetupListInMemoryRepository implements
 const mapSetupToEntity = (setup: any): SetupEntity => {
   return new SetupEntity({
     id: uuid(),
-    name: setup.name,
+    nome: setup.nome,
     createdAt: setup.createdAt,
-    active: setup.active,
+    updatedAt: setup.updatedAt,
+    ativo: setup.ativo,
     userId: setup.userId,
   });
 }

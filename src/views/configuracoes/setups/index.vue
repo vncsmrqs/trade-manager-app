@@ -8,6 +8,7 @@
           outlined
           dense
           label="Busca"
+          :disabled="isLoading"
         ></v-text-field>
       </v-col>
       <v-col>
@@ -16,6 +17,7 @@
           color="primary"
           style="height: 40px"
           @click="search"
+          :disabled="isLoading"
         >Buscar</v-btn>
       </v-col>
       <v-spacer></v-spacer>
@@ -58,9 +60,9 @@
         <v-switch
             small
             class="mr-2"
-            :value="item.active"
+            :input-value="item.ativo"
             dense
-            @change="(value) => toggleAtivo(item, value)"
+            @change="() => toggleAtivo(item, !item.ativo)"
         >
           mdi-pencil
         </v-switch>
@@ -171,7 +173,7 @@ export default class SetupView extends Vue {
       text: 'NOME',
         align: 'start',
         sortable: false,
-        value: 'name',
+        value: 'nome',
         width: '70%',
       },
       {
@@ -213,7 +215,9 @@ export default class SetupView extends Vue {
   }
 
   private updateState(newState: SetupViewState) {
-    this.localState = newState;
+    this.$nextTick(() => {
+      this.localState = newState;
+    });
   }
 
   public mounted() {

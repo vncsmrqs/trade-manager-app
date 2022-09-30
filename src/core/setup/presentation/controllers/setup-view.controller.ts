@@ -51,7 +51,7 @@ export class SetupViewController extends Controller<SetupViewState> {
   private mapToUpdatedState(setupList: SetupEntity[]): LoadedSetupViewState {
     return {
       kind: "LoadedSetupViewState",
-      page: 0,
+      page: 1,
       pageCount: 10,
       items: setupList,
     };
@@ -70,21 +70,17 @@ export class SetupViewController extends Controller<SetupViewState> {
   }
 
   public async changeAtivo(id: string, value: boolean): Promise<void> {
+    this.changeState({
+      ...this.state,
+      kind: 'LoadedSetupViewState',
+      items: this.state.items.map((setup) => {
+        if (setup.id === id) setup.ativo = value;
+        return setup;
+      }),
+    });
     try {
-      const result = await this.updateSetup.execute({ id, active: value });
-      if (result.successful) {
-        this.changeState({
-          ...this.state,
-          kind: 'LoadedSetupViewState',
-          items: this.state.items?.map((setup) => {
-            if (setup.id === id) {
-              setup.id = id;
-            }
-            return setup;
-          }),
-        });
-        return;
-      }
+      const result = await this.updateSetup.execute({ id, ativo: value });
+      if (result.successful) return;
       this.notificationController.push({
         type: 'error',
         message: result.error,
@@ -95,5 +91,15 @@ export class SetupViewController extends Controller<SetupViewState> {
         message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do setup`,
       });
     }
+    this.changeState({
+      ...this.state,
+      kind: 'LoadedSetupViewState',
+      items: this.state.items.map((setup) => {
+        if (setup.id === id) {
+          setup.ativo = !value;
+        }
+        return setup;
+      }),
+    });
   }
 }

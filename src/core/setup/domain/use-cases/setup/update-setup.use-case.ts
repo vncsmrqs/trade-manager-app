@@ -8,8 +8,8 @@ export interface UpdateSetupUseCaseContract {
 export namespace UpdateSetupUseCaseContract {
   export type Params = {
     id: string;
-    name?: string;
-    active?: boolean;
+    nome?: string;
+    ativo?: boolean;
   };
-  export type Response = SetupEntity;
+  export type Response = void;
 }
