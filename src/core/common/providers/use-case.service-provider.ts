@@ -28,12 +28,25 @@ import { UpdateGatilhoRepositoryContract } from "@/core/gatilho/data/contracts/u
 import { DeleteGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/delete-gatilho.use-case";
 import { DeleteGatilhoUseCase } from "@/core/gatilho/data/implementations/use-cases/delete-gatilho.use-case";
 import { DeleteGatilhoRepositoryContract } from "@/core/gatilho/data/contracts/delete-gatilho.repository";
+import { ListTipoEntradaUseCase } from "@/core/tipo-entrada/data/implementations/use-cases/list-tipo-entrada.use.case";
+import { CreateTipoEntradaUseCase } from "@/core/tipo-entrada/data/implementations/use-cases/create-tipo-entrada.use-case";
+import { UpdateTipoEntradaUseCase } from "@/core/tipo-entrada/data/implementations/use-cases/update-tipo-entrada.use-case";
+import { UpdateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/update-tipo-entrada.use-case";
+import { CreateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/create-tipo-entrada.use-case";
+import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
+import { ListTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/list-tipo-entrada.repository";
+import { CreateTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/create-tipo-entrada.repository";
+import { UpdateTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/update-tipo-entrada.repository";
+import { DeleteTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/delete-tipo-entrada.use-case";
+import { DeleteTipoEntradaUseCase } from "@/core/tipo-entrada/data/implementations/use-cases/delete-tipo-entrada.use-case";
+import { DeleteTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/delete-tipo-entrada.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
   boot(container: ContainerContract): void {
     this.bootSetupUseCases(container);
     this.bootGatilhoUseCases(container);
+    this.bootTipoEntradaUseCases(container);
   }
 
   private bootSetupUseCases(container: ContainerContract): void {
@@ -84,6 +97,32 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<DeleteGatilhoUseCaseContract>(TYPES.DeleteGatilhoUseCaseContract, () => {
       return new DeleteGatilhoUseCase(
         container.make<DeleteGatilhoRepositoryContract>(TYPES.DeleteGatilhoRepositoryContract),
+      );
+    });
+  }
+
+  private bootTipoEntradaUseCases(container: ContainerContract): void {
+    container.bind<ListTipoEntradaUseCaseContract>(TYPES.ListTipoEntradaUseCaseContract, () => {
+      return new ListTipoEntradaUseCase(
+        container.make<ListTipoEntradaRepositoryContract>(TYPES.ListTipoEntradaRepositoryContract),
+      );
+    });
+
+    container.bind<CreateTipoEntradaUseCaseContract>(TYPES.CreateTipoEntradaUseCaseContract, () => {
+      return new CreateTipoEntradaUseCase(
+        container.make<CreateTipoEntradaRepositoryContract>(TYPES.CreateTipoEntradaRepositoryContract),
+      );
+    });
+
+    container.bind<UpdateTipoEntradaUseCaseContract>(TYPES.UpdateTipoEntradaUseCaseContract, () => {
+      return new UpdateTipoEntradaUseCase(
+        container.make<UpdateTipoEntradaRepositoryContract>(TYPES.UpdateTipoEntradaRepositoryContract),
+      );
+    });
+
+    container.bind<DeleteTipoEntradaUseCaseContract>(TYPES.DeleteTipoEntradaUseCaseContract, () => {
+      return new DeleteTipoEntradaUseCase(
+        container.make<DeleteTipoEntradaRepositoryContract>(TYPES.DeleteTipoEntradaRepositoryContract),
       );
     });
   }

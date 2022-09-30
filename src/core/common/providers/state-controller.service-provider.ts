@@ -19,6 +19,13 @@ import { CreateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/cr
 import { UpdateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/update-gatilho.use-case";
 import { DeleteGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/delete-gatilho.use-case";
 import { ListGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/list-gatilho.use-case";
+import { ListTipoEntradaController } from "@/core/tipo-entrada/presentation/controllers/list-tipo-entrada.controller";
+import { DeleteTipoEntradaController } from "@/core/tipo-entrada/presentation/controllers/delete-tipo-entrada.controller";
+import { CreateOrUpdateTipoEntradaController } from "@/core/tipo-entrada/presentation/controllers/create-or-update-tipo-entrada.controller";
+import { CreateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/create-tipo-entrada.use-case";
+import { UpdateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/update-tipo-entrada.use-case";
+import { DeleteTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/delete-tipo-entrada.use-case";
+import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -26,6 +33,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
   boot(container: ContainerContract): void {
     this.bootSetupControllers(container);
     this.bootGatilhoControllers(container);
+    this.bootTipoEntradaControllers(container);
 
     container.singleton(TYPES.NotificationController, () => new NotificationController());
 
@@ -81,6 +89,31 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new DeleteGatilhoController(
         container.make<DeleteGatilhoUseCaseContract>(TYPES.DeleteGatilhoUseCaseContract),
         container.make<ListGatilhoController>(TYPES.ListGatilhoController),
+      );
+    });
+  }
+
+  private bootTipoEntradaControllers(container: ContainerContract): void {
+    container.singleton(TYPES.ListTipoEntradaController, () => {
+      return new ListTipoEntradaController(
+        container.make<ListTipoEntradaUseCaseContract>(TYPES.ListTipoEntradaUseCaseContract),
+        container.make<UpdateTipoEntradaUseCaseContract>(TYPES.UpdateTipoEntradaUseCaseContract),
+      );
+    });
+
+    container.singleton(TYPES.CreateOrUpdateTipoEntradaController, () => {
+      return new CreateOrUpdateTipoEntradaController(
+        container.make<CreateTipoEntradaUseCaseContract>(TYPES.CreateTipoEntradaUseCaseContract),
+        container.make<UpdateTipoEntradaUseCaseContract>(TYPES.UpdateTipoEntradaUseCaseContract),
+        container.make<ListTipoEntradaController>(TYPES.ListTipoEntradaController),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    });
+
+    container.singleton(TYPES.DeleteTipoEntradaController, () => {
+      return new DeleteTipoEntradaController(
+        container.make<DeleteTipoEntradaUseCaseContract>(TYPES.DeleteTipoEntradaUseCaseContract),
+        container.make<ListTipoEntradaController>(TYPES.ListTipoEntradaController),
       );
     });
   }

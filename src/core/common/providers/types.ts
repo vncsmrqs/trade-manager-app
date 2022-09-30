@@ -15,6 +15,11 @@ export const TYPES = {
   UpdateGatilhoUseCaseContract: Symbol('UpdateGatilhoUseCaseContract'),
   DeleteGatilhoUseCaseContract: Symbol('DeleteGatilhoUseCaseContract'),
 
+  ListTipoEntradaUseCaseContract: Symbol('ListTipoEntradaUseCaseContract'),
+  CreateTipoEntradaUseCaseContract: Symbol('CreateTipoEntradaUseCaseContract'),
+  UpdateTipoEntradaUseCaseContract: Symbol('UpdateTipoEntradaUseCaseContract'),
+  DeleteTipoEntradaUseCaseContract: Symbol('DeleteTipoEntradaUseCaseContract'),
+
   /* Repositories */
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
@@ -26,6 +31,11 @@ export const TYPES = {
   UpdateGatilhoRepositoryContract: Symbol('UpdateGatilhoRepositoryContract'),
   DeleteGatilhoRepositoryContract: Symbol('DeleteGatilhoRepositoryContract'),
 
+  ListTipoEntradaRepositoryContract: Symbol('ListTipoEntradaRepositoryContract'),
+  CreateTipoEntradaRepositoryContract: Symbol('CreateTipoEntradaRepositoryContract'),
+  UpdateTipoEntradaRepositoryContract: Symbol('UpdateTipoEntradaRepositoryContract'),
+  DeleteTipoEntradaRepositoryContract: Symbol('DeleteTipoEntradaRepositoryContract'),
+
   /* State Controllers */
   NotificationController: Symbol('NotificationController'),
   SystemController: Symbol('SystemController'),
@@ -35,11 +45,11 @@ export const TYPES = {
   CreateOrUpdateSetupController: Symbol('CreateOrUpdateSetupController'),
   DeleteSetupController: Symbol('DeleteSetupController'),
 
-  ListGatilhoController: Symbol('ListSetupController'),
-  CreateOrUpdateGatilhoController: Symbol('CreateOrSetupController'),
-  DeleteGatilhoController: Symbol('DeleteSetupController'),
+  ListGatilhoController: Symbol('ListGatilhoController'),
+  CreateOrUpdateGatilhoController: Symbol('CreateOrUpdateGatilhoController'),
+  DeleteGatilhoController: Symbol('DeleteGatilhoController'),
 
+  ListTipoEntradaController: Symbol('ListTipoEntradaController'),
+  CreateOrUpdateTipoEntradaController: Symbol('CreateOrUpdateTipoEntradaController'),
+  DeleteTipoEntradaController: Symbol('DeleteTipoEntradaController'),
 };
-
-
-
