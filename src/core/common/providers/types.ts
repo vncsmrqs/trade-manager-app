@@ -17,7 +17,7 @@ export const TYPES = {
   DeleteSetupRepositoryContract: Symbol('DeleteSetupRepositoryContract'),
 
   /* View Controllers */
-  SetupViewController: Symbol('SetupViewController'),
+  ListSetupController: Symbol('ListSetupController'),
   CreateOrSetupController: Symbol('CreateOrSetupController'),
   NotificationController: Symbol('NotificationController'),
   SystemController: Symbol('SystemController'),

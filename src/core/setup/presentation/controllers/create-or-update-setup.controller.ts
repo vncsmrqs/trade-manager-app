@@ -1,7 +1,7 @@
 import { Controller } from "@/core/common/domain/controller";
 import { CreateOrUpdateSetupState, initialCreateSetupState } from "@/core/setup/presentation/states/create-or-update-setup.state";
 import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
-import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
+import { ListSetupController } from "./list-setup.controller";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/update-setup.use-case";
 
@@ -9,7 +9,7 @@ export class CreateOrUpdateSetupController extends Controller<CreateOrUpdateSetu
   constructor(
     private createSetupUseCase: CreateSetupUseCaseContract,
     private updateSetupUseCase: UpdateSetupUseCaseContract,
-    private setupViewController: SetupViewController,
+    private listSetupController: ListSetupController,
     private notificationController: NotificationController,
 
   ) {
@@ -38,7 +38,7 @@ export class CreateOrUpdateSetupController extends Controller<CreateOrUpdateSetu
           message: 'Setup salvo com sucesso!',
           timeout: 3000,
         });
-        this.setupViewController.loadSetupList();
+        this.listSetupController.loadSetupList();
         return;
       }
 

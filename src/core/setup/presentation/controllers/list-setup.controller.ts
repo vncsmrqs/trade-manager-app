@@ -1,31 +1,31 @@
 import { Controller } from "@/core/common/domain/controller";
 import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/list-setup.use-case";
 import {
-  initialSetupViewState,
-  LoadedSetupViewState,
-  SetupViewState
-} from "@/core/setup/presentation/states/setup-view.state";
+  initialListSetupState,
+  LoadedListSetupState,
+  ListSetupState
+} from "@/core/setup/presentation/states/list-setup.state";
 import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/update-setup.use-case";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
-export class SetupViewController extends Controller<SetupViewState> {
+export class ListSetupController extends Controller<ListSetupState> {
   constructor(
     private getSetupListUseCase: ListSetupUseCaseContract,
     private updateSetup: UpdateSetupUseCaseContract,
   ) {
-    super(initialSetupViewState);
+    super(initialListSetupState);
   }
 
   private notificationController = app.make<NotificationController>(TYPES.NotificationController);
 
   public resetState() {
-    this.changeState(initialSetupViewState);
+    this.changeState(initialListSetupState);
   }
 
   public loadSetupList(search?: string, page?: number) {
     this.changeState({
-      kind: "LoadingSetupViewState",
+      kind: "LoadingListSetupState",
       search,
     });
     this.getSetupListUseCase
@@ -40,21 +40,21 @@ export class SetupViewController extends Controller<SetupViewState> {
           return;
         }
         this.changeState({
-          kind: "ErrorSetupViewState",
+          kind: "ErrorListSetupState",
           error: result.error,
         });
       })
       .catch((error) => {
           this.changeState({
-            kind: "ErrorSetupViewState",
+            kind: "ErrorListSetupState",
             error: error.message,
           });
       });
   }
 
-  private mapToUpdatedState(response: ListSetupUseCaseContract.Response): LoadedSetupViewState {
+  private mapToUpdatedState(response: ListSetupUseCaseContract.Response): LoadedListSetupState {
     return {
-      kind: "LoadedSetupViewState",
+      kind: "LoadedListSetupState",
       page: response.page,
       pageCount: response.pageCount,
       items: response.items,
@@ -68,7 +68,7 @@ export class SetupViewController extends Controller<SetupViewState> {
   public async changeAtivo(id: string, value: boolean): Promise<void> {
     this.changeState({
       ...this.state,
-      kind: 'LoadedSetupViewState',
+      kind: 'LoadedListSetupState',
       items: this.state.items.map((setup) => {
         if (setup.id === id) setup.ativo = value;
         return setup;
@@ -89,7 +89,7 @@ export class SetupViewController extends Controller<SetupViewState> {
     }
     this.changeState({
       ...this.state,
-      kind: 'LoadedSetupViewState',
+      kind: 'LoadedListSetupState',
       items: this.state.items.map((setup) => {
         if (setup.id === id) {
           setup.ativo = !value;

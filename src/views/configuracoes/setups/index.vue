@@ -104,10 +104,10 @@
 
 <script lang="ts">
 import { app } from "@/core/common/container";
-import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
+import { ListSetupController } from "@/core/setup/presentation/controllers/list-setup.controller";
 import { TYPES } from "@/core/common/providers/types";
 import { Component, Vue } from "vue-property-decorator";
-import { SetupViewState } from "@/core/setup/presentation/states/setup-view.state";
+import { ListSetupState } from "@/core/setup/presentation/states/list-setup.state";
 import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 import DeleteSetup from "@/views/configuracoes/setups/components/delete-setup.vue";
 import CreateOrUpdateSetup from "@/views/configuracoes/setups/components/create-or-update-setup.vue";
@@ -115,9 +115,9 @@ import CreateOrUpdateSetup from "@/views/configuracoes/setups/components/create-
 @Component({
   components: { CreateOrUpdateSetup, DeleteSetup },
 })
-export default class SetupView extends Vue {
-  private setupViewController: SetupViewController = app.make<SetupViewController>(TYPES.SetupViewController);
-  private localState: SetupViewState = this.setupViewController.state;
+export default class ListSetup extends Vue {
+  private listSetupController: ListSetupController = app.make<ListSetupController>(TYPES.ListSetupController);
+  private localState: ListSetupState = this.listSetupController.state;
 
   searchTerm = '';
 
@@ -140,7 +140,7 @@ export default class SetupView extends Vue {
   }
 
   async search(): Promise<void> {
-    await this.setupViewController.loadSetupList({
+    await this.listSetupController.loadSetupList({
       search: this.searchTerm,
       page: 1,
     });
@@ -162,7 +162,7 @@ export default class SetupView extends Vue {
   }
 
   get isLoading(): boolean {
-    return this.localState.kind === 'LoadingSetupViewState';
+    return this.localState.kind === 'LoadingListSetupState';
   }
 
   get headers() {
@@ -190,11 +190,11 @@ export default class SetupView extends Vue {
   }
 
   private async changePage(page: number): Promise<void> {
-    await this.setupViewController.goToPage(page);
+    await this.listSetupController.goToPage(page);
   }
 
   private async toggleAtivo(item: SetupEntity, value: boolean) {
-    await this.setupViewController.changeAtivo(item.id, value);
+    await this.listSetupController.changeAtivo(item.id, value);
   }
 
   private createItem() {
@@ -208,22 +208,22 @@ export default class SetupView extends Vue {
   }
 
   private created() {
-    this.setupViewController.subscribe(this.updateState);
-    this.setupViewController.resetState();
+    this.listSetupController.subscribe(this.updateState);
+    this.listSetupController.resetState();
   }
 
-  private updateState(newState: SetupViewState) {
+  private updateState(newState: ListSetupState) {
     this.$nextTick(() => {
       this.localState = newState;
     });
   }
 
   public mounted() {
-    this.setupViewController.loadSetupList();
+    this.listSetupController.loadSetupList();
   }
 
   private beforeDestroy() {
-    this.setupViewController.unsubscribe(this.updateState);
+    this.listSetupController.unsubscribe(this.updateState);
   }
 }
 </script>

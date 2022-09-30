@@ -5,7 +5,7 @@ import { ListSetupRepositoryContract } from "@/core/setup/data/contracts/list-se
 import { ContainerContract, ServiceProviderContract } from "@/core/common/container/contracts";
 
 //implementations
-import { ListSetupUseCase } from "@/core/setup/data/implementations/use-cases/list-setup-use.case";
+import { ListSetupUseCase } from "@/core/setup/data/implementations/use-cases/list-setup.use.case";
 import { CreateSetupUseCase } from "@/core/setup/data/implementations/use-cases/create-setup.use-case";
 import { CreateSetupRepositoryContract } from "@/core/setup/data/contracts/create-setup.repository";
 import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";

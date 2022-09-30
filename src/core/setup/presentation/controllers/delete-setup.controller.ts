@@ -3,12 +3,12 @@ import { DeleteSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/
 import { DeleteSetupState, initialDeleteSetupState } from "@/core/setup/presentation/states/delete-setup.state";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
-import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
+import { ListSetupController } from "./list-setup.controller";
 
 export class DeleteSetupController extends Controller<DeleteSetupState> {
   constructor(
     private deleteSetupUseCase: DeleteSetupUseCaseContract,
-    private setupViewController: SetupViewController,
+    private listSetupController: ListSetupController,
   ) {
     super(initialDeleteSetupState);
   }
@@ -31,7 +31,7 @@ export class DeleteSetupController extends Controller<DeleteSetupState> {
           message: 'Setup excluido com sucesso!',
           timeout: 3000,
         });
-        this.setupViewController.loadSetupList();
+        this.listSetupController.loadSetupList();
         return;
       }
       this.changeState({

@@ -3,7 +3,7 @@ import { TYPES } from "@/core/common/providers/types";
 //contracts
 import { ContainerContract, ServiceProviderContract } from "@/core/common/container/contracts";
 import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/list-setup.use-case";
-import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
+import { ListSetupController } from "@/core/setup/presentation/controllers/list-setup.controller";
 import { CreateOrUpdateSetupController } from "@/core/setup/presentation/controllers/create-or-update-setup.controller";
 import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
@@ -17,8 +17,8 @@ import { DeleteSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/
 export class StateControllerServiceProvider implements ServiceProviderContract {
   register(): void {}
   boot(container: ContainerContract): void {
-    container.singleton(TYPES.SetupViewController, () => {
-      return new SetupViewController(
+    container.singleton(TYPES.ListSetupController, () => {
+      return new ListSetupController(
         container.make<ListSetupUseCaseContract>(TYPES.ListSetupUseCaseContract),
         container.make<UpdateSetupUseCaseContract>(TYPES.UpdateSetupUseCaseContract),
       );
@@ -28,7 +28,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new CreateOrUpdateSetupController(
         container.make<CreateSetupUseCaseContract>(TYPES.CreateSetupUseCaseContract),
         container.make<UpdateSetupUseCaseContract>(TYPES.UpdateSetupUseCaseContract),
-        container.make<SetupViewController>(TYPES.SetupViewController),
+        container.make<ListSetupController>(TYPES.ListSetupController),
         container.make<NotificationController>(TYPES.NotificationController),
       );
     });
@@ -36,7 +36,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     container.singleton(TYPES.DeleteSetupController, () => {
       return new DeleteSetupController(
         container.make<DeleteSetupUseCaseContract>(TYPES.DeleteSetupUseCaseContract),
-        container.make<SetupViewController>(TYPES.SetupViewController),
+        container.make<ListSetupController>(TYPES.ListSetupController),
       );
     });
 
