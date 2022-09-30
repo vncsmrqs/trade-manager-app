@@ -52,8 +52,9 @@ export class ListSetupController extends Controller<ListSetupState> {
       });
   }
 
-  private mapToUpdatedState(response: ListSetupUseCaseContract.Response): LoadedListSetupState {
+  private mapToUpdatedState(response: ListSetupUseCaseContract.Response): ListSetupState {
     return {
+      ...this.state,
       kind: "LoadedListSetupState",
       page: response.page,
       pageCount: response.pageCount,

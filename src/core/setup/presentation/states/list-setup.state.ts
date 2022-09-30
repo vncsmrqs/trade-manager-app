@@ -19,9 +19,6 @@ export type LoadingListSetupState = {
 
 export type LoadedListSetupState = {
   kind: "LoadedListSetupState";
-  items: SetupEntity[];
-  page: number;
-  pageCount: number;
 }
 
 export type ErrorListSetupState = {
