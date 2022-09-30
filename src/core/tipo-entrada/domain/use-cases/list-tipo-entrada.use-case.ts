@@ -1,11 +1,11 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
+import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 
-export interface ListGatilhoUseCaseContract {
-  execute(params: ListGatilhoUseCaseContract.Params): Promise<ActionResult<ListGatilhoUseCaseContract.Response, string>>
+export interface ListTipoEntradaUseCaseContract {
+  execute(params: ListTipoEntradaUseCaseContract.Params): Promise<ActionResult<ListTipoEntradaUseCaseContract.Response, string>>
 }
 
-export namespace ListGatilhoUseCaseContract {
+export namespace ListTipoEntradaUseCaseContract {
   export type Params = {
     search?: string;
     page?: number;
@@ -13,7 +13,7 @@ export namespace ListGatilhoUseCaseContract {
   }
 
   export type Response = {
-    items: GatilhoEntity[];
+    items: TipoEntradaEntity[];
     page: number;
     pageCount: number;
   }

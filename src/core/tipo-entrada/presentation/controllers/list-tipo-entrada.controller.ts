@@ -1,34 +1,34 @@
 import { Controller } from "@/core/common/domain/controller";
-import { ListGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/list-gatilho.use-case";
+import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
 import {
-  initialListGatilhoState,
-  LoadedListGatilhoState,
-  ListGatilhoState
-} from "@/core/gatilho/presentation/states/list-gatilho.state";
-import { UpdateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/update-gatilho.use-case";
+  initialListTipoEntradaState,
+  LoadedListTipoEntradaState,
+  ListTipoEntradaState
+} from "@/core/tipo-entrada/presentation/states/list-tipo-entrada.state";
+import { UpdateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/update-tipo-entrada.use-case";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
-export class ListTipoEntradaController extends Controller<ListGatilhoState> {
+export class ListTipoEntradaController extends Controller<ListTipoEntradaState> {
   constructor(
-    private getGatilhoListUseCase: ListGatilhoUseCaseContract,
-    private updateGatilho: UpdateGatilhoUseCaseContract,
+    private getTipoEntradaListUseCase: ListTipoEntradaUseCaseContract,
+    private updateTipoEntrada: UpdateTipoEntradaUseCaseContract,
   ) {
-    super(initialListGatilhoState);
+    super(initialListTipoEntradaState);
   }
 
   private notificationController = app.make<NotificationController>(TYPES.NotificationController);
 
   public resetState() {
-    this.changeState(initialListGatilhoState);
+    this.changeState(initialListTipoEntradaState);
   }
 
-  public loadGatilhoList(search?: string, page?: number) {
+  public loadTipoEntradaList(search?: string, page?: number) {
     this.changeState({
-      kind: "LoadingListGatilhoState",
+      kind: "LoadingListTipoEntradaState",
       search,
     });
-    this.getGatilhoListUseCase
+    this.getTipoEntradaListUseCase
       .execute({
         itemsPerPage: this.state.itemsPerPage,
         search,
@@ -40,22 +40,22 @@ export class ListTipoEntradaController extends Controller<ListGatilhoState> {
           return;
         }
         this.changeState({
-          kind: "ErrorListGatilhoState",
+          kind: "ErrorListTipoEntradaState",
           error: result.error,
         });
       })
       .catch((error) => {
           this.changeState({
-            kind: "ErrorListGatilhoState",
+            kind: "ErrorListTipoEntradaState",
             error: error.message,
           });
       });
   }
 
-  private mapToUpdatedState(response: ListGatilhoUseCaseContract.Response): ListGatilhoState {
+  private mapToUpdatedState(response: ListTipoEntradaUseCaseContract.Response): ListTipoEntradaState {
     return {
       ...this.state,
-      kind: "LoadedListGatilhoState",
+      kind: "LoadedListTipoEntradaState",
       page: response.page,
       pageCount: response.pageCount,
       items: response.items,
@@ -63,20 +63,20 @@ export class ListTipoEntradaController extends Controller<ListGatilhoState> {
   }
 
   public async goToPage(page: number): Promise<void> {
-    return this.loadGatilhoList(this.state.search, page);
+    return this.loadTipoEntradaList(this.state.search, page);
   }
 
   public async changeAtivo(id: string, value: boolean): Promise<void> {
     this.changeState({
       ...this.state,
-      kind: 'LoadedListGatilhoState',
-      items: this.state.items.map((gatilho) => {
-        if (gatilho.id === id) gatilho.ativo = value;
-        return gatilho;
+      kind: 'LoadedListTipoEntradaState',
+      items: this.state.items.map((tipoEntrada) => {
+        if (tipoEntrada.id === id) tipoEntrada.ativo = value;
+        return tipoEntrada;
       }),
     });
     try {
-      const result = await this.updateGatilho.execute({ id, ativo: value });
+      const result = await this.updateTipoEntrada.execute({ id, ativo: value });
       if (result.successful) return;
       this.notificationController.push({
         type: 'error',
@@ -85,17 +85,17 @@ export class ListTipoEntradaController extends Controller<ListGatilhoState> {
     } catch (error) {
       this.notificationController.push({
         type: 'error',
-        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do gatilho`,
+        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do tipo de entrada`,
       });
     }
     this.changeState({
       ...this.state,
-      kind: 'LoadedListGatilhoState',
-      items: this.state.items.map((gatilho) => {
-        if (gatilho.id === id) {
-          gatilho.ativo = !value;
+      kind: 'LoadedListTipoEntradaState',
+      items: this.state.items.map((tipoEntrada) => {
+        if (tipoEntrada.id === id) {
+          tipoEntrada.ativo = !value;
         }
-        return gatilho;
+        return tipoEntrada;
       }),
     });
   }

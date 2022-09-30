@@ -1,32 +1,32 @@
-import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
+import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 
-export type BaseDeleteGatilhoState = {
+export type BaseDeleteTipoEntradaState = {
   error?: string;
 }
-export type InitialDeleteGatilhoState = {
-  kind: "InitialDeleteGatilhoState";
+export type InitialDeleteTipoEntradaState = {
+  kind: "InitialDeleteTipoEntradaState";
 }
 
-export type DeletingGatilhoState = {
-  kind: "DeletingGatilhoState";
+export type DeletingTipoEntradaState = {
+  kind: "DeletingTipoEntradaState";
 }
 
-export type DeletedGatilhoState = {
-  kind: "DeletedGatilhoState";
+export type DeletedTipoEntradaState = {
+  kind: "DeletedTipoEntradaState";
 }
 
-export type ErrorDeleteGatilhoState = {
-  kind: "ErrorDeleteGatilhoState";
+export type ErrorDeleteTipoEntradaState = {
+  kind: "ErrorDeleteTipoEntradaState";
 }
 
 export type DeleteTipoEntradaState = (
-  InitialDeleteGatilhoState |
-  DeletingGatilhoState |
-  DeletedGatilhoState |
-  ErrorDeleteGatilhoState
-) & BaseDeleteGatilhoState;
+  InitialDeleteTipoEntradaState |
+  DeletingTipoEntradaState |
+  DeletedTipoEntradaState |
+  ErrorDeleteTipoEntradaState
+) & BaseDeleteTipoEntradaState;
 
-export const initialDeleteGatilhoState: DeleteTipoEntradaState = {
-  kind: "InitialDeleteGatilhoState",
+export const initialDeleteTipoEntradaState: DeleteTipoEntradaState = {
+  kind: "InitialDeleteTipoEntradaState",
   error: undefined,
 };

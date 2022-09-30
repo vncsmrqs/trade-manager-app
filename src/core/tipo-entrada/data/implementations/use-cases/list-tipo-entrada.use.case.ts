@@ -1,15 +1,15 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { ListGatilhoRepositoryContract } from "@/core/gatilho/data/contracts/list-gatilho.repository";
-import { ListGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/list-gatilho.use-case";
+import { ListTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/list-tipo-entrada.repository";
+import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
 
-export class ListTipoEntradaUseCase implements ListGatilhoUseCaseContract {
+export class ListTipoEntradaUseCase implements ListTipoEntradaUseCaseContract {
   constructor(
-    private listGatilhoRepository: ListGatilhoRepositoryContract
+    private listTipoEntradaRepository: ListTipoEntradaRepositoryContract
   ) {}
 
   async execute(
-    params: ListGatilhoRepositoryContract.Params
-  ): Promise<ActionResult<ListGatilhoUseCaseContract.Response, string>> {
-    return this.listGatilhoRepository.list(params);
+    params: ListTipoEntradaRepositoryContract.Params
+  ): Promise<ActionResult<ListTipoEntradaUseCaseContract.Response, string>> {
+    return this.listTipoEntradaRepository.list(params);
   }
 }

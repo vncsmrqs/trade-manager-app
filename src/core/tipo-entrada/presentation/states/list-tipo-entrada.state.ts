@@ -1,42 +1,42 @@
-import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
+import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 
-export type BaseGatilhoListState = {
+export type BaseTipoEntradaListState = {
   search?: string;
   itemsPerPage: number;
-  items: GatilhoEntity[];
+  items: TipoEntradaEntity[];
   page: number;
   pageCount: number;
   error?: string;
 };
 
-export type InitialListGatilhoState = {
-  kind: "InitialListGatilhoState";
+export type InitialListTipoEntradaState = {
+  kind: "InitialListTipoEntradaState";
 }
 
-export type LoadingListGatilhoState = {
-  kind: "LoadingListGatilhoState";
+export type LoadingListTipoEntradaState = {
+  kind: "LoadingListTipoEntradaState";
 }
 
-export type LoadedListGatilhoState = {
-  kind: "LoadedListGatilhoState";
+export type LoadedListTipoEntradaState = {
+  kind: "LoadedListTipoEntradaState";
 }
 
-export type ErrorListGatilhoState = {
-  kind: "ErrorListGatilhoState";
+export type ErrorListTipoEntradaState = {
+  kind: "ErrorListTipoEntradaState";
   error: string;
 }
 
 type AvailableStates = (
-  InitialListGatilhoState |
-  LoadingListGatilhoState |
-  LoadedListGatilhoState |
-  ErrorListGatilhoState
+  InitialListTipoEntradaState |
+  LoadingListTipoEntradaState |
+  LoadedListTipoEntradaState |
+  ErrorListTipoEntradaState
 );
 
-export type ListTipoEntradaState = AvailableStates & BaseGatilhoListState;
+export type ListTipoEntradaState = AvailableStates & BaseTipoEntradaListState;
 
-export const initialListGatilhoState : ListTipoEntradaState = {
-  kind: "InitialListGatilhoState",
+export const initialListTipoEntradaState : ListTipoEntradaState = {
+  kind: "InitialListTipoEntradaState",
   itemsPerPage: 10,
   items: [],
   page: 1,

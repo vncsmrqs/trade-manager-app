@@ -1,4 +1,4 @@
-export type GatilhoEntityProps = {
+export type TipoEntradaEntityProps = {
   id: string;
   nome: string;
   createdAt: string;
@@ -8,9 +8,9 @@ export type GatilhoEntityProps = {
 }
 
 export class TipoEntradaEntity {
-  private props: GatilhoEntityProps;
+  private props: TipoEntradaEntityProps;
 
-  constructor(props: GatilhoEntityProps) {
+  constructor(props: TipoEntradaEntityProps) {
     this.props = props;
   }
 

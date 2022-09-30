@@ -1,35 +1,35 @@
-import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
+import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 
-export type BaseCreateGatilhoState = {
+export type BaseCreateTipoEntradaState = {
   formDisabled: boolean;
   error?: string;
 }
 
-export type InitialCreateGatilhoState = {
-  kind: "InitialCreateOrUpdateGatilhoState";
+export type InitialCreateTipoEntradaState = {
+  kind: "InitialCreateOrUpdateTipoEntradaState";
 }
 
-export type SavingGatilhoState = {
-  kind: "SavingGatilhoState";
+export type SavingTipoEntradaState = {
+  kind: "SavingTipoEntradaState";
 }
 
-export type CreatedOrUpdatedGatilhoState = {
-  kind: "CreatedOrUpdatedGatilhoState";
+export type CreatedOrUpdatedTipoEntradaState = {
+  kind: "CreatedOrUpdatedTipoEntradaState";
 }
 
-export type ErrorSavingGatilhoState = {
-  kind: "ErrorSavingGatilhoState";
+export type ErrorSavingTipoEntradaState = {
+  kind: "ErrorSavingTipoEntradaState";
 }
 
 export type CreateOrUpdateTipoEntradaState = (
-  InitialCreateGatilhoState |
-  SavingGatilhoState |
-  CreatedOrUpdatedGatilhoState |
-  ErrorSavingGatilhoState
-) & BaseCreateGatilhoState;
+  InitialCreateTipoEntradaState |
+  SavingTipoEntradaState |
+  CreatedOrUpdatedTipoEntradaState |
+  ErrorSavingTipoEntradaState
+) & BaseCreateTipoEntradaState;
 
-export const initialCreateGatilhoState: CreateOrUpdateTipoEntradaState = {
-  kind: "InitialCreateOrUpdateGatilhoState",
+export const initialCreateTipoEntradaState: CreateOrUpdateTipoEntradaState = {
+  kind: "InitialCreateOrUpdateTipoEntradaState",
   formDisabled: false,
   error: undefined,
 };

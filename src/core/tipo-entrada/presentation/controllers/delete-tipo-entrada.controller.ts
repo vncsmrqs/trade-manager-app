@@ -1,52 +1,52 @@
 import { Controller } from "@/core/common/domain/controller";
-import { DeleteGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/delete-gatilho.use-case";
-import { DeleteGatilhoState, initialDeleteGatilhoState } from "@/core/gatilho/presentation/states/delete-gatilho.state";
+import { DeleteTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/delete-tipo-entrada.use-case";
+import { DeleteTipoEntradaState, initialDeleteTipoEntradaState } from "@/core/tipo-entrada/presentation/states/delete-tipo-entrada.state";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
-import { ListGatilhoController } from "@/core/gatilho/presentation/controllers/list-gatilho.controller";
+import { ListTipoEntradaController } from "@/core/tipo-entrada/presentation/controllers/list-tipo-entrada.controller";
 
-export class DeleteTipoEntradaController extends Controller<DeleteGatilhoState> {
+export class DeleteTipoEntradaController extends Controller<DeleteTipoEntradaState> {
   constructor(
-    private deleteGatilhoUseCase: DeleteGatilhoUseCaseContract,
-    private listGatilhoController: ListGatilhoController,
+    private deleteTipoEntradaUseCase: DeleteTipoEntradaUseCaseContract,
+    private listTipoEntradaController: ListTipoEntradaController,
   ) {
-    super(initialDeleteGatilhoState);
+    super(initialDeleteTipoEntradaState);
   }
 
   private notifierController = app.make<NotificationController>(TYPES.NotificationController);
 
-  public async deleteGatilho(id: string) {
+  public async deleteTipoEntrada(id: string) {
     this.changeState({
-      kind: "DeletingGatilhoState",
+      kind: "DeletingTipoEntradaState",
     });
 
     try {
-      const result = await this.deleteGatilhoUseCase.execute({  id });
+      const result = await this.deleteTipoEntradaUseCase.execute({  id });
       if (result.successful) {
         this.changeState({
-          kind: "DeletedGatilhoState",
+          kind: "DeletedTipoEntradaState",
         });
         this.notifierController.push({
           type: 'success',
-          message: 'Gatilho excluido com sucesso!',
+          message: 'TipoEntrada excluido com sucesso!',
           timeout: 3000,
         });
-        this.listGatilhoController.loadGatilhoList();
+        this.listTipoEntradaController.loadTipoEntradaList();
         return;
       }
       this.changeState({
-        kind: "ErrorDeleteGatilhoState",
+        kind: "ErrorDeleteTipoEntradaState",
         error: result.error,
       });
     } catch (error: any) {
       this.changeState({
-        kind: "ErrorDeleteGatilhoState",
+        kind: "ErrorDeleteTipoEntradaState",
         error: 'Algum erro inesperado aconteceu!',
       });
     }
   }
 
   resetState() {
-    this.changeState(initialDeleteGatilhoState);
+    this.changeState(initialDeleteTipoEntradaState);
   }
 }

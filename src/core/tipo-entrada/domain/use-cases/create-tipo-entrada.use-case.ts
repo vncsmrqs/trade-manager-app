@@ -1,11 +1,11 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
+import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 
-export interface CreateGatilhoUseCaseContract {
-  execute(params: CreateGatilhoUseCaseContract.Params): Promise<ActionResult<CreateGatilhoUseCaseContract.Response, string>>
+export interface CreateTipoEntradaUseCaseContract {
+  execute(params: CreateTipoEntradaUseCaseContract.Params): Promise<ActionResult<CreateTipoEntradaUseCaseContract.Response, string>>
 }
 
-export namespace CreateGatilhoUseCaseContract {
+export namespace CreateTipoEntradaUseCaseContract {
   export type Params = {
     name: string,
     active?: boolean,

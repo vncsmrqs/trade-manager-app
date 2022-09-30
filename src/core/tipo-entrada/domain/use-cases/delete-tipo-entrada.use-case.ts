@@ -1,11 +1,11 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
+import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 
-export interface DeleteGatilhoUseCaseContract {
-  execute(params: DeleteGatilhoUseCaseContract.Params): Promise<ActionResult<DeleteGatilhoUseCaseContract.Response, string>>
+export interface DeleteTipoEntradaUseCaseContract {
+  execute(params: DeleteTipoEntradaUseCaseContract.Params): Promise<ActionResult<DeleteTipoEntradaUseCaseContract.Response, string>>
 }
 
-export namespace DeleteGatilhoUseCaseContract {
+export namespace DeleteTipoEntradaUseCaseContract {
   export type Params = {
     id: string;
   };

@@ -1,60 +1,60 @@
 import { Controller } from "@/core/common/domain/controller";
-import { CreateOrUpdateGatilhoState, initialCreateGatilhoState } from "@/core/gatilho/presentation/states/create-or-update-gatilho.state";
-import { CreateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/create-gatilho.use-case";
-import { ListGatilhoController } from "@/core/gatilho/presentation/controllers/list-gatilho.controller";
+import { CreateOrUpdateTipoEntradaState, initialCreateTipoEntradaState } from "@/core/tipo-entrada/presentation/states/create-or-update-tipo-entrada.state";
+import { CreateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/create-tipo-entrada.use-case";
+import { ListTipoEntradaController } from "@/core/tipo-entrada/presentation/controllers/list-tipo-entrada.controller";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
-import { UpdateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/update-gatilho.use-case";
+import { UpdateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/update-tipo-entrada.use-case";
 
-export class CreateOrUpdateTipoEntradaController extends Controller<CreateOrUpdateGatilhoState> {
+export class CreateOrUpdateTipoEntradaController extends Controller<CreateOrUpdateTipoEntradaState> {
   constructor(
-    private createGatilhoUseCase: CreateGatilhoUseCaseContract,
-    private updateGatilhoUseCase: UpdateGatilhoUseCaseContract,
-    private listGatilhoController: ListGatilhoController,
+    private createTipoEntradaUseCase: CreateTipoEntradaUseCaseContract,
+    private updateTipoEntradaUseCase: UpdateTipoEntradaUseCaseContract,
+    private listTipoEntradaController: ListTipoEntradaController,
     private notificationController: NotificationController,
 
   ) {
-    super(initialCreateGatilhoState);
+    super(initialCreateTipoEntradaState);
   }
 
-  public async createOrUpdateGatilho(params: any) {
+  public async createOrUpdateTipoEntrada(params: any) {
     this.changeState({
-      kind: "SavingGatilhoState",
+      kind: "SavingTipoEntradaState",
       formDisabled: true,
     });
 
     try {
 
       const result = await this[
-        params.id ? 'updateGatilhoUseCase' : 'createGatilhoUseCase'
+        params.id ? 'updateTipoEntradaUseCase' : 'createTipoEntradaUseCase'
       ].execute(params);
 
       if (result.successful) {
         this.changeState({
-          kind: "CreatedOrUpdatedGatilhoState",
+          kind: "CreatedOrUpdatedTipoEntradaState",
           formDisabled: false,
         });
         this.notificationController.push({
           type: 'success',
-          message: 'Gatilho salvo com sucesso!',
+          message: 'TipoEntrada salvo com sucesso!',
           timeout: 3000,
         });
-        this.listGatilhoController.loadGatilhoList();
+        this.listTipoEntradaController.loadTipoEntradaList();
         return;
       }
 
       this.changeState({
-        kind: "ErrorSavingGatilhoState",
+        kind: "ErrorSavingTipoEntradaState",
         error: result.error,
       });
     } catch (error: any) {
       this.changeState({
-        kind: "ErrorSavingGatilhoState",
+        kind: "ErrorSavingTipoEntradaState",
         error: 'Algum erro inesperado aconteceu!',
       });
     }
   }
 
   resetState() {
-    this.changeState(initialCreateGatilhoState);
+    this.changeState(initialCreateTipoEntradaState);
   }
 }
