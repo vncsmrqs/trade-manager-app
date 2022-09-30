@@ -5,17 +5,20 @@ import { CreateSetupRepositoryContract } from "@/core/setup/data/contracts/creat
 import { v4 as uuid } from "uuid";
 import { UpdateSetupRepositoryContract } from "@/core/setup/data/contracts/update-setup.repository";
 import { DeleteSetupRepositoryContract } from "@/core/setup/data/contracts/delete-setup.repository";
+import { chunkArray } from "@/common/utils";
 
-const setupList: Record<any, any>[] = [
-  {
-    id: '',
-    nome: 'Vinicius',
+let setupList: Record<any, any>[] = generateSetups();
+
+function generateSetups(num = 501): Record<string, any>[] {
+  return Array.from(Array(num).keys()).map((i) => ({
+    id: uuid(),
+    nome: 'Setup ' + (i + 1),
     ativo: true,
     createdAt: '2022-01-01T00:00:00-03',
     updatedAt: '2022-01-01T00:00:00-03',
     userId: '',
-  },
-];
+  }));
+}
 
 export class SetupListInMemoryRepository implements
   ListSetupRepositoryContract,
@@ -23,25 +26,42 @@ export class SetupListInMemoryRepository implements
   UpdateSetupRepositoryContract,
   DeleteSetupRepositoryContract
 {
-  list(): Promise<ActionResult<SetupEntity[], any>> {
+  list(
+    params: ListSetupRepositoryContract.Params
+  ): Promise<ActionResult<ListSetupRepositoryContract.Response, any>> {
     return new Promise((resolve) => {
+      const items = chunkArray<SetupEntity>(mapSetupListToEntity(setupList), params.itemsPerPage);
+      const page = params.page || 1;
       setTimeout(() => {
-        resolve(ActionResult.success(mapSetupListToEntity(setupList)));
+        resolve(ActionResult.success({
+          items: items[page-1],
+          page,
+          pageCount: Math.ceil(setupList.length / (params.itemsPerPage || 1)),
+        }));
       }, 3000);
     });
   }
 
-  create(params: CreateSetupRepositoryContract.Params): Promise<ActionResult<SetupEntity, string>> {
+  create(params: CreateSetupRepositoryContract.Params): Promise<ActionResult<void, string>> {
     return new Promise((resolve, reject) => {
-      setupList.push(params);
+      setupList.push(mapSetupToEntity(params));
       setTimeout(() => {
-        resolve(ActionResult.success(mapSetupToEntity(params)));
+        resolve(ActionResult.success());
       }, 1000);
     });
   }
 
   update(params: UpdateSetupRepositoryContract.Params): Promise<ActionResult<void, string>> {
     return new Promise((resolve, reject) => {
+      setupList = setupList.map((setup) => {
+        if (params.id === setup.id) {
+          return {
+            ...setup,
+            ...params,
+          };
+        }
+        return setup;
+      });
       setTimeout(() => {
         resolve(ActionResult.success());
       }, 1000);
@@ -50,7 +70,8 @@ export class SetupListInMemoryRepository implements
 
   delete(params: DeleteSetupRepositoryContract.Params): Promise<ActionResult<void, string>> {
     return new Promise((resolve, reject) => {
-      setupList.push(params);
+      console.log('DELETE SETUP', params);
+      setupList = setupList.filter((s) => s.id !== params.id);
       setTimeout(() => {
         resolve(ActionResult.success());
       }, 1000);
@@ -58,9 +79,9 @@ export class SetupListInMemoryRepository implements
   }
 }
 
-const mapSetupToEntity = (setup: any): SetupEntity => {
+const mapSetupToEntity = (setup: Record<string, any>): SetupEntity => {
   return new SetupEntity({
-    id: uuid(),
+    id: setup.id || uuid(),
     nome: setup.nome,
     createdAt: setup.createdAt,
     updatedAt: setup.updatedAt,
@@ -69,6 +90,6 @@ const mapSetupToEntity = (setup: any): SetupEntity => {
   });
 }
 
-const mapSetupListToEntity = (setupList: Record<any, any>[]): SetupEntity[] => {
+const mapSetupListToEntity = (setupList: Record<string, any>[]): SetupEntity[] => {
   return setupList.map(mapSetupToEntity);
 }

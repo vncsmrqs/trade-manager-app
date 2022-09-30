@@ -45,7 +45,7 @@
 
       <template v-slot:top>
         <delete-setup
-            :id="itemToDelete"
+            :item="itemToDelete"
             :show="showDeleteDialog"
             @close="closeDeleteDialog"
         ></delete-setup>
@@ -136,15 +136,13 @@ export default class SetupView extends Vue {
   }
 
   get showPagination(): boolean{
-    if (this.localState.items) {
-      return this.localState.items.length > this.pagination.itemsPerPage;
-    }
-    return false;
+    return this.pagination.pageCount > 1;
   }
 
   async search(): Promise<void> {
     await this.setupViewController.loadSetupList({
       search: this.searchTerm,
+      page: 1,
     });
   }
 
@@ -159,7 +157,7 @@ export default class SetupView extends Vue {
   }
 
   deleteItem(item) {
-    this.itemToDelete = Object.assign({}, item);
+    this.itemToDelete = item;
     this.showDeleteDialog = true;
   }
 

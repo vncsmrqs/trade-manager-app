@@ -7,7 +7,9 @@ export class ListSetupUseCase implements ListSetupUseCaseContract {
     private listSetupRepository: ListSetupRepositoryContract
   ) {}
 
-  async execute(): Promise<ActionResult<ListSetupUseCaseContract.Response, any>> {
-    return this.listSetupRepository.list();
+  async execute(
+    params: ListSetupRepositoryContract.Params
+  ): Promise<ActionResult<ListSetupUseCaseContract.Response, string>> {
+    return this.listSetupRepository.list(params);
   }
 }

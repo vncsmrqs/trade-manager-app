@@ -21,7 +21,7 @@ const routes: Array<RouteConfig> = [
     path: '/trades',
     name: 'trades',
     meta: {
-      pageTitle: 'Registros',
+      pageTitle: 'Meu diário',
     },
     component: () => import(/* webpackChunkName: "trades" */ '@/views/trades/index.vue')
   },
@@ -29,7 +29,7 @@ const routes: Array<RouteConfig> = [
     path: '/configuracoes/setups',
     name: 'configuracoes.setups',
     meta: {
-      pageTitle: 'Setups',
+      pageTitle: 'Setup',
     },
     component: () => import(/* webpackChunkName: "configuracoes.setups" */ '../views/configuracoes/setups/index.vue'),
   },

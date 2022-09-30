@@ -27,6 +27,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     container.singleton(TYPES.CreateOrSetupController, () => {
       return new CreateOrUpdateSetupController(
         container.make<CreateSetupUseCaseContract>(TYPES.CreateSetupUseCaseContract),
+        container.make<UpdateSetupUseCaseContract>(TYPES.UpdateSetupUseCaseContract),
         container.make<SetupViewController>(TYPES.SetupViewController),
         container.make<NotificationController>(TYPES.NotificationController),
       );

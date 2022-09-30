@@ -10,5 +10,5 @@ export namespace CreateSetupUseCaseContract {
     name: string,
     active?: boolean,
   };
-  export type Response = SetupEntity;
+  export type Response = void;
 }

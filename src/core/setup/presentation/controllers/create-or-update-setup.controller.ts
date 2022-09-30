@@ -3,10 +3,12 @@ import { CreateOrUpdateSetupState, initialCreateSetupState } from "@/core/setup/
 import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
 import { SetupViewController } from "@/core/setup/presentation/controllers/setup-view.controller";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
+import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/update-setup.use-case";
 
 export class CreateOrUpdateSetupController extends Controller<CreateOrUpdateSetupState> {
   constructor(
     private createSetupUseCase: CreateSetupUseCaseContract,
+    private updateSetupUseCase: UpdateSetupUseCaseContract,
     private setupViewController: SetupViewController,
     private notificationController: NotificationController,
 
@@ -21,7 +23,11 @@ export class CreateOrUpdateSetupController extends Controller<CreateOrUpdateSetu
     });
 
     try {
-      const result = await this.createSetupUseCase.execute(params);
+
+      const result = await this[
+        params.id ? 'updateSetupUseCase' : 'createSetupUseCase'
+      ].execute(params);
+
       if (result.successful) {
         this.changeState({
           kind: "CreatedOrUpdatedSetupState",
@@ -35,6 +41,7 @@ export class CreateOrUpdateSetupController extends Controller<CreateOrUpdateSetu
         this.setupViewController.loadSetupList();
         return;
       }
+
       this.changeState({
         kind: "ErrorSavingSetupState",
         error: result.error,

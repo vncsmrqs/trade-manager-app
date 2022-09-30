@@ -71,6 +71,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
 import { CreateOrUpdateSetupState } from "@/core/setup/presentation/states/create-or-update-setup.state";
 import { DeleteSetupController } from "@/core/setup/presentation/controllers/delete-setup.controller";
+import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 
 @Component({})
 export default class DeleteSetup extends Vue {
@@ -78,10 +79,10 @@ export default class DeleteSetup extends Vue {
   private localState: CreateOrUpdateSetupState = this.controller.state;
 
   @Prop() show!: boolean;
-  @Prop() id!: string;
+  @Prop() item!: SetupEntity;
 
   async confirmDelete() {
-    await this.controller.deleteSetup(this.id);
+    await this.controller.deleteSetup(this.item.id);
     this.close();
   }
 

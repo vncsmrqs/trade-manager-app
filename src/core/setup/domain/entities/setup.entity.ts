@@ -1,5 +1,5 @@
 export type SetupEntityProps = {
-  id?: string;
+  id: string;
   nome: string;
   createdAt: string;
   updatedAt: string;
@@ -19,7 +19,7 @@ export class SetupEntity {
   }
 
   get id(): string {
-    return this.props?.id || '';
+    return this.props.id;
   }
 
   set id(id: string) {

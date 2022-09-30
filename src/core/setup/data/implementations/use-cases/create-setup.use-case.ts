@@ -7,7 +7,9 @@ export class CreateSetupUseCase implements CreateSetupUseCaseContract {
     private createSetupRepository: CreateSetupRepositoryContract
   ) {}
 
-  async execute(params: CreateSetupUseCaseContract.Params): Promise<ActionResult<CreateSetupUseCaseContract.Response, any>> {
+  async execute(
+    params: CreateSetupUseCaseContract.Params
+  ): Promise<ActionResult<CreateSetupUseCaseContract.Response, any>> {
     return this.createSetupRepository.create(params);
   }
 }

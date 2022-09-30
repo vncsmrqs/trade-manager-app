@@ -1,5 +1,4 @@
 import { Controller } from "@/core/common/domain/controller";
-import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/list-setup.use-case";
 import {
   initialSetupViewState,
@@ -24,12 +23,17 @@ export class SetupViewController extends Controller<SetupViewState> {
     this.changeState(initialSetupViewState);
   }
 
-  public loadSetupList(filter?: ListSetupUseCaseContract.Params) {
+  public loadSetupList(search?: string, page?: number) {
     this.changeState({
       kind: "LoadingSetupViewState",
+      search,
     });
     this.getSetupListUseCase
-      .execute(filter)
+      .execute({
+        itemsPerPage: this.state.itemsPerPage,
+        search,
+        page,
+      })
       .then((result) => {
         if (result.successful) {
           this.changeState(this.mapToUpdatedState(result.value));
@@ -48,25 +52,17 @@ export class SetupViewController extends Controller<SetupViewState> {
       });
   }
 
-  private mapToUpdatedState(setupList: SetupEntity[]): LoadedSetupViewState {
+  private mapToUpdatedState(response: ListSetupUseCaseContract.Response): LoadedSetupViewState {
     return {
       kind: "LoadedSetupViewState",
-      page: 1,
-      pageCount: 10,
-      items: setupList,
+      page: response.page,
+      pageCount: response.pageCount,
+      items: response.items,
     };
   }
 
   public async goToPage(page: number): Promise<void> {
-    this.changeState({
-      kind: "LoadingSetupViewState",
-    });
-    setTimeout(() => {
-      this.changeState({
-        kind: "LoadedSetupViewState",
-        page,
-      });
-    }, 3000);
+    return this.loadSetupList(this.state.search, page);
   }
 
   public async changeAtivo(id: string, value: boolean): Promise<void> {
