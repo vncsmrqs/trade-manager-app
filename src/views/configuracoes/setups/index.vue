@@ -19,8 +19,15 @@
         >Buscar</v-btn>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col class="ml-auto">
-        <v-btn>Novo</v-btn>
+      <v-col>
+        <div class="d-flex">
+          <v-spacer></v-spacer>
+          <v-btn
+              color="primary"
+              style="height: 40px"
+              @click="createItem"
+          >Novo</v-btn>
+        </div>
       </v-col>
     </v-row>
 

@@ -7,7 +7,7 @@
     >
       <v-card>
         <v-card-title>
-          <span class="text-h5">{{ isUpdateForm ? 'Criar' : 'Editar' }} setup</span>
+          <span class="text-h5">{{ isUpdateForm ? 'Editar' : 'Criar' }} setup</span>
           <v-spacer></v-spacer>
           <v-btn
               color="primary"
@@ -23,14 +23,14 @@
         <v-divider></v-divider>
 
         <v-card-text class="mt-8">
-          <v-form @submit.prevent="submit" :disabled="isSaving">
+          <v-form ref="form" @submit.prevent="submit" :disabled="isSaving">
             <v-text-field
                 outlined
                 dense
                 label="Nome"
                 v-model="form.nome"
                 ref="name"
-                :rules="[() => !!form.nome || 'O nome é obrigatório',]"
+                :rules="[() => !!form.nome || 'O nome é obrigatório']"
                 required
             ></v-text-field>
 
@@ -94,13 +94,6 @@ type FormType = {
   ativo: boolean;
 };
 
-const defaultForm = function (): FormType {
-  return {
-    nome: '',
-    ativo: true,
-  };
-};
-
 @Component({})
 export default class CreateOrUpdateSetup extends Vue {
   private controller = app.make<CreateOrUpdateSetupController>(TYPES.CreateOrSetupController);
@@ -109,10 +102,17 @@ export default class CreateOrUpdateSetup extends Vue {
   @Prop() show!: boolean;
   @Prop() item?: SetupEntity;
 
-  form = defaultForm();
+  form = this.defaultForm();
 
   get isUpdateForm(): boolean {
     return !!this.item;
+  }
+
+  defaultForm(): FormType {
+    return {
+      nome: '',
+      ativo: true,
+    };
   }
 
   async submit() {
@@ -139,7 +139,7 @@ export default class CreateOrUpdateSetup extends Vue {
 
   fillForm(item: SetupEntity) {
     this.form = {
-      ...defaultForm(),
+      ...this.defaultForm(),
       id: item.id,
       nome: item.name,
       ativo: item.ativo,
@@ -148,8 +148,9 @@ export default class CreateOrUpdateSetup extends Vue {
 
   @Watch('show')
   changeShow(value: boolean) {
+    this.$refs.form.resetValidation();
     this.controller.resetState();
-    this.form = defaultForm();
+    this.form = this.defaultForm();
     if (value && this.isUpdateForm) {
       this.fillForm(this.item);
     }
