@@ -1,4 +1,5 @@
 export type SetupEntityProps = {
+  id: string;
   name: string;
   createdAt: string;
   userId: string;
@@ -14,5 +15,13 @@ export class SetupEntity {
 
   get name(): string {
     return this.props.name;
+  }
+
+  get id(): string {
+    return this.props.id;
+  }
+
+  set id(id: string) {
+    this.props.id = id;
   }
 }

@@ -69,7 +69,6 @@ router.beforeEach(middlewarePipeline);
 const systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
 
 router.afterEach((to) => {
-  console.log(to);
   const pageTitle = to.meta?.pageTitle;
   if (pageTitle) {
     systemController.updatePageTitle(pageTitle);

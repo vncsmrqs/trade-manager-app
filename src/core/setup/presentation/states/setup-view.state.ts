@@ -1,7 +1,11 @@
 import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 
 export type BaseSetupListState = {
-  ready: boolean;
+  itemsPerPage: number;
+  items?: SetupEntity[];
+  page?: number;
+  pageCount?: number;
+  error?: string;
 };
 
 export type InitialSetupViewState = {
@@ -16,6 +20,7 @@ export type LoadedSetupViewState = {
   kind: "LoadedSetupViewState";
   items: SetupEntity[];
   page: number;
+  pageCount: number;
 }
 
 export type ErrorSetupViewState = {
@@ -34,5 +39,6 @@ export type SetupViewState = AvailableStates & BaseSetupListState;
 
 export const initialSetupViewState : SetupViewState = {
   kind: "InitialSetupViewState",
-  ready: false,
+  itemsPerPage: 10,
+  items: [],
 };

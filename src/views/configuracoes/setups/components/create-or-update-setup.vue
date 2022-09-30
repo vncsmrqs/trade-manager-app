@@ -1,28 +1,19 @@
 <template>
     <v-dialog
-        v-model="show"
+        :value="show"
+        @input="close"
         max-width="600px"
         persistent
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-            color="primary"
-            dark
-            v-bind="attrs"
-            v-on="on"
-        >
-          Novo
-        </v-btn>
-      </template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">Novo setup</span>
+          <span class="text-h5">{{ isUpdateForm ? 'Criar' : 'Editar' }} setup</span>
           <v-spacer></v-spacer>
           <v-btn
               color="primary"
               text
               icon
-              @click="cancel"
+              @click="close"
               :disabled="isSaving"
           >
             <v-icon>mdi-close</v-icon>
@@ -37,14 +28,17 @@
                 outlined
                 dense
                 label="Nome"
+                v-model="form.nome"
+                ref="name"
+                :rules="[() => !!form.nome || 'O nome é obrigatório',]"
                 required
-                v-model="form.name"
             ></v-text-field>
+
             <v-row>
               <v-spacer></v-spacer>
               <div class="d-flex align-center mr-1">
                 <span class="mr-2 text-body-1">Ativo</span>
-                <v-switch v-model="form.active" />
+                <v-switch v-model="form.ativo" />
               </div>
             </v-row>
           </v-form>
@@ -61,15 +55,15 @@
 
         <v-card-actions>
           <div v-if="isSaving">
-            <v-progress-circular indeterminate></v-progress-circular>
-            <span class="ml-4">Salvando</span>
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            <span class="ml-4">Salvando...</span>
           </div>
           <v-spacer></v-spacer>
           <div class="mb-4 mr-2">
             <v-btn
                 color="blue darken-1"
                 text
-                @click="cancel"
+                @click="close"
                 :disabled="isSaving"
             >
               Cancelar
@@ -88,44 +82,43 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
-import { CreateSetupController } from "@/core/setup/presentation/controllers/create-setup.controller";
-import { CreateSetupState } from "@/core/setup/presentation/states/create-setup.state";
-import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
+import { CreateOrUpdateSetupController } from "@/core/setup/presentation/controllers/create-or-update-setup.controller";
+import { CreateOrUpdateSetupState } from "@/core/setup/presentation/states/create-or-update-setup.state";
+import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 
 type FormType = {
-  name: string;
-  active: boolean;
+  id?: string,
+  nome: string;
+  ativo: boolean;
 };
 
 const defaultForm = function (): FormType {
   return {
-    name: '',
-    active: true,
+    nome: '',
+    ativo: true,
   };
 };
 
 @Component({})
-export default class CreateSetup extends Vue {
-  private controller = app.make<CreateSetupController>(TYPES.CreateSetupController);
-  private notifierController = app.make<NotificationController>(TYPES.NotificationController);
+export default class CreateOrUpdateSetup extends Vue {
+  private controller = app.make<CreateOrUpdateSetupController>(TYPES.CreateOrSetupController);
+  private localState: CreateOrUpdateSetupState = this.controller.state;
 
-  private localState: CreateSetupState = this.controller.state;
-
-  show = false;
+  @Prop() show!: boolean;
+  @Prop() item?: SetupEntity;
 
   form = defaultForm();
 
+  get isUpdateForm(): boolean {
+    return !!this.item;
+  }
+
   async submit() {
-    await this.controller.createSetup(this.form.name);
+    await this.controller.createOrUpdateSetup(this.form);
     if (!this.hasError) {
-      this.show = false;
-      this.notifierController.push({
-        type: 'success',
-        message: 'Setup salvo com sucesso!',
-        timeout: 3000,
-      });
+      this.close();
     }
   }
 
@@ -134,7 +127,7 @@ export default class CreateSetup extends Vue {
   }
 
   get hasError(): boolean {
-    return this.localState.kind === 'ErrorCreateSetupState';
+    return this.localState.kind === 'ErrorSavingSetupState';
   }
 
   get error(): string | null {
@@ -144,18 +137,29 @@ export default class CreateSetup extends Vue {
     return null;
   }
 
-  @Watch('show')
-  changeShow() {
-    this.controller.resetState();
-    this.form = defaultForm();
+  fillForm(item: SetupEntity) {
+    this.form = {
+      ...defaultForm(),
+      id: item.id,
+      nome: item.name,
+      ativo: item.ativo,
+    };
   }
 
-  cancel() {
+  @Watch('show')
+  changeShow(value: boolean) {
+    this.controller.resetState();
+    this.form = defaultForm();
+    if (value && this.isUpdateForm) {
+      this.fillForm(this.item);
+    }
+  }
+
+  close() {
     if (this.localState.kind === 'SavingSetupState') {
       return;
     }
-    this.$emit('cancel');
-    this.show = false;
+    this.$emit('close');
   }
 
   changeState(state) {

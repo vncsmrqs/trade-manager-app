@@ -10,8 +10,11 @@ export abstract class Controller<S> {
     return this.internalState;
   }
 
-  changeState(state: S) {
-    this.internalState = state;
+  changeState(state: Partial<S>) {
+    this.internalState = {
+      ...this.state,
+      ...state,
+    };
     if (this.listeners.length > 0) {
       this.listeners.forEach(listener => listener(this.state));
     }

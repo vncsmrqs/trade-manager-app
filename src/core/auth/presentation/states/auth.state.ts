@@ -4,6 +4,7 @@ export type User = {
   initials: string;
   lastname: string;
   email: string;
+  imageUrl?: string;
 };
 
 export type BaseAuthState = {
