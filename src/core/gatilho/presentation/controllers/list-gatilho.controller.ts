@@ -1,31 +1,31 @@
 import { Controller } from "@/core/common/domain/controller";
 import { ListGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/list-gatilho.use-case";
 import {
-  initialGatilhoViewState,
-  LoadedGatilhoViewState,
-  GatilhoViewState
-} from "@/core/gatilho/presentation/states/gatilho-view.state";
+  initialListGatilhoState,
+  LoadedListGatilhoState,
+  ListGatilhoState
+} from "@/core/gatilho/presentation/states/list-gatilho.state";
 import { UpdateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/update-gatilho.use-case";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
-export class GatilhoViewController extends Controller<GatilhoViewState> {
+export class ListGatilhoController extends Controller<ListGatilhoState> {
   constructor(
     private getGatilhoListUseCase: ListGatilhoUseCaseContract,
     private updateGatilho: UpdateGatilhoUseCaseContract,
   ) {
-    super(initialGatilhoViewState);
+    super(initialListGatilhoState);
   }
 
   private notificationController = app.make<NotificationController>(TYPES.NotificationController);
 
   public resetState() {
-    this.changeState(initialGatilhoViewState);
+    this.changeState(initialListGatilhoState);
   }
 
   public loadGatilhoList(search?: string, page?: number) {
     this.changeState({
-      kind: "LoadingGatilhoViewState",
+      kind: "LoadingListGatilhoState",
       search,
     });
     this.getGatilhoListUseCase
@@ -40,21 +40,22 @@ export class GatilhoViewController extends Controller<GatilhoViewState> {
           return;
         }
         this.changeState({
-          kind: "ErrorGatilhoViewState",
+          kind: "ErrorListGatilhoState",
           error: result.error,
         });
       })
       .catch((error) => {
           this.changeState({
-            kind: "ErrorGatilhoViewState",
+            kind: "ErrorListGatilhoState",
             error: error.message,
           });
       });
   }
 
-  private mapToUpdatedState(response: ListGatilhoUseCaseContract.Response): LoadedGatilhoViewState {
+  private mapToUpdatedState(response: ListGatilhoUseCaseContract.Response): ListGatilhoState {
     return {
-      kind: "LoadedGatilhoViewState",
+      ...this.state,
+      kind: "LoadedListGatilhoState",
       page: response.page,
       pageCount: response.pageCount,
       items: response.items,
@@ -68,7 +69,7 @@ export class GatilhoViewController extends Controller<GatilhoViewState> {
   public async changeAtivo(id: string, value: boolean): Promise<void> {
     this.changeState({
       ...this.state,
-      kind: 'LoadedGatilhoViewState',
+      kind: 'LoadedListGatilhoState',
       items: this.state.items.map((gatilho) => {
         if (gatilho.id === id) gatilho.ativo = value;
         return gatilho;
@@ -89,7 +90,7 @@ export class GatilhoViewController extends Controller<GatilhoViewState> {
     }
     this.changeState({
       ...this.state,
-      kind: 'LoadedGatilhoViewState',
+      kind: 'LoadedListGatilhoState',
       items: this.state.items.map((gatilho) => {
         if (gatilho.id === id) {
           gatilho.ativo = !value;

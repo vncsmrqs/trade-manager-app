@@ -3,12 +3,12 @@ import { DeleteGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/de
 import { DeleteGatilhoState, initialDeleteGatilhoState } from "@/core/gatilho/presentation/states/delete-gatilho.state";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
-import { GatilhoViewController } from "@/core/gatilho/presentation/controllers/gatilho-view.controller";
+import { ListGatilhoController } from "@/core/gatilho/presentation/controllers/list-gatilho.controller";
 
 export class DeleteGatilhoController extends Controller<DeleteGatilhoState> {
   constructor(
     private deleteGatilhoUseCase: DeleteGatilhoUseCaseContract,
-    private gatilhoViewController: GatilhoViewController,
+    private listGatilhoController: ListGatilhoController,
   ) {
     super(initialDeleteGatilhoState);
   }
@@ -31,7 +31,7 @@ export class DeleteGatilhoController extends Controller<DeleteGatilhoState> {
           message: 'Gatilho excluido com sucesso!',
           timeout: 3000,
         });
-        this.gatilhoViewController.loadGatilhoList();
+        this.listGatilhoController.loadGatilhoList();
         return;
       }
       this.changeState({

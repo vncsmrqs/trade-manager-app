@@ -1,7 +1,7 @@
 import { Controller } from "@/core/common/domain/controller";
 import { CreateOrUpdateGatilhoState, initialCreateGatilhoState } from "@/core/gatilho/presentation/states/create-or-update-gatilho.state";
 import { CreateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/create-gatilho.use-case";
-import { GatilhoViewController } from "@/core/gatilho/presentation/controllers/gatilho-view.controller";
+import { ListGatilhoController } from "@/core/gatilho/presentation/controllers/list-gatilho.controller";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 import { UpdateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/update-gatilho.use-case";
 
@@ -9,7 +9,7 @@ export class CreateOrUpdateGatilhoController extends Controller<CreateOrUpdateGa
   constructor(
     private createGatilhoUseCase: CreateGatilhoUseCaseContract,
     private updateGatilhoUseCase: UpdateGatilhoUseCaseContract,
-    private gatilhoViewController: GatilhoViewController,
+    private listGatilhoController: ListGatilhoController,
     private notificationController: NotificationController,
 
   ) {
@@ -38,7 +38,7 @@ export class CreateOrUpdateGatilhoController extends Controller<CreateOrUpdateGa
           message: 'Gatilho salvo com sucesso!',
           timeout: 3000,
         });
-        this.gatilhoViewController.loadGatilhoList();
+        this.listGatilhoController.loadGatilhoList();
         return;
       }
 
