@@ -1,5 +1,5 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
+import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/create-setup.use-case";
 import { CreateSetupRepositoryContract } from "@/core/setup/data/contracts/create-setup.repository";
 
 export class CreateSetupUseCase implements CreateSetupUseCaseContract {

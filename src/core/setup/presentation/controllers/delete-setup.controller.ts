@@ -1,5 +1,5 @@
 import { Controller } from "@/core/common/domain/controller";
-import { DeleteSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/delete-setup.use-case";
+import { DeleteSetupUseCaseContract } from "@/core/setup/domain/use-cases/delete-setup.use-case";
 import { DeleteSetupState, initialDeleteSetupState } from "@/core/setup/presentation/states/delete-setup.state";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";

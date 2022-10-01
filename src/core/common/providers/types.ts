@@ -1,4 +1,4 @@
-import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/update-setup.use-case";
+import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/update-setup.use-case";
 import { DeleteSetupController } from "@/core/setup/presentation/controllers/delete-setup.controller";
 
 export const TYPES = {

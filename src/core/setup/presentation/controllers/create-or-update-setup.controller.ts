@@ -1,9 +1,9 @@
 import { Controller } from "@/core/common/domain/controller";
 import { CreateOrUpdateSetupState, initialCreateSetupState } from "@/core/setup/presentation/states/create-or-update-setup.state";
-import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
+import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/create-setup.use-case";
 import { ListSetupController } from "./list-setup.controller";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
-import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/update-setup.use-case";
+import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/update-setup.use-case";
 
 export class CreateOrUpdateSetupController extends Controller<CreateOrUpdateSetupState> {
   constructor(

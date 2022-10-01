@@ -1,11 +1,11 @@
 import { Controller } from "@/core/common/domain/controller";
-import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/list-setup.use-case";
+import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/list-setup.use-case";
 import {
   initialListSetupState,
   LoadedListSetupState,
   ListSetupState
 } from "@/core/setup/presentation/states/list-setup.state";
-import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/update-setup.use-case";
+import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/update-setup.use-case";
 import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 

@@ -2,16 +2,16 @@ import { TYPES } from "@/core/common/providers/types";
 
 //contracts
 import { ContainerContract, ServiceProviderContract } from "@/core/common/container/contracts";
-import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/list-setup.use-case";
+import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/list-setup.use-case";
 import { ListSetupController } from "@/core/setup/presentation/controllers/list-setup.controller";
 import { CreateOrUpdateSetupController } from "@/core/setup/presentation/controllers/create-or-update-setup.controller";
-import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/create-setup.use-case";
+import { CreateSetupUseCaseContract } from "@/core/setup/domain/use-cases/create-setup.use-case";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
-import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/update-setup.use-case";
+import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/update-setup.use-case";
 import { DeleteSetupController } from "@/core/setup/presentation/controllers/delete-setup.controller";
-import { DeleteSetupUseCaseContract } from "@/core/setup/domain/use-cases/setup/delete-setup.use-case";
+import { DeleteSetupUseCaseContract } from "@/core/setup/domain/use-cases/delete-setup.use-case";
 import { ListGatilhoController } from "@/core/gatilho/presentation/controllers/list-gatilho.controller";
 import { DeleteGatilhoController } from "@/core/gatilho/presentation/controllers/delete-gatilho.controller";
 import { CreateOrUpdateGatilhoController } from "@/core/gatilho/presentation/controllers/create-or-update-gatilho.controller";
