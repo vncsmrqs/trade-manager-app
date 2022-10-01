@@ -28,7 +28,7 @@
         </v-col>
         <v-col cols="12" sm="5" md="3">
           <v-menu
-              ref="menu"
+              ref="startDate"
               v-model="showStartDatePicker"
               :close-on-content-click="false"
               :return-value.sync="filter.startDate"
@@ -38,7 +38,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                  v-model="filter.startDate"
+                  :value="formattedStartDate"
                   label="Data inicial"
                   prepend-inner-icon="mdi-calendar"
                   readonly
@@ -53,7 +53,8 @@
             <v-date-picker
                 v-model="filter.startDate"
                 no-title
-                scrollable
+                color="primary"
+                locale="pt-BR"
             >
               <v-spacer></v-spacer>
               <v-btn
@@ -66,7 +67,7 @@
               <v-btn
                   text
                   color="primary"
-                  @click="$refs.menu.save(filter.startDate)"
+                  @click="$refs.startDate.save(filter.startDate)"
               >
                 Concluir
               </v-btn>
@@ -75,7 +76,7 @@
         </v-col>
         <v-col cols="12" sm="6" md="3">
           <v-menu
-              ref="menu"
+              ref="endDate"
               v-model="showEndDatePicker"
               :close-on-content-click="false"
               :return-value.sync="filter.endDate"
@@ -85,7 +86,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                  v-model="filter.endDate"
+                  :value="formattedEndDate"
                   label="Data inicial"
                   prepend-inner-icon="mdi-calendar"
                   readonly
@@ -100,7 +101,8 @@
             <v-date-picker
                 v-model="filter.endDate"
                 no-title
-                scrollable
+                color="primary"
+                locale="pt-BR"
             >
               <v-spacer></v-spacer>
               <v-btn
@@ -113,7 +115,7 @@
               <v-btn
                   text
                   color="primary"
-                  @click="$refs.menu.save(filter.endDate)"
+                  @click="$refs.endDate.save(filter.endDate)"
               >
                 Concluir
               </v-btn>
@@ -412,14 +414,22 @@ export default class ListTrade extends Vue {
 
   generateForm() {
     return {
-      startDate: '2020-01-01',
-      endDate: '2020-01-01',
+      startDate: '',
+      endDate: '',
       setupId: [],
       gatilhoId: [],
       tipoEntradaId: [],
       ativoId: [],
       resultado: [],
     };
+  }
+
+  get formattedStartDate() {
+    return '01/01/2022';
+  }
+
+  get formattedEndDate() {
+    return '01/01/2022';
   }
 
   filterChips = [];
