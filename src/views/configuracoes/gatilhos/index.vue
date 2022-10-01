@@ -19,7 +19,10 @@
               @click="search"
               block
               :disabled="isLoading"
-          >Buscar</v-btn>
+          >
+            <v-icon left>mdi-magnify</v-icon>
+            <span>Buscar</span>
+          </v-btn>
         </v-col>
         <v-spacer></v-spacer>
         <v-col col="12" sm="2" class="d-flex mb-8 mb-sm-0">
@@ -29,7 +32,10 @@
               style="height: 40px"
               @click="createItem"
               block
-          >Novo</v-btn>
+          >
+            <v-icon left>mdi-plus</v-icon>
+            <span>Novo</span>
+          </v-btn>
         </v-col>
       </v-row>
     </v-form>
