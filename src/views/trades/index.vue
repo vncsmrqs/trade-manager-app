@@ -408,22 +408,25 @@ function generateTrades(num = 10): Record<string, any>[] {
   components: { FilterTrades }
 })
 export default class ListTrade extends Vue {
-  filter = {
-    startDate: '2020-01-01',
-    endDate: '2020-01-01',
-    setupId: null,
-    gatilhoId: null,
-    tipoEntradaId: null,
-    ativoId: null,
-    resultado: null,
-  };
+  filter = this.generateForm();
+
+  generateForm() {
+    return {
+      startDate: '2020-01-01',
+      endDate: '2020-01-01',
+      setupId: [],
+      gatilhoId: [],
+      tipoEntradaId: [],
+      ativoId: [],
+      resultado: [],
+    };
+  }
 
   filterChips = [];
 
   isLoading = false;
 
   search() {
-    console.log({ filter: this.filter });
     this.fakeLoad();
   }
 
@@ -459,9 +462,10 @@ export default class ListTrade extends Vue {
 
   fakeLoad() {
     this.isLoading = true;
+    console.log({ filter: this.filter });
     setTimeout(() => {
       this.isLoading = false;
-    }, 5000);
+    }, 1000);
   }
 
   showStartDatePicker = false;
@@ -491,15 +495,33 @@ export default class ListTrade extends Vue {
           ];
         }, []);
     this.closeFilterDialog();
+    this.fillForm(this.filterChips);
     this.fakeLoad();
+  }
+
+  private fillForm(filterChips: Record<string, any>[]): void {
+    const filterFields = [
+      'ativoId',
+      'setupId',
+      'resultado',
+      'gatilhoId',
+      'tipoEntradaId',
+    ];
+
+    filterFields.forEach((field) => {
+      this.filter[field] = filterChips
+        .filter((f) => f.field === field)
+        .map((f) => f.value);
+    });
   }
 
   removeFilter(item: any): void {
     this.filterChips = this.filterChips.filter((chip) => {
       return chip.value !== item.value && chip.item !== chip.field
     });
-    if (this.filter?.[item.field]) {
-      this.filter[item.field] = null;
+    const field = this.filter[item.field];
+    if (field) {
+      this.filter[item.field] = field.filter((f) => f !== item.value);
     }
   }
 
