@@ -1,6 +1,13 @@
 <template>
   <v-container class="pa-8">
 
+    <filter-trades
+        :filter-chips="filterChips"
+        :show="showFilterDialog"
+        @close="closeFilterDialog"
+        @submit="submitFilter"
+    ></filter-trades>
+
     <v-form @submit.prevent="search" :disabled="isLoading">
       <v-row>
         <v-col cols="12" md="auto">
@@ -13,6 +20,7 @@
                 block
                 style="height: 100%;"
                 :disabled="isLoading"
+                @click="openFilterDialog"
             >
               <v-icon>mdi-filter</v-icon>
             </v-btn>
@@ -39,6 +47,7 @@
                   dense
                   v-bind="attrs"
                   v-on="on"
+                  hide-details
               ></v-text-field>
             </template>
             <v-date-picker
@@ -85,6 +94,7 @@
                   dense
                   v-bind="attrs"
                   v-on="on"
+                  hide-details
               ></v-text-field>
             </template>
             <v-date-picker
@@ -154,7 +164,29 @@
       </v-row>
     </v-form>
 
-    <v-row>
+    <v-row v-if="filterChips.length">
+      <v-col cols="12" sm="6">
+        <v-row>
+          <v-col
+              v-for="chip in filterChips"
+              :key="chip.value"
+              cols="auto"
+              class="pr-0 pb-0"
+          >
+            <v-chip
+                close
+                small
+                @click:close="() => removeFilter(chip)"
+                :disabled="isLoading"
+            >
+              {{ chip.text }}
+            </v-chip>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <v-row class="mt-8">
       <v-col cols="12" sm="4">
         <v-alert
             border="left"
@@ -334,6 +366,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { v4 as uuid } from "uuid";
+import FilterTrades from "@/views/trades/components/filter-trades.vue";
 
 function generateTrades(num = 10): Record<string, any>[] {
   return Array.from(Array(num).keys()).map((i) => {
@@ -372,17 +405,20 @@ function generateTrades(num = 10): Record<string, any>[] {
 }
 
 @Component({
+  components: { FilterTrades }
 })
 export default class ListTrade extends Vue {
   filter = {
     startDate: '2020-01-01',
     endDate: '2020-01-01',
-    setupId: '',
-    gatilhoId: '',
-    tipoEntradaId: '',
-    ativoId: '',
-    resultado: 'gain',
+    setupId: null,
+    gatilhoId: null,
+    tipoEntradaId: null,
+    ativoId: null,
+    resultado: null,
   };
+
+  filterChips = [];
 
   isLoading = false;
 
@@ -430,6 +466,46 @@ export default class ListTrade extends Vue {
 
   showStartDatePicker = false;
   showEndDatePicker = false;
+  showFilterDialog = false;
+
+  closeFilterDialog() {
+    this.showFilterDialog = false;
+  }
+
+  submitFilter(filter: any) {
+    this.filterChips = Object.keys(filter)
+        .filter((field) => !!filter[field] || (Array.isArray(filter[field]) && filter[field].length))
+        .reduce((filterList, field) => {
+          const chip = filter[field];
+
+          if (Array.isArray(chip)) {
+            return [
+                ...filterList,
+                ...chip.map((c) => ({ field, ...c }))
+            ];
+          }
+
+          return [
+            ...filterList,
+            { field, ...chip }
+          ];
+        }, []);
+    this.closeFilterDialog();
+    this.fakeLoad();
+  }
+
+  removeFilter(item: any): void {
+    this.filterChips = this.filterChips.filter((chip) => {
+      return chip.value !== item.value && chip.item !== chip.field
+    });
+    if (this.filter?.[item.field]) {
+      this.filter[item.field] = null;
+    }
+  }
+
+  openFilterDialog() {
+    this.showFilterDialog = true;
+  }
 
   pointsTextColor(pontos: number): string {
     if (pontos > 0) return 'blue--text text--accent-1';
