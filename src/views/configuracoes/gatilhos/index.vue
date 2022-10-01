@@ -103,6 +103,7 @@
       <v-spacer></v-spacer>
       <v-col cols="12" sm="6" md="4">
         <v-pagination
+            :disabled="isLoading"
             :value="pagination.page"
             @input="changePage"
             :length="pagination.pageCount"
