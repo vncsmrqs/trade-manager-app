@@ -7,7 +7,7 @@
     >
       <v-card>
         <v-card-title>
-          <span class="text-h5">Apagar gatilho</span>
+          <span class="text-h5">Excluir gatilho?</span>
           <v-spacer></v-spacer>
           <v-btn
               color="primary"
@@ -25,7 +25,7 @@
         <v-card-text class="mt-8">
 
           <div>
-            Deseja realmente apagar esse gatilho? Esta ação não pode ser desfeita.
+            Tem certeza que deseja excluir esse gatilho?
           </div>
 
           <v-alert
@@ -41,7 +41,7 @@
         <v-card-actions>
           <div v-if="isDeleting">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
-            <span class="ml-4">Apagando...</span>
+            <span class="ml-4">Excluindo...</span>
           </div>
           <v-spacer></v-spacer>
           <div class="mb-4 mr-2">
@@ -59,7 +59,7 @@
                 @click="confirmDelete"
                 :disabled="isDeleting"
             >
-              Apagar
+              Excluir
             </v-btn>
           </div>
         </v-card-actions>
