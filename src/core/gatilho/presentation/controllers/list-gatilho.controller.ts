@@ -6,18 +6,16 @@ import {
   ListGatilhoState
 } from "@/core/gatilho/presentation/states/list-gatilho.state";
 import { UpdateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/update-gatilho.use-case";
-import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 export class ListGatilhoController extends Controller<ListGatilhoState> {
   constructor(
     private getGatilhoListUseCase: ListGatilhoUseCaseContract,
     private updateGatilho: UpdateGatilhoUseCaseContract,
+    private notificationController: NotificationController,
   ) {
     super(initialListGatilhoState);
   }
-
-  private notificationController = app.make<NotificationController>(TYPES.NotificationController);
 
   public resetState() {
     this.changeState(initialListGatilhoState);

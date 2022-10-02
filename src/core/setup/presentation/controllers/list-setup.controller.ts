@@ -13,11 +13,10 @@ export class ListSetupController extends Controller<ListSetupState> {
   constructor(
     private getSetupListUseCase: ListSetupUseCaseContract,
     private updateSetup: UpdateSetupUseCaseContract,
+    private notificationController: NotificationController,
   ) {
     super(initialListSetupState);
   }
-
-  private notificationController = app.make<NotificationController>(TYPES.NotificationController);
 
   public resetState() {
     this.changeState(initialListSetupState);

@@ -9,11 +9,10 @@ export class DeleteGatilhoController extends Controller<DeleteGatilhoState> {
   constructor(
     private deleteGatilhoUseCase: DeleteGatilhoUseCaseContract,
     private listGatilhoController: ListGatilhoController,
+    private notificationController: NotificationController,
   ) {
     super(initialDeleteGatilhoState);
   }
-
-  private notifierController = app.make<NotificationController>(TYPES.NotificationController);
 
   public async deleteGatilho(id: string) {
     this.changeState({
@@ -26,7 +25,7 @@ export class DeleteGatilhoController extends Controller<DeleteGatilhoState> {
         this.changeState({
           kind: "DeletedGatilhoState",
         });
-        this.notifierController.push({
+        this.notificationController.push({
           type: 'success',
           message: 'Gatilho excluido com sucesso!',
           timeout: 3000,

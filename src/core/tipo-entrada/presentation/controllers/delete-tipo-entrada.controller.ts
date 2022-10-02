@@ -9,11 +9,11 @@ export class DeleteTipoEntradaController extends Controller<DeleteTipoEntradaSta
   constructor(
     private deleteTipoEntradaUseCase: DeleteTipoEntradaUseCaseContract,
     private listTipoEntradaController: ListTipoEntradaController,
+    private notifierController: NotificationController,
   ) {
     super(initialDeleteTipoEntradaState);
   }
 
-  private notifierController = app.make<NotificationController>(TYPES.NotificationController);
 
   public async deleteTipoEntrada(id: string) {
     this.changeState({

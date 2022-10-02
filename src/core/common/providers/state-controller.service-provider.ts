@@ -26,28 +26,34 @@ import { CreateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use
 import { UpdateTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/update-tipo-entrada.use-case";
 import { DeleteTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/delete-tipo-entrada.use-case";
 import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
+import { ListTradeController } from "@/core/trade/presentation/controllers/list-trade.controller";
+import { ListTradeUseCaseContract } from "@/core/trade/domain/use-cases/list-trade.use-case";
+import { UpdateTradeUseCaseContract } from "@/core/trade/domain/use-cases/update-trade.use-case";
+import { CreateOrUpdateTradeController } from "@/core/trade/presentation/controllers/create-or-update-trade.controller";
+import { CreateTradeUseCaseContract } from "@/core/trade/domain/use-cases/create-trade.use-case";
+import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete-trade.use-case";
+import { DeleteTradeController } from "@/core/trade/presentation/controllers/delete-trade.controller";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
-  register(): void {}
+  register(container: ContainerContract): void {
+    container.singleton(TYPES.NotificationController, () => new NotificationController());
+    container.singleton(TYPES.SystemController, () => new SystemController());
+    container.singleton(TYPES.AuthController, () => new AuthController());
+  }
   boot(container: ContainerContract): void {
     this.bootSetupControllers(container);
     this.bootGatilhoControllers(container);
     this.bootTipoEntradaControllers(container);
-
-    container.singleton(TYPES.NotificationController, () => new NotificationController());
-
-    container.singleton(TYPES.SystemController, () => new SystemController());
-
-    container.singleton(TYPES.AuthController, () => new AuthController());
+    this.bootTradeControllers(container);
   }
-
 
   private bootSetupControllers(container: ContainerContract): void {
     container.singleton(TYPES.ListSetupController, () => {
       return new ListSetupController(
         container.make<ListSetupUseCaseContract>(TYPES.ListSetupUseCaseContract),
         container.make<UpdateSetupUseCaseContract>(TYPES.UpdateSetupUseCaseContract),
+        container.make<NotificationController>(TYPES.NotificationController),
       );
     });
 
@@ -64,6 +70,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new DeleteSetupController(
         container.make<DeleteSetupUseCaseContract>(TYPES.DeleteSetupUseCaseContract),
         container.make<ListSetupController>(TYPES.ListSetupController),
+        container.make<NotificationController>(TYPES.NotificationController),
       );
     });
   }
@@ -73,6 +80,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new ListGatilhoController(
         container.make<ListGatilhoUseCaseContract>(TYPES.ListGatilhoUseCaseContract),
         container.make<UpdateGatilhoUseCaseContract>(TYPES.UpdateGatilhoUseCaseContract),
+        container.make<NotificationController>(TYPES.NotificationController),
       );
     });
 
@@ -89,6 +97,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new DeleteGatilhoController(
         container.make<DeleteGatilhoUseCaseContract>(TYPES.DeleteGatilhoUseCaseContract),
         container.make<ListGatilhoController>(TYPES.ListGatilhoController),
+        container.make<NotificationController>(TYPES.NotificationController),
       );
     });
   }
@@ -114,6 +123,31 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new DeleteTipoEntradaController(
         container.make<DeleteTipoEntradaUseCaseContract>(TYPES.DeleteTipoEntradaUseCaseContract),
         container.make<ListTipoEntradaController>(TYPES.ListTipoEntradaController),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    });
+  }
+
+  private bootTradeControllers(container: ContainerContract): void {
+    container.singleton(TYPES.ListTradeController, () => {
+      return new ListTradeController(
+        container.make<ListTradeUseCaseContract>(TYPES.ListTradeUseCaseContract),
+      );
+    });
+
+    container.singleton(TYPES.CreateOrUpdateTradeController, () => {
+      return new CreateOrUpdateTradeController(
+        container.make<CreateTradeUseCaseContract>(TYPES.CreateTradeUseCaseContract),
+        container.make<UpdateTradeUseCaseContract>(TYPES.UpdateTradeUseCaseContract),
+        container.make<ListTradeController>(TYPES.ListTradeController),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    });
+
+    container.singleton(TYPES.DeleteTradeController, () => {
+      return new DeleteTradeController(
+        container.make<DeleteTradeUseCaseContract>(TYPES.DeleteTradeUseCaseContract),
+        container.make<NotificationController>(TYPES.NotificationController),
       );
     });
   }

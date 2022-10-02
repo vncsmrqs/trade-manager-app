@@ -40,6 +40,18 @@ import { UpdateTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/co
 import { DeleteTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/delete-tipo-entrada.use-case";
 import { DeleteTipoEntradaUseCase } from "@/core/tipo-entrada/data/implementations/use-cases/delete-tipo-entrada.use-case";
 import { DeleteTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/delete-tipo-entrada.repository";
+import { ListTradeUseCase } from "@/core/trade/data/implementations/use-cases/list-trade.use.case";
+import { CreateTradeUseCase } from "@/core/trade/data/implementations/use-cases/create-trade.use-case";
+import { UpdateTradeUseCase } from "@/core/trade/data/implementations/use-cases/update-trade.use-case";
+import { UpdateTradeUseCaseContract } from "@/core/trade/domain/use-cases/update-trade.use-case";
+import { CreateTradeUseCaseContract } from "@/core/trade/domain/use-cases/create-trade.use-case";
+import { ListTradeUseCaseContract } from "@/core/trade/domain/use-cases/list-trade.use-case";
+import { ListTradeRepositoryContract } from "@/core/trade/data/contracts/list-trade.repository";
+import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/create-trade.repository";
+import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
+import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete-trade.use-case";
+import { DeleteTradeUseCase } from "@/core/trade/data/implementations/use-cases/delete-trade.use-case";
+import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delete-trade.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -47,6 +59,7 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     this.bootSetupUseCases(container);
     this.bootGatilhoUseCases(container);
     this.bootTipoEntradaUseCases(container);
+    this.bootTradeUseCases(container);
   }
 
   private bootSetupUseCases(container: ContainerContract): void {
@@ -123,6 +136,32 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<DeleteTipoEntradaUseCaseContract>(TYPES.DeleteTipoEntradaUseCaseContract, () => {
       return new DeleteTipoEntradaUseCase(
         container.make<DeleteTipoEntradaRepositoryContract>(TYPES.DeleteTipoEntradaRepositoryContract),
+      );
+    });
+  }
+
+  private bootTradeUseCases(container: ContainerContract): void {
+    container.bind<ListTradeUseCaseContract>(TYPES.ListTradeUseCaseContract, () => {
+      return new ListTradeUseCase(
+        container.make<ListTradeRepositoryContract>(TYPES.ListTradeRepositoryContract),
+      );
+    });
+
+    container.bind<CreateTradeUseCaseContract>(TYPES.CreateTradeUseCaseContract, () => {
+      return new CreateTradeUseCase(
+        container.make<CreateTradeRepositoryContract>(TYPES.CreateTradeRepositoryContract),
+      );
+    });
+
+    container.bind<UpdateTradeUseCaseContract>(TYPES.UpdateTradeUseCaseContract, () => {
+      return new UpdateTradeUseCase(
+        container.make<UpdateTradeRepositoryContract>(TYPES.UpdateTradeRepositoryContract),
+      );
+    });
+
+    container.bind<DeleteTradeUseCaseContract>(TYPES.DeleteTradeUseCaseContract, () => {
+      return new DeleteTradeUseCase(
+        container.make<DeleteTradeRepositoryContract>(TYPES.DeleteTradeRepositoryContract),
       );
     });
   }

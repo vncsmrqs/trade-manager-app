@@ -9,11 +9,10 @@ export class DeleteSetupController extends Controller<DeleteSetupState> {
   constructor(
     private deleteSetupUseCase: DeleteSetupUseCaseContract,
     private listSetupController: ListSetupController,
+    private notifierController: NotificationController,
   ) {
     super(initialDeleteSetupState);
   }
-
-  private notifierController = app.make<NotificationController>(TYPES.NotificationController);
 
   public async deleteSetup(id: string) {
     this.changeState({

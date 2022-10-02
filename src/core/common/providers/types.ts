@@ -20,6 +20,11 @@ export const TYPES = {
   UpdateTipoEntradaUseCaseContract: Symbol('UpdateTipoEntradaUseCaseContract'),
   DeleteTipoEntradaUseCaseContract: Symbol('DeleteTipoEntradaUseCaseContract'),
 
+  ListTradeUseCaseContract: Symbol('ListTradeUseCaseContract'),
+  CreateTradeUseCaseContract: Symbol('CreateTradeUseCaseContract'),
+  UpdateTradeUseCaseContract: Symbol('UpdateTradeUseCaseContract'),
+  DeleteTradeUseCaseContract: Symbol('DeleteTradeUseCaseContract'),
+
   /* Repositories */
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
@@ -35,6 +40,11 @@ export const TYPES = {
   CreateTipoEntradaRepositoryContract: Symbol('CreateTipoEntradaRepositoryContract'),
   UpdateTipoEntradaRepositoryContract: Symbol('UpdateTipoEntradaRepositoryContract'),
   DeleteTipoEntradaRepositoryContract: Symbol('DeleteTipoEntradaRepositoryContract'),
+
+  ListTradeRepositoryContract: Symbol('ListTradeRepositoryContract'),
+  CreateTradeRepositoryContract: Symbol('CreateTradeRepositoryContract'),
+  UpdateTradeRepositoryContract: Symbol('UpdateTradeRepositoryContract'),
+  DeleteTradeRepositoryContract: Symbol('DeleteTradeRepositoryContract'),
 
   /* State Controllers */
   NotificationController: Symbol('NotificationController'),
@@ -52,4 +62,8 @@ export const TYPES = {
   ListTipoEntradaController: Symbol('ListTipoEntradaController'),
   CreateOrUpdateTipoEntradaController: Symbol('CreateOrUpdateTipoEntradaController'),
   DeleteTipoEntradaController: Symbol('DeleteTipoEntradaController'),
+
+  ListTradeController: Symbol('ListTradeController'),
+  CreateOrUpdateTradeController: Symbol('CreateOrUpdateTradeController'),
+  DeleteTradeController: Symbol('DeleteTradeController'),
 };

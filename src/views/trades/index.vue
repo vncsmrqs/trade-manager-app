@@ -2,13 +2,13 @@
   <v-container class="pa-8">
 
     <filter-trades
-        :filter-chips="filterChips"
+        :filter-chips="filterFormAsList"
         :show="showFilterDialog"
         @close="closeFilterDialog"
         @submit="submitFilter"
     ></filter-trades>
 
-    <v-form @submit.prevent="search" :disabled="isLoading">
+    <v-form @submit.prevent="() => search()" :disabled="isLoading">
       <v-row>
         <v-col cols="12" md="auto">
           <div style="height: 40px; width: 48px !important;">
@@ -128,7 +128,7 @@
               outlined
               color="primary"
               style="height: 40px"
-              @click="search"
+              @click="() => search()"
               block
               :disabled="isLoading"
           >
@@ -166,11 +166,11 @@
       </v-row>
     </v-form>
 
-    <v-row v-if="filterChips.length">
+    <v-row v-if="filterFormAsList.length">
       <v-col cols="12" sm="6">
         <v-row>
           <v-col
-              v-for="chip in filterChips"
+              v-for="chip in filterFormAsList"
               :key="chip.value"
               cols="auto"
               class="pr-0 pb-0"
@@ -199,7 +199,7 @@
         >
           <v-row>
             <v-col>
-              <div><h2>{{ metadata.totalItems }}</h2></div>
+              <div><h2>{{ listTradeState.metadata.totalItems }}</h2></div>
               <span class="text-body-2">Operações</span>
             </v-col>
           </v-row>
@@ -215,11 +215,11 @@
         >
           <v-row>
             <v-col>
-              <div><h2>{{ metadata.gainCount }}</h2></div>
+              <div><h2>{{ listTradeState.metadata.gainCount }}</h2></div>
               <span class="text-body-2">Gain</span>
             </v-col>
             <v-col class="d-flex align-center justify-end">
-              {{ metadata.gainPercentage }}%
+              {{ listTradeState.metadata.gainPercentage }}%
             </v-col>
           </v-row>
         </v-alert>
@@ -234,11 +234,11 @@
         >
           <v-row>
             <v-col>
-              <div><h2>{{ metadata.lossCount }}</h2></div>
+              <div><h2>{{ listTradeState.metadata.lossCount }}</h2></div>
               <span class="text-body-2">Loss</span>
             </v-col>
             <v-col class="d-flex align-center justify-end">
-              {{ metadata.lossPercentage }}%
+              {{ listTradeState.metadata.lossPercentage }}%
             </v-col>
           </v-row>
         </v-alert>
@@ -303,11 +303,11 @@
                   <div
                       v-if="header.name === 'pontos'"
                       :class="[
-                        pointsTextColor(trade.pontos),
+                        pointsTextColor(trade.pontuacao),
                       ]"
                   >
                     <div class="text-body-1 font-weight-bold">
-                      {{ trade.pontos * (trade.pontos < 0 ? -1 : 1) }}
+                      {{ trade.pontuacao * (trade.pontuacao < 0 ? -1 : 1) }}
                     </div>
                     <div class="text-caption font-weight-light text-capitalize">
                       {{ trade.resultado }}
@@ -352,7 +352,7 @@
         <span class="ml-4">Buscando...</span>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="12" sm="6" md="4">
+      <v-col cols="12" sm="6" md="4" class="d-flex justify-end pr-0">
         <v-pagination
             :disabled="isLoading"
             :value="pagination.page"
@@ -367,52 +367,29 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { v4 as uuid } from "uuid";
 import FilterTrades from "@/views/trades/components/filter-trades.vue";
-
-function generateTrades(num = 10): Record<string, any>[] {
-  return Array.from(Array(num).keys()).map((i) => {
-      const par = i % 2 === 0;
-      const multiploDeTres =  i % 3 === 0;
-      const pontos = multiploDeTres ? 0 : (i * 100 * (par ? 1 : -1));
-      const resultado = (pontos) => {
-        if (pontos > 0) return 'gain';
-        if (pontos < 0) return 'loss';
-        return '0x0'
-      };
-      return {
-        id: uuid(),
-        nome: 'Registro ' + (i + 1),
-        userId: '',
-        setupId: '',
-        setupNome: 'Setup ' + (i + 1),
-        tipoEntradaId: '',
-        tipoEntradaNome: 'Tipo Entrada ' + (i + 1),
-        gatilhoId: '',
-        gatilhoNome: 'Gatilho ' + (i + 1),
-        ativo: true,
-        lote: '1',
-        ativoId: '',
-        ativoCode: 'WIN',
-        createdAt: '2022-01-01T00:00:00-03',
-        updatedAt: '2022-01-01T00:00:00-03',
-        imagemUrl: par ? 'url' : '',
-        pontos,
-        resultado: resultado(pontos),
-        timeFrame: '5 minutos',
-        dataAberturaFormatted: '01/01/2022',
-        horaAberturaFormatted: '00:00',
-    }
-  });
-}
+import { app, TYPES } from "@/core/common/container";
+import {
+  FilterFormComplete,
+  FilterFormObject,
+  ListTradeController
+} from "@/core/trade/presentation/controllers/list-trade.controller";
+import { ListTradeFilter, ListTradeState } from "@/core/trade/presentation/states/list-trade.state";
+import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
 
 @Component({
   components: { FilterTrades }
 })
 export default class ListTrade extends Vue {
-  filter = this.generateForm();
+  private listTradeController = app.make<ListTradeController>(TYPES.ListTradeController);
+  private listTradeState = this.listTradeController.state;
 
-  generateForm() {
+  filter: ListTradeFilter = this.generateForm();
+  showStartDatePicker = false;
+  showEndDatePicker = false;
+  showFilterDialog = false;
+
+  generateForm(): Required<ListTradeFilter> {
     return {
       startDate: '',
       endDate: '',
@@ -432,22 +409,14 @@ export default class ListTrade extends Vue {
     return '01/01/2022';
   }
 
-  filterChips = [];
+  filterFormAsList: FilterFormComplete[] = [];
 
-  isLoading = false;
-
-  search() {
-    this.fakeLoad();
+  get isLoading(): boolean {
+    return this.listTradeState.kind === "LoadingListTradeState";
   }
 
-  get metadata() {
-    return {
-      totalItems: 100,
-      lossCount: 10,
-      gainCount: 10,
-      lossPercentage: 10,
-      gainPercentage: 10,
-    };
+  async search(page = 1): Promise<void> {
+    await this.listTradeController.loadTradeList(this.filter, page);
   }
 
   createItem() {
@@ -460,56 +429,28 @@ export default class ListTrade extends Vue {
 
   get pagination() {
     return {
-      page: 1,
-      pageCount: 10,
-      itemsPerPage: 10,
+      page: this.listTradeState.page,
+      pageCount: this.listTradeState.pageCount,
+      itemsPerPage: this.listTradeState.itemsPerPage,
     };
   }
 
-  changePage() {
-    this.fakeLoad();
+  async changePage(page: number): Promise<void> {
+    await this.listTradeController.goToPage(page);
   }
-
-  fakeLoad() {
-    this.isLoading = true;
-    console.log({ filter: this.filter });
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
-  }
-
-  showStartDatePicker = false;
-  showEndDatePicker = false;
-  showFilterDialog = false;
 
   closeFilterDialog() {
     this.showFilterDialog = false;
   }
 
-  submitFilter(filter: any) {
-    this.filterChips = Object.keys(filter)
-        .filter((field) => !!filter[field] || (Array.isArray(filter[field]) && filter[field].length))
-        .reduce((filterList, field) => {
-          const chip = filter[field];
-
-          if (Array.isArray(chip)) {
-            return [
-                ...filterList,
-                ...chip.map((c) => ({ field, ...c }))
-            ];
-          }
-
-          return [
-            ...filterList,
-            { field, ...chip }
-          ];
-        }, []);
+  async submitFilter(filter: FilterFormObject): Promise<void> {
+    this.filterFormAsList = ListTradeController.mapFilterObjectToFilterList(filter);
     this.closeFilterDialog();
-    this.fillForm(this.filterChips);
-    this.fakeLoad();
+    this.fillForm(this.filterFormAsList);
+    return await this.search(1);
   }
 
-  private fillForm(filterChips: Record<string, any>[]): void {
+  private fillForm(filterChips: FilterFormComplete[]): void {
     const filterFields = [
       'ativoId',
       'setupId',
@@ -518,20 +459,29 @@ export default class ListTrade extends Vue {
       'tipoEntradaId',
     ];
 
+    const newFilter: Record<string, any[]> = {};
+
     filterFields.forEach((field) => {
-      this.filter[field] = filterChips
+      newFilter[field] = filterChips
         .filter((f) => f.field === field)
         .map((f) => f.value);
     });
+
+    this.filter = {
+      ...this.filter,
+      ...newFilter,
+    }
   }
 
-  removeFilter(item: any): void {
-    this.filterChips = this.filterChips.filter((chip) => {
-      return chip.value !== item.value && chip.item !== chip.field
+  removeFilter(item: FilterFormComplete): void {
+    this.filterFormAsList = this.filterFormAsList.filter((filter) => {
+      return filter.value !== item.value && item.field !== filter.field;
     });
+
     const field = this.filter[item.field];
+
     if (field) {
-      this.filter[item.field] = field.filter((f) => f !== item.value);
+      this.filter[item.field] = field.filter((f: string) => f !== item.value);
     }
   }
 
@@ -588,9 +538,23 @@ export default class ListTrade extends Vue {
       align: 'left',
       width: '5%',
     },
-  ]
+  ];
 
-  items = generateTrades();
+  get items(): TradeEntity[] {
+    return this.listTradeState.items;
+  }
+
+  private updateState(newState: ListTradeState) {
+    this.listTradeState = newState;
+  }
+
+  private created() {
+    this.listTradeController.subscribe(this.updateState);
+  }
+
+  private beforeDestroy() {
+    this.listTradeController.unsubscribe(this.updateState);
+  }
 }
 </script>
 

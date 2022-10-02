@@ -22,6 +22,11 @@ import { DeleteTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/co
 import { ManageSetupInMemoryRepository } from "@/core/setup/infra/repositories/manage-setup-in-memory.repository";
 import { ManageGatilhoInMemoryRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-in-memory.repository";
 import { ManageTipoEntradaInMemoryRepository } from "@/core/tipo-entrada/infra/repositories/manage-tipo-entrada-in-memory.repository";
+import { ManageTradeInMemoryRepository } from "@/core/trade/infra/repositories/manage-trade-in-memory.repository";
+import { ListTradeRepositoryContract } from "@/core/trade/data/contracts/list-trade.repository";
+import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/create-trade.repository";
+import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
+import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delete-trade.repository";
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
@@ -54,5 +59,11 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
       TYPES.DeleteTipoEntradaRepositoryContract,
       manageTipoEntradaRepository
     );
+
+    const manageTradeRepository = new ManageTradeInMemoryRepository();
+    container.instance<ListTradeRepositoryContract>(TYPES.ListTradeRepositoryContract, manageTradeRepository);
+    container.instance<CreateTradeRepositoryContract>(TYPES.CreateTradeRepositoryContract, manageTradeRepository);
+    container.instance<UpdateTradeRepositoryContract>(TYPES.UpdateTradeRepositoryContract, manageTradeRepository);
+    container.instance<DeleteTradeRepositoryContract>(TYPES.DeleteTradeRepositoryContract, manageTradeRepository);
   }
 }
