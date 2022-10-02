@@ -69,14 +69,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
-import { CreateOrUpdateSetupState } from "@/core/setup/presentation/states/create-or-update-setup.state";
 import { DeleteSetupController } from "@/core/setup/presentation/controllers/delete-setup.controller";
 import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 
 @Component({})
 export default class DeleteSetup extends Vue {
   private controller = app.make<DeleteSetupController>(TYPES.DeleteSetupController);
-  private localState: CreateOrUpdateSetupState = this.controller.state;
+  private localState = this.controller.state;
 
   @Prop() show!: boolean;
   @Prop() item!: SetupEntity;

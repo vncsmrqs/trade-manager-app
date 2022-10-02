@@ -69,14 +69,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
-import { CreateOrUpdateTipoEntradaState } from "@/core/tipo-entrada/presentation/states/create-or-update-tipo-entrada.state";
 import { DeleteTipoEntradaController } from "@/core/tipo-entrada/presentation/controllers/delete-tipo-entrada.controller";
 import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 
 @Component({})
 export default class DeleteTipoEntrada extends Vue {
   private controller = app.make<DeleteTipoEntradaController>(TYPES.DeleteTipoEntradaController);
-  private localState: CreateOrUpdateTipoEntradaState = this.controller.state;
+  private localState = this.controller.state;
 
   @Prop() show!: boolean;
   @Prop() item!: TipoEntradaEntity;

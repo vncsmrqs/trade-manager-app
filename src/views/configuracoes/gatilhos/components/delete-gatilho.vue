@@ -69,14 +69,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
-import { CreateOrUpdateGatilhoState } from "@/core/gatilho/presentation/states/create-or-update-gatilho.state";
 import { DeleteGatilhoController } from "@/core/gatilho/presentation/controllers/delete-gatilho.controller";
 import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
 
 @Component({})
 export default class DeleteGatilho extends Vue {
   private controller = app.make<DeleteGatilhoController>(TYPES.DeleteGatilhoController);
-  private localState: CreateOrUpdateGatilhoState = this.controller.state;
+  private localState = this.controller.state;
 
   @Prop() show!: boolean;
   @Prop() item!: GatilhoEntity;
