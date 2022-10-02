@@ -133,8 +133,8 @@ export default class ListSetup extends Vue {
 
   searchTerm = '';
 
-  itemToUpdate!: SetupEntity = null;
-  itemToDelete!: SetupEntity = null;
+  itemToUpdate?: SetupEntity;
+  itemToDelete?: SetupEntity;
 
   showDeleteDialog = false;
   showCreateOrUpdateDialog = false;
@@ -152,23 +152,20 @@ export default class ListSetup extends Vue {
   }
 
   async search(): Promise<void> {
-    await this.listSetupController.loadSetupList({
-      search: this.searchTerm,
-      page: 1,
-    });
+    await this.listSetupController.loadSetupList(this.searchTerm, 1);
   }
 
   closeDeleteDialog() {
-    this.itemToDelete = {};
+    this.itemToDelete = undefined;
     this.showDeleteDialog = false;
   }
 
   closeCreateOrUpdateDialog() {
-    this.itemToUpdate = null;
+    this.itemToUpdate = undefined;
     this.showCreateOrUpdateDialog = false;
   }
 
-  deleteItem(item) {
+  deleteItem(item: SetupEntity) {
     this.itemToDelete = item;
     this.showDeleteDialog = true;
   }
@@ -211,7 +208,7 @@ export default class ListSetup extends Vue {
   }
 
   private createItem() {
-    this.itemToUpdate = null;
+    this.itemToUpdate = undefined;
     this.showCreateOrUpdateDialog = true;
   }
 

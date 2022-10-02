@@ -133,8 +133,8 @@ export default class ListGatilho extends Vue {
 
   searchTerm = '';
 
-  itemToUpdate!: GatilhoEntity = null;
-  itemToDelete!: GatilhoEntity = null;
+  itemToUpdate?: GatilhoEntity;
+  itemToDelete?: GatilhoEntity;
 
   showDeleteDialog = false;
   showCreateOrUpdateDialog = false;
@@ -152,23 +152,20 @@ export default class ListGatilho extends Vue {
   }
 
   async search(): Promise<void> {
-    await this.listGatilhoController.loadGatilhoList({
-      search: this.searchTerm,
-      page: 1,
-    });
+    await this.listGatilhoController.loadGatilhoList(this.searchTerm, 1);
   }
 
   closeDeleteDialog() {
-    this.itemToDelete = {};
+    this.itemToDelete = undefined;
     this.showDeleteDialog = false;
   }
 
   closeCreateOrUpdateDialog() {
-    this.itemToUpdate = null;
+    this.itemToUpdate = undefined;
     this.showCreateOrUpdateDialog = false;
   }
 
-  deleteItem(item) {
+  deleteItem(item: GatilhoEntity) {
     this.itemToDelete = item;
     this.showDeleteDialog = true;
   }
@@ -211,7 +208,7 @@ export default class ListGatilho extends Vue {
   }
 
   private createItem() {
-    this.itemToUpdate = null;
+    this.itemToUpdate = undefined;
     this.showCreateOrUpdateDialog = true;
   }
 
