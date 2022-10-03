@@ -66,4 +66,5 @@ export const TYPES = {
   ListTradeController: Symbol('ListTradeController'),
   CreateOrUpdateTradeController: Symbol('CreateOrUpdateTradeController'),
   DeleteTradeController: Symbol('DeleteTradeController'),
+  DetailTradeController: Symbol('DetailTradeController'),
 };

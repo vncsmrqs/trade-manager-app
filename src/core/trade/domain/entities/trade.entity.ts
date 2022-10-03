@@ -1,6 +1,6 @@
 export type TradeResultadoType = 'gain' | 'loss' | '0x0';
 
-type DefaultTradeEntityProps = {
+export type DefaultTradeEntityProps = {
   id: string;
   userId: string;
   ativoId: string;
@@ -8,6 +8,7 @@ type DefaultTradeEntityProps = {
   gatilhoId?: string;
   tipoEntradaId?: string;
   tradeImportacaoId?: string;
+  timeFrameId?: string;
   createdAt: string;
   updatedAt: string;
   dataAbertura: string;
@@ -20,6 +21,7 @@ type DefaultTradeEntityProps = {
   primeiroAlvo?: boolean;
   segundoAlvo?: boolean;
   imagemUrl?: string;
+  observacao?: string;
 }
 
 export type TradeEntityProps = DefaultTradeEntityProps & {
@@ -29,6 +31,7 @@ export type TradeEntityProps = DefaultTradeEntityProps & {
   gatilhoNome?: string;
   tipoEntradaNome?: string;
   ativoCode: string;
+  timeFrameName?: string;
 }
 
 export class TradeEntity {

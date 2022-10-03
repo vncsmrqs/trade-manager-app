@@ -8,6 +8,11 @@
         @submit="submitFilter"
     ></filter-trades>
 
+    <detail-trade
+        :show="showDetailTradeDialog"
+        @close="closeDetailDialog"
+    ></detail-trade>
+
     <v-form @submit.prevent="() => search()" :disabled="isLoading">
       <v-row>
         <v-col cols="12" md="auto">
@@ -329,6 +334,7 @@
                       icon
                       elevation="0"
                       :disabled="isLoading"
+                      @click="() => detailTrade(trade)"
                     >
                       <v-icon large>mdi-chevron-right</v-icon>
                     </v-btn>
@@ -376,9 +382,10 @@ import {
 } from "@/core/trade/presentation/controllers/list-trade.controller";
 import { ListTradeFilter, ListTradeState } from "@/core/trade/presentation/states/list-trade.state";
 import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
+import DetailTrade from "@/views/trades/components/detail-trade.vue";
 
 @Component({
-  components: { FilterTrades }
+  components: { DetailTrade, FilterTrades }
 })
 export default class ListTrade extends Vue {
   private listTradeController = app.make<ListTradeController>(TYPES.ListTradeController);
@@ -388,18 +395,55 @@ export default class ListTrade extends Vue {
   showStartDatePicker = false;
   showEndDatePicker = false;
   showFilterDialog = false;
+  filterFormAsList: FilterFormComplete[] = [];
 
-  generateForm(): Required<ListTradeFilter> {
-    return {
-      startDate: '',
-      endDate: '',
-      setupId: [],
-      gatilhoId: [],
-      tipoEntradaId: [],
-      ativoId: [],
-      resultado: [],
-    };
-  }
+  itemToDetail?: TradeEntity;
+  showDetailTradeDialog = false;
+
+  headers = [
+    {
+      title: 'Lote',
+      name: 'lote',
+      align: 'center',
+      width: '5%',
+    },
+    {
+      title: 'Data - Horário',
+      name: 'data-horario',
+      align: 'left',
+      width: '15%',
+    },
+    {
+      title: 'Setup - Complemento',
+      name: 'setup-gatilho',
+      align: 'left',
+      width: '37%',
+    },
+    {
+      title: 'Tipo de entrada - Time Frame',
+      name: 'tipo-entrada-time-frame',
+      align: 'left',
+      width: '25%',
+    },
+    {
+      title: 'Pontos',
+      name: 'pontos',
+      align: 'left',
+      width: '8%',
+    },
+    {
+      title: '',
+      name: 'imagem',
+      align: 'left',
+      width: '5%',
+    },
+    {
+      title: '',
+      name: 'acoes',
+      align: 'left',
+      width: '5%',
+    },
+  ];
 
   get formattedStartDate() {
     return '01/01/2022';
@@ -409,14 +453,8 @@ export default class ListTrade extends Vue {
     return '01/01/2022';
   }
 
-  filterFormAsList: FilterFormComplete[] = [];
-
   get isLoading(): boolean {
     return this.listTradeState.kind === "LoadingListTradeState";
-  }
-
-  async search(page = 1): Promise<void> {
-    await this.listTradeController.loadTradeList(this.filter, page);
   }
 
   createItem() {
@@ -435,8 +473,38 @@ export default class ListTrade extends Vue {
     };
   }
 
+  get items(): TradeEntity[] {
+    return this.listTradeState.items;
+  }
+
   async changePage(page: number): Promise<void> {
     await this.listTradeController.goToPage(page);
+  }
+
+  async search(page = 1): Promise<void> {
+    await this.listTradeController.loadTradeList(this.filter, page);
+  }
+
+  generateForm(): Required<ListTradeFilter> {
+    return {
+      startDate: '',
+      endDate: '',
+      setupId: [],
+      gatilhoId: [],
+      tipoEntradaId: [],
+      ativoId: [],
+      resultado: [],
+    };
+  }
+
+  detailTrade(item: TradeEntity): void {
+    this.itemToDetail = item;
+    this.showDetailTradeDialog = true;
+  }
+
+  closeDetailDialog(): void {
+    this.itemToDetail = undefined;
+    this.showDetailTradeDialog = false;
   }
 
   closeFilterDialog() {
@@ -495,53 +563,8 @@ export default class ListTrade extends Vue {
     return 'grey--text text--lighter-2'
   }
 
-  headers = [
-    {
-      title: 'Lote',
-      name: 'lote',
-      align: 'center',
-      width: '5%',
-    },
-    {
-      title: 'Data - Horário',
-      name: 'data-horario',
-      align: 'left',
-      width: '15%',
-    },
-    {
-      title: 'Setup - Complemento',
-      name: 'setup-gatilho',
-      align: 'left',
-      width: '37%',
-    },
-    {
-      title: 'Tipo de entrada - Time Frame',
-      name: 'tipo-entrada-time-frame',
-      align: 'left',
-      width: '25%',
-    },
-    {
-      title: 'Pontos',
-      name: 'pontos',
-      align: 'left',
-      width: '8%',
-    },
-    {
-      title: '',
-      name: 'imagem',
-      align: 'left',
-      width: '5%',
-    },
-    {
-      title: '',
-      name: 'acoes',
-      align: 'left',
-      width: '5%',
-    },
-  ];
-
-  get items(): TradeEntity[] {
-    return this.listTradeState.items;
+  mounted() {
+    this.search(1);
   }
 
   private updateState(newState: ListTradeState) {

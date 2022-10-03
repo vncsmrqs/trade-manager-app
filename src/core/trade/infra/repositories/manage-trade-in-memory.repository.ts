@@ -127,6 +127,7 @@ const mapTradeToEntity = (trade: Record<string, any>): TradeEntity => {
     gatilhoId : trade.gatilhoId,
     tipoEntradaId : trade.tipoEntradaId,
     tradeImportacaoId : trade.tradeImportacaoId,
+    timeFrameId: trade.timeFrameId,
     createdAt: trade.createdAt,
     updatedAt: trade.updatedAt,
     dataAbertura: trade.dataAbertura,
@@ -145,6 +146,7 @@ const mapTradeToEntity = (trade: Record<string, any>): TradeEntity => {
     gatilhoNome: trade.gatilhoNome,
     tipoEntradaNome: trade.tipoEntradaNome,
     ativoCode: trade.ativoCode,
+    timeFrameName: trade.timeFrameName,
   });
 }
 

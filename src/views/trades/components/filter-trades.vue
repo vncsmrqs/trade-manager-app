@@ -140,11 +140,11 @@ export default class FilterTrades extends Vue {
 
   defaultForm(): FormType {
     return {
-      setupId: null,
-      ativoId: null,
-      gatilhoId: null,
-      tipoEntradaId: null,
-      resultado: null,
+      setupId: undefined,
+      ativoId: undefined,
+      gatilhoId: undefined,
+      tipoEntradaId: undefined,
+      resultado: undefined,
     };
   }
 
