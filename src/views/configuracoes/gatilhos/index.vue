@@ -133,8 +133,8 @@ export default class ListGatilho extends Vue {
 
   searchTerm = '';
 
-  itemToUpdate?: GatilhoEntity;
-  itemToDelete?: GatilhoEntity;
+  itemToUpdate?: GatilhoEntity = null;
+  itemToDelete?: GatilhoEntity = null;
 
   showDeleteDialog = false;
   showCreateOrUpdateDialog = false;

@@ -35,7 +35,7 @@ function generateTrades(num = 500): Record<string, any>[] {
       pontuacao,
       resultado: geraResultado(pontuacao),
       seguiuPlano : par,
-      sentimento : ':)',
+      sentimento : multiploDeTres ? 'neutro' : (par ? 'bem' : 'mal'),
       primeiroAlvo : par,
       segundoAlvo : !par,
       imagemUrl : 'url-da-imagem',
@@ -45,6 +45,7 @@ function generateTrades(num = 500): Record<string, any>[] {
       setupNome: 'Setup ' + (i + 1),
       gatilhoNome: 'Gatilho ' + (i + 1),
       tipoEntradaNome: 'Tipo Entrada ' + (i + 1),
+      observacao: 'Observação ' + (i + 1),
     };
   });
 }
@@ -146,7 +147,8 @@ const mapTradeToEntity = (trade: Record<string, any>): TradeEntity => {
     gatilhoNome: trade.gatilhoNome,
     tipoEntradaNome: trade.tipoEntradaNome,
     ativoCode: trade.ativoCode,
-    timeFrameName: trade.timeFrameName,
+    timeFrameNome: trade.timeFrameNome,
+    observacao: trade.observacao,
   });
 }
 

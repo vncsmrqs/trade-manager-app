@@ -1,7 +1,6 @@
 import { Controller } from "@/core/common/domain/controller";
 import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete-trade.use-case";
 import { DeleteTradeState, initialDeleteTradeState } from "@/core/trade/presentation/states/delete-trade.state";
-import { app, TYPES } from "@/core/common/container";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 export class DeleteTradeController extends Controller<DeleteTradeState> {

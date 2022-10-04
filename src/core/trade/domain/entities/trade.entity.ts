@@ -1,4 +1,5 @@
 export type TradeResultadoType = 'gain' | 'loss' | '0x0';
+export type TradeSentimentoType = 'bem' | 'neutro' | 'mal';
 
 export type DefaultTradeEntityProps = {
   id: string;
@@ -31,7 +32,7 @@ export type TradeEntityProps = DefaultTradeEntityProps & {
   gatilhoNome?: string;
   tipoEntradaNome?: string;
   ativoCode: string;
-  timeFrameName?: string;
+  timeFrameNome?: string;
 }
 
 export class TradeEntity {
@@ -58,6 +59,9 @@ export class TradeEntity {
   }
   get tipoEntradaId(): string | undefined {
     return this.props.tipoEntradaId;
+  }
+  get timeFrameId(): string | undefined {
+    return this.props.timeFrameId;
   }
   get tradeImportacaoId(): string | undefined {
     return this.props.tradeImportacaoId;
@@ -115,6 +119,14 @@ export class TradeEntity {
   }
   get ativoCode(): string {
     return this.props.ativoCode;
+  }
+
+  get observacao(): string | undefined {
+    return this.props.observacao;
+  }
+
+  get timeFrameNome(): string | undefined {
+    return this.props.timeFrameNome;
   }
 
   get dataAberturaFormatted(): string {

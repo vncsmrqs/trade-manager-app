@@ -133,8 +133,8 @@ export default class ListSetup extends Vue {
 
   searchTerm = '';
 
-  itemToUpdate?: SetupEntity;
-  itemToDelete?: SetupEntity;
+  itemToUpdate?: SetupEntity = null;
+  itemToDelete?: SetupEntity = null;
 
   showDeleteDialog = false;
   showCreateOrUpdateDialog = false;
@@ -147,7 +147,7 @@ export default class ListSetup extends Vue {
     }
   }
 
-  get showPagination(): boolean{
+  get showPagination(): boolean {
     return this.pagination.pageCount > 1;
   }
 
@@ -156,12 +156,12 @@ export default class ListSetup extends Vue {
   }
 
   closeDeleteDialog() {
-    this.itemToDelete = undefined;
+    this.itemToDelete = null;
     this.showDeleteDialog = false;
   }
 
   closeCreateOrUpdateDialog() {
-    this.itemToUpdate = undefined;
+    this.itemToUpdate = null;
     this.showCreateOrUpdateDialog = false;
   }
 
@@ -208,7 +208,7 @@ export default class ListSetup extends Vue {
   }
 
   private createItem() {
-    this.itemToUpdate = undefined;
+    this.itemToUpdate = null;
     this.showCreateOrUpdateDialog = true;
   }
 

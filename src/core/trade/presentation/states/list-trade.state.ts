@@ -47,7 +47,7 @@ export type ListTradeState = AvailableStates & BaseTradeListState;
 
 export const initialListTradeState : ListTradeState = {
   kind: "InitialListTradeState",
-  itemsPerPage: 50,
+  itemsPerPage: 10,
   items: [],
   page: 1,
   pageCount: 1,

@@ -133,8 +133,8 @@ export default class ListTipoEntrada extends Vue {
 
   searchTerm = '';
 
-  itemToUpdate?: TipoEntradaEntity;
-  itemToDelete?: TipoEntradaEntity;
+  itemToUpdate?: TipoEntradaEntity = null;
+  itemToDelete?: TipoEntradaEntity = null;
 
   showDeleteDialog = false;
   showCreateOrUpdateDialog = false;
@@ -156,12 +156,12 @@ export default class ListTipoEntrada extends Vue {
   }
 
   closeDeleteDialog() {
-    this.itemToDelete = undefined;
+    this.itemToDelete = null;
     this.showDeleteDialog = false;
   }
 
   closeCreateOrUpdateDialog() {
-    this.itemToUpdate = undefined;
+    this.itemToUpdate = null;
     this.showCreateOrUpdateDialog = false;
   }
 
@@ -208,7 +208,7 @@ export default class ListTipoEntrada extends Vue {
   }
 
   private createItem() {
-    this.itemToUpdate = undefined;
+    this.itemToUpdate = null;
     this.showCreateOrUpdateDialog = true;
   }
 

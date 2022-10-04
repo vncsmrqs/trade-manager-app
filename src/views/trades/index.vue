@@ -8,10 +8,11 @@
         @submit="submitFilter"
     ></filter-trades>
 
-    <detail-trade
+    <manage-trade
+        :item="itemToDetail"
         :show="showDetailTradeDialog"
         @close="closeDetailDialog"
-    ></detail-trade>
+    ></manage-trade>
 
     <v-form @submit.prevent="() => search()" :disabled="isLoading">
       <v-row>
@@ -382,10 +383,10 @@ import {
 } from "@/core/trade/presentation/controllers/list-trade.controller";
 import { ListTradeFilter, ListTradeState } from "@/core/trade/presentation/states/list-trade.state";
 import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
-import DetailTrade from "@/views/trades/components/detail-trade.vue";
+import ManageTrade from "@/views/trades/components/manage-trade.vue";
 
 @Component({
-  components: { DetailTrade, FilterTrades }
+  components: { ManageTrade, FilterTrades }
 })
 export default class ListTrade extends Vue {
   private listTradeController = app.make<ListTradeController>(TYPES.ListTradeController);
@@ -397,7 +398,7 @@ export default class ListTrade extends Vue {
   showFilterDialog = false;
   filterFormAsList: FilterFormComplete[] = [];
 
-  itemToDetail?: TradeEntity;
+  itemToDetail?: TradeEntity = null;
   showDetailTradeDialog = false;
 
   headers = [
@@ -458,10 +459,11 @@ export default class ListTrade extends Vue {
   }
 
   createItem() {
-    console.log('createItem');
+    this.itemToDetail = null;
+    this.showDetailTradeDialog = true;
   }
 
-  get showPagination(): boolean{
+  get showPagination(): boolean {
     return this.pagination.pageCount > 1;
   }
 
@@ -503,7 +505,7 @@ export default class ListTrade extends Vue {
   }
 
   closeDetailDialog(): void {
-    this.itemToDetail = undefined;
+    this.itemToDetail = null;
     this.showDetailTradeDialog = false;
   }
 
@@ -573,6 +575,7 @@ export default class ListTrade extends Vue {
 
   private created() {
     this.listTradeController.subscribe(this.updateState);
+    this.listTradeController.resetState();
   }
 
   private beforeDestroy() {

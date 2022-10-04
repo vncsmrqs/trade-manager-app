@@ -33,7 +33,7 @@ import { CreateOrUpdateTradeController } from "@/core/trade/presentation/control
 import { CreateTradeUseCaseContract } from "@/core/trade/domain/use-cases/create-trade.use-case";
 import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete-trade.use-case";
 import { DeleteTradeController } from "@/core/trade/presentation/controllers/delete-trade.controller";
-import { DetailTradeController } from "@/core/trade/presentation/controllers/detail-trade.controller";
+import { ManageTradeController } from "@/core/trade/presentation/controllers/manage-trade.controller";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -153,7 +153,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     });
 
     container.singleton(TYPES.DetailTradeController, () => {
-      return new DetailTradeController(
+      return new ManageTradeController(
         { execute(params: any): Promise<void> { return new Promise((resolve) => resolve() ) }},
         container.make<NotificationController>(TYPES.NotificationController),
       );

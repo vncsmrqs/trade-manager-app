@@ -31,12 +31,12 @@ export const initialSystemState: SystemState = {
     {
       title: 'Dashboard',
       routeName: 'dashboard',
-      icon: 'mdi-chart-bar',
+      icon: 'mdi-chart-pie',
     },
     {
-      title: 'Registros',
+      title: 'Meu diário',
       routeName: 'trades',
-      icon: 'mdi-swap-vertical',
+      icon: 'mdi-note-outline',
     },
     {
       title: 'Configurações',
