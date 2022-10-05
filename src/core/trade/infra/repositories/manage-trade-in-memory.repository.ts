@@ -41,7 +41,7 @@ function generateTrades(num = 500): Record<string, any>[] {
       imagemUrl : 'https://poderdoinvestimento.com/wp-content/uploads/2020/09/MUDAN%C3%87AS-TENDENCIA-MEDIAS.png',
       userNome: 'User ' + (i + 1),
       ativoNome: 'Contrato Indice Cheio ' + (i + 1),
-      ativoCode: 'WIN' + (i + 1),
+      ativoCodigo: 'WIN' + (i + 1),
       setupNome: 'Setup ' + (i + 1),
       gatilhoNome: 'Gatilho ' + (i + 1),
       tipoEntradaNome: 'Tipo Entrada ' + (i + 1),
@@ -146,7 +146,7 @@ const mapTradeToEntity = (trade: Record<string, any>): TradeEntity => {
     setupNome: trade.setupNome,
     gatilhoNome: trade.gatilhoNome,
     tipoEntradaNome: trade.tipoEntradaNome,
-    ativoCode: trade.ativoCode,
+    ativoCodigo: trade.ativoCodigo,
     timeFrameNome: trade.timeFrameNome,
     observacao: trade.observacao,
   });

@@ -52,6 +52,15 @@ import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/updat
 import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete-trade.use-case";
 import { DeleteTradeUseCase } from "@/core/trade/data/implementations/use-cases/delete-trade.use-case";
 import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delete-trade.repository";
+import { ListAtivoUseCaseContract } from "@/core/ativo/domain/use-cases/list-ativo.use-case";
+import { ListAtivoUseCase } from "@/core/ativo/data/implementations/use-cases/list-ativo.use.case";
+import { ListAtivoRepositoryContract } from "@/core/ativo/data/contracts/list-ativo.repository";
+import { ListTimeFrameUseCaseContract } from "@/core/time-frame/domain/use-cases/list-time-frame.use-case";
+import { ListTimeFrameUseCase } from "@/core/time-frame/data/implementations/use-cases/list-time-frame.use.case";
+import { ListTimeFrameRepositoryContract } from "@/core/time-frame/data/contracts/list-time-frame.repository";
+import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
+import { ListCampoCustomizavelUseCase } from "@/core/campo-customizavel/data/implementations/use-cases/list-campo-customizavel.use.case";
+import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -60,6 +69,9 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     this.bootGatilhoUseCases(container);
     this.bootTipoEntradaUseCases(container);
     this.bootTradeUseCases(container);
+    this.bootAtivoUseCases(container);
+    this.bootTimeFrameUseCases(container);
+    this.bootCampoCustomizavelUseCases(container);
   }
 
   private bootSetupUseCases(container: ContainerContract): void {
@@ -162,6 +174,30 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<DeleteTradeUseCaseContract>(TYPES.DeleteTradeUseCaseContract, () => {
       return new DeleteTradeUseCase(
         container.make<DeleteTradeRepositoryContract>(TYPES.DeleteTradeRepositoryContract),
+      );
+    });
+  }
+
+  private bootAtivoUseCases(container: ContainerContract): void {
+    container.bind<ListAtivoUseCaseContract>(TYPES.ListAtivoUseCaseContract, () => {
+      return new ListAtivoUseCase(
+        container.make<ListAtivoRepositoryContract>(TYPES.ListAtivoRepositoryContract),
+      );
+    });
+  }
+
+  private bootTimeFrameUseCases(container: ContainerContract): void {
+    container.bind<ListTimeFrameUseCaseContract>(TYPES.ListTimeFrameUseCaseContract, () => {
+      return new ListTimeFrameUseCase(
+        container.make<ListTimeFrameRepositoryContract>(TYPES.ListTimeFrameRepositoryContract),
+      );
+    });
+  }
+
+  private bootCampoCustomizavelUseCases(container: ContainerContract): void {
+    container.bind<ListCampoCustomizavelUseCaseContract>(TYPES.ListCampoCustomizavelUseCaseContract, () => {
+      return new ListCampoCustomizavelUseCase(
+        container.make<ListCampoCustomizavelRepositoryContract>(TYPES.ListCampoCustomizavelRepositoryContract),
       );
     });
   }

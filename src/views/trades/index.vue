@@ -288,7 +288,7 @@
                 >
                   <div v-if="header.name === 'lote'">
                     <div>{{ trade.lote }}</div>
-                    <div>{{ trade.ativoCode }}</div>
+                    <div>{{ trade.ativoCodigo }}</div>
                   </div>
 
                   <div v-if="header.name === 'data-horario'">

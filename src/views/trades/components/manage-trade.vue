@@ -108,12 +108,12 @@
                     <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Ativo</div>
-                        <div>{{ formatStringFieldValue(form.ativoCode) }}</div>
+                        <div>{{ formatStringFieldValue(form.ativoCodigo) }}</div>
                       </div>
                       <v-combobox
                           v-else
                           :value="form.ativoId"
-                          @change="(obj) => selectItem('ativo', obj, 'Code')"
+                          @change="(obj) => selectItem('ativo', obj, 'Codigo')"
                           :items="ativoList"
                           label="Ativo"
                           outlined
@@ -123,7 +123,7 @@
                           :rules="formRules.ativoId"
                           required
                       >
-                        <template v-slot:selection>{{ form.ativoCode }}</template>
+                        <template v-slot:selection>{{ form.ativoCodigo }}</template>
                       </v-combobox>
                     </v-col>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
@@ -193,7 +193,8 @@
                       </div>
                       <v-combobox
                           v-else
-                          v-model="form.tipoEntradaId"
+                          :value="form.tipoEntradaId"
+                          @change="(obj) => selectItem('tipoEntrada', obj)"
                           :items="tipoEntradaList"
                           label="Tipo de entrada"
                           outlined
@@ -215,12 +216,12 @@
                   <v-col
                       cols="6"
                       :class="{'py-0': !detailMode}"
-                      v-for="campoCustomizavel in camposCustomizaveisList"
+                      v-for="campoCustomizavel in localizacaoList"
                       :key="campoCustomizavel.id"
                   >
                     <div v-if="detailMode" class="text-body-1">
                       <div class="font-weight-bold mb-2">{{ campoCustomizavel.nome }}</div>
-                      <div>{{ getCampoCustomizavelValue(campoCustomizavel.id) }}</div>
+                      <div>{{ getValorLocalizacao(campoCustomizavel.id) }}</div>
                     </div>
                     <div v-else>
                       <span class="text-body-1 font-weight-bold">{{ campoCustomizavel.nome }}</span>
@@ -229,7 +230,7 @@
                           column
                       >
                         <v-radio
-                            v-for="valorDisponivel in campoCustomizavel.valoresDisponiveis"
+                            v-for="valorDisponivel in campoCustomizavel.valores"
                             :label="valorDisponivel.nome"
                             :value="valorDisponivel.valor"
                             :key="`${campoCustomizavel.id}-${valorDisponivel.valor}`"
@@ -577,6 +578,9 @@ import {
 import { ManageTradeState } from "@/core/trade/presentation/states/manage-trade.state";
 import { ManageTradeController } from "@/core/trade/presentation/controllers/manage-trade.controller";
 import DeleteTrade from "@/views/trades/components/delete-trade.vue";
+import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
+import { ListTradeFilterState } from "@/core/trade/presentation/states/list-trade-filter.state";
+import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
 
 type FormType = Partial<TradeEntityProps> & {
   horaAbertura?: string;
@@ -589,6 +593,9 @@ type FormType = Partial<TradeEntityProps> & {
 export default class ManageTrade extends Vue {
   private detailTradeController = app.make<ManageTradeController>(TYPES.DetailTradeController);
   private detailTradeState = this.detailTradeController.state;
+
+  private listTradeFilterController = app.make<ListTradeFilterController>(TYPES.ListTradeFilterController);
+  private listTradeFilterState = this.listTradeFilterController.state;
 
   private readonly availableTabs = {
     DADOS_PRINCIPAIS: '1',
@@ -634,87 +641,9 @@ export default class ManageTrade extends Vue {
 
   showDeleteDialog = false;
 
-  camposCustomizaveisList = [
-    {
-      id: '1',
-      userId: '',
-      nome: 'MM89',
-      contexto: 'localizacao',
-      ativo: true,
-      valoresDisponiveis: [
-        {
-          campoCustomizavelId: '1',
-          valor: 'a-favor',
-          nome: 'A favor',
-        },
-        {
-          campoCustomizavelId: '1',
-          valor: 'contra',
-          nome: 'Contra',
-        },
-      ],
-    },
-    {
-      id: '2',
-      userId: '',
-      nome: 'MM20',
-      contexto: 'localizacao',
-      ativo: true,
-      valoresDisponiveis: [
-        {
-          campoCustomizavelId: '2',
-          valor: 'a-favor',
-          nome: 'A favor',
-        },
-        {
-          campoCustomizavelId: '2',
-          valor: 'contra',
-          nome: 'Contra',
-        },
-      ],
-    },
-    {
-      id: '3',
-      userId: '',
-      nome: 'MM200',
-      contexto: 'localizacao',
-      ativo: true,
-      valoresDisponiveis: [
-        {
-          campoCustomizavelId: '3',
-          valor: 'a-favor',
-          nome: 'A favor',
-        },
-        {
-          campoCustomizavelId: '3',
-          valor: 'contra',
-          nome: 'Contra',
-        },
-      ],
-    },
-    {
-      id: '4',
-      userId: '',
-      nome: 'Distância da MM200',
-      contexto: 'localizacao',
-      ativo: true,
-      valoresDisponiveis: [
-        {
-          campoCustomizavelId: '4',
-          valor: 'afastado+20',
-          nome: 'Afastado + 20%',
-        },
-        {
-          campoCustomizavelId: '4',
-          valor: 'nao-afastado',
-          nome: 'Não Afastado',
-        },
-      ],
-    },
-  ]
-
-  getCampoCustomizavelValue(campoCustomizavelId: string): string {
-    return 'Não definido: ' + campoCustomizavelId;
+  getValorLocalizacao(localizacao: CampoCustomizavelEntity, valor: string): string {
+    const valorCampoCustomizavel = localizacao.valores?.find((v) => v.valor === valor);
+    return valorCampoCustomizavel ? valorCampoCustomizavel.nome : 'Não definido';
   }
 
   defaultForm(): FormType {
@@ -798,23 +727,42 @@ export default class ManageTrade extends Vue {
   }
 
   get setupList() {
-    return [];
+    return this.listTradeFilterState.setupList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
   }
 
   get gatilhoList() {
-    return [];
+    return this.listTradeFilterState.gatilhoList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
   }
 
   get tipoEntradaList() {
-    return [];
+    return this.listTradeFilterState.tipoEntradaList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
   }
 
   get ativoList() {
-    return [];
+    return this.listTradeFilterState.ativoList.map((item) => ({
+      text: item.codigo,
+      value: item.id,
+    }));
   }
 
   get timeFrameList() {
-    return [];
+    return this.listTradeFilterState.timeFrameList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
+  }
+
+  get localizacaoList() {
+    return this.listTradeFilterState.localizacaoList;
   }
 
   get isLoading(): boolean {
@@ -1018,7 +966,7 @@ export default class ManageTrade extends Vue {
       setupNome: item.setupNome,
       gatilhoNome: item.gatilhoNome,
       tipoEntradaNome: item.tipoEntradaNome,
-      ativoCode: item.ativoCode,
+      ativoCodigo: item.ativoCodigo,
       timeFrameNome: item.timeFrameNome,
     };
   }
@@ -1087,16 +1035,22 @@ export default class ManageTrade extends Vue {
     this.$emit('close');
   }
 
-  changeState(state: ManageTradeState) {
+  changeDetailTradeState(state: ManageTradeState) {
     this.detailTradeState = state;
   }
 
+  changeListTradeFilterState(state: ListTradeFilterState) {
+    this.listTradeFilterState = state;
+  }
+
   created() {
-    this.detailTradeController.subscribe(this.changeState);
+    this.detailTradeController.subscribe(this.changeDetailTradeState);
+    this.listTradeFilterController.subscribe(this.changeListTradeFilterState);
   }
 
   beforeDestroy() {
     this.detailTradeController.unsubscribe(this.changeState);
+    this.listTradeFilterController.unsubscribe(this.changeListTradeFilterState);
   }
 }
 </script>

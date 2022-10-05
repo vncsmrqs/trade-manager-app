@@ -34,6 +34,10 @@ import { CreateTradeUseCaseContract } from "@/core/trade/domain/use-cases/create
 import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete-trade.use-case";
 import { DeleteTradeController } from "@/core/trade/presentation/controllers/delete-trade.controller";
 import { ManageTradeController } from "@/core/trade/presentation/controllers/manage-trade.controller";
+import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
+import { ListTimeFrameUseCaseContract } from "@/core/time-frame/domain/use-cases/list-time-frame.use-case";
+import { ListAtivoUseCaseContract } from "@/core/ativo/domain/use-cases/list-ativo.use-case";
+import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -156,6 +160,17 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new ManageTradeController(
         { execute(params: any): Promise<void> { return new Promise((resolve) => resolve() ) }},
         container.make<NotificationController>(TYPES.NotificationController),
+      );
+    });
+
+    container.singleton(TYPES.ListTradeFilterController, () => {
+      return new ListTradeFilterController(
+        container.make<ListSetupUseCaseContract>(TYPES.ListSetupUseCaseContract),
+        container.make<ListGatilhoUseCaseContract>(TYPES.ListGatilhoUseCaseContract),
+        container.make<ListTipoEntradaUseCaseContract>(TYPES.ListTipoEntradaUseCaseContract),
+        container.make<ListTimeFrameUseCaseContract>(TYPES.ListTimeFrameUseCaseContract),
+        container.make<ListAtivoUseCaseContract>(TYPES.ListAtivoUseCaseContract),
+        container.make<ListCampoCustomizavelUseCaseContract>(TYPES.ListCampoCustomizavelUseCaseContract),
       );
     });
   }

@@ -31,7 +31,7 @@ export type TradeEntityProps = DefaultTradeEntityProps & {
   setupNome?: string;
   gatilhoNome?: string;
   tipoEntradaNome?: string;
-  ativoCode: string;
+  ativoCodigo: string;
   timeFrameNome?: string;
 }
 
@@ -117,8 +117,8 @@ export class TradeEntity {
   get tipoEntradaNome(): string | undefined{
     return this.props.tipoEntradaNome;
   }
-  get ativoCode(): string {
-    return this.props.ativoCode;
+  get ativoCodigo(): string {
+    return this.props.ativoCodigo;
   }
 
   get observacao(): string | undefined {

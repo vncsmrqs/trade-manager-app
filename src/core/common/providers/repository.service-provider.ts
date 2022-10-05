@@ -27,6 +27,12 @@ import { ListTradeRepositoryContract } from "@/core/trade/data/contracts/list-tr
 import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/create-trade.repository";
 import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
 import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delete-trade.repository";
+import { ListAtivoRepositoryContract } from "@/core/ativo/data/contracts/list-ativo.repository";
+import { ListTimeFrameRepositoryContract } from "@/core/time-frame/data/contracts/list-time-frame.repository";
+import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
+import { ManageCampoCustomizavelInMemoryRepository } from "@/core/campo-customizavel/infra/repositories/manage-campo-customizavel-in-memory.repository";
+import { ManageAtivoInMemoryRepository } from "@/core/ativo/infra/repositories/manage-ativo-in-memory.repository";
+import { ManageTimeFrameInMemoryRepository } from "@/core/time-frame/infra/repositories/manage-time-frame-in-memory.repository";
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
@@ -65,5 +71,20 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<CreateTradeRepositoryContract>(TYPES.CreateTradeRepositoryContract, manageTradeRepository);
     container.instance<UpdateTradeRepositoryContract>(TYPES.UpdateTradeRepositoryContract, manageTradeRepository);
     container.instance<DeleteTradeRepositoryContract>(TYPES.DeleteTradeRepositoryContract, manageTradeRepository);
+
+    const manageAtivoRepository = new ManageAtivoInMemoryRepository();
+    container.instance<ListAtivoRepositoryContract>(TYPES.ListAtivoRepositoryContract, manageAtivoRepository);
+
+    const manageTimeFrameRepository = new ManageTimeFrameInMemoryRepository();
+    container.instance<ListTimeFrameRepositoryContract>(
+      TYPES.ListTimeFrameRepositoryContract,
+      manageTimeFrameRepository
+    );
+
+    const manageCampoCustomizavelRepository = new ManageCampoCustomizavelInMemoryRepository();
+    container.instance<ListCampoCustomizavelRepositoryContract>(
+      TYPES.ListCampoCustomizavelRepositoryContract,
+      manageCampoCustomizavelRepository
+    );
   }
 }

@@ -25,6 +25,12 @@ export const TYPES = {
   UpdateTradeUseCaseContract: Symbol('UpdateTradeUseCaseContract'),
   DeleteTradeUseCaseContract: Symbol('DeleteTradeUseCaseContract'),
 
+  ListAtivoUseCaseContract: Symbol('ListAtivoUseCaseContract'),
+
+  ListTimeFrameUseCaseContract: Symbol('ListTimeFrameUseCaseContract'),
+
+  ListCampoCustomizavelUseCaseContract: Symbol('ListCampoCustomizavelUseCaseContract'),
+
   /* Repositories */
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
@@ -45,6 +51,12 @@ export const TYPES = {
   CreateTradeRepositoryContract: Symbol('CreateTradeRepositoryContract'),
   UpdateTradeRepositoryContract: Symbol('UpdateTradeRepositoryContract'),
   DeleteTradeRepositoryContract: Symbol('DeleteTradeRepositoryContract'),
+
+  ListAtivoRepositoryContract: Symbol('ListAtivoRepositoryContract'),
+
+  ListTimeFrameRepositoryContract: Symbol('ListTimeFrameRepositoryContract'),
+
+  ListCampoCustomizavelRepositoryContract: Symbol('ListCampoCustomizavelRepositoryContract'),
 
   /* State Controllers */
   NotificationController: Symbol('NotificationController'),
@@ -67,4 +79,5 @@ export const TYPES = {
   CreateOrUpdateTradeController: Symbol('CreateOrUpdateTradeController'),
   DeleteTradeController: Symbol('DeleteTradeController'),
   DetailTradeController: Symbol('DetailTradeController'),
+  ListTradeFilterController: Symbol('ListTradeFilterController'),
 };
