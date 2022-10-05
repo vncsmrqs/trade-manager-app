@@ -33,6 +33,7 @@
                 dense
                 clearable
                 :multiple="Array.isArray(form.setupId)"
+                :loading="isLoading"
             ></v-combobox>
 
             <v-combobox
@@ -43,6 +44,7 @@
                 dense
                 clearable
                 :multiple="Array.isArray(form.gatilhoId)"
+                :loading="isLoading"
             ></v-combobox>
 
             <v-combobox
@@ -53,6 +55,7 @@
                 dense
                 clearable
                 :multiple="Array.isArray(form.tipoEntradaId)"
+                :loading="isLoading"
             ></v-combobox>
 
             <v-row>
@@ -65,6 +68,7 @@
                     dense
                     clearable
                     :multiple="Array.isArray(form.resultado)"
+                    :loading="isLoading"
                 ></v-combobox>
               </v-col>
               <v-col cols="6">
@@ -76,6 +80,7 @@
                     dense
                     clearable
                     :multiple="Array.isArray(form.ativoId)"
+                    :loading="isLoading"
                 ></v-combobox>
               </v-col>
             </v-row>
@@ -120,6 +125,8 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { app, TYPES } from "@/core/common/container";
+import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
 
 type FormType = {
   setupId: undefined | string | string[],
@@ -134,7 +141,8 @@ export default class FilterTrades extends Vue {
   @Prop() show!: boolean;
   @Prop() filterChips!: Record<string, any>[];
 
-  private localState = {};
+  private listTradeFilterController = app.make<ListTradeFilterController>(TYPES.ListTradeFilterController);
+  private listTradeFilterState = this.listTradeFilterController.state;
 
   form: FormType = this.defaultForm();
 
@@ -171,66 +179,46 @@ export default class FilterTrades extends Vue {
   }
 
   get setupList() {
-    return [
-      {
-        value: 'id-setup-1',
-        text: 'Setup 1',
-      },
-      {
-        value: 'id-setup-2',
-        text: 'Setup 2',
-      },
-    ];
+    return this.listTradeFilterState.setupList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
   }
 
   get gatilhoList() {
-    return [
-      {
-        value: 'id-gatilho-1',
-        text: 'Gatilho 1',
-      },
-      {
-        value: 'id-gatilho-2',
-        text: 'Gatilho 2',
-      },
-    ];
+    return this.listTradeFilterState.gatilhoList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
   }
 
   get tipoEntradaList() {
-    return [
-      {
-        value: 'id-tipo-entrada-1',
-        text: 'Tipo Entrada 1',
-      },
-      {
-        value: 'id-tipo-entrada-2',
-        text: 'Tipo Entrada 2',
-      },
-    ];
+    return this.listTradeFilterState.tipoEntradaList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
+  }
+
+  get ativoList() {
+    return this.listTradeFilterState.ativoList.map((item) => ({
+      text: item.codigo,
+      value: item.id,
+    }));
   }
 
   get resultadoList() {
     return [
       {
-        value: 'id-resultado-1',
-        text: 'Resultado 1',
+        value: 'gain',
+        text: 'GAIN',
       },
       {
-        value: 'id-resultado-2',
-        text: 'Resultado 2',
-      },
-    ];
-  }
-
-  get ativoList() {
-    return [
-      {
-        value: 'id-ativo-1',
-        text: 'Ativo 1',
+        value: '0x0',
+        text: '0x0',
       },
       {
-        value: 'id-ativo-2',
-        text: 'Ativo 2',
+        value: 'loss',
+        text: 'LOSS',
       },
     ];
   }
@@ -246,22 +234,23 @@ export default class FilterTrades extends Vue {
   @Watch('show')
   changeShow(value: boolean) {
     this.form = this.defaultForm();
+    this.listTradeFilterController.loadFilterList();
     if (value && this.filterChips.length) {
       this.fillForm(this.filterChips);
     }
   }
 
   get isLoading(): boolean {
-    return this.localState.kind === 'SavingGatilhoState';
+    return this.listTradeFilterState.kind === "LoadingListTradeFilterState";
   }
 
   get hasError(): boolean {
-    return this.localState.kind === 'ErrorSavingGatilhoState';
+    return this.listTradeFilterState.kind === "ErrorListTradeFilterState";
   }
 
   get error(): string | null {
     if (this.hasError) {
-      return this.localState.error;
+      return this.listTradeFilterState.error;
     }
     return null;
   }
@@ -270,16 +259,16 @@ export default class FilterTrades extends Vue {
     this.$emit('close');
   }
 
-  changeState(state) {
-    this.localState = state;
+  changeListTradeFilterState(state) {
+    this.listTradeFilterState = state;
   }
 
   created() {
-    // this.controller.subscribe(this.changeState);
+    this.listTradeFilterController.subscribe(this.changeListTradeFilterState);
   }
 
   beforeDestroy() {
-    // this.controller.unsubscribe(this.changeState);
+    this.listTradeFilterController.unsubscribe(this.changeListTradeFilterState);
   }
 }
 </script>

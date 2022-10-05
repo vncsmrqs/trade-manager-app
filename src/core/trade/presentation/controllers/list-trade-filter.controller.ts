@@ -21,7 +21,6 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
     private listLocalizacaoUseCase: ListCampoCustomizavelUseCaseContract,
   ) {
     super(initialListTradeFilterState);
-    this.loadFilterList();
   }
 
   public resetState() {

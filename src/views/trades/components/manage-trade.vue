@@ -60,34 +60,96 @@
                         <div class="font-weight-bold mb-2">Data</div>
                         <div>{{ formatStringFieldValue(form.dataAbertura) }}</div>
                       </div>
-                      <v-text-field
+                      <v-menu
                           v-else
-                          v-model="form.dataAbertura"
-                          label="Data"
-                          outlined
-                          dense
-                          clearable
-                          ref="dataAbertura"
-                          :rules="formRules.dataAbertura"
-                          required
-                      ></v-text-field>
+                          ref="dataAberturaDialog"
+                          v-model="showDataAberturaPicker"
+                          :close-on-content-click="false"
+                          :return-value.sync="form.dataAbertura"
+                          transition="fade"
+                          offset-y
+                          min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                              v-model="form.dataAbertura"
+                              label="Data"
+                              outlined
+                              dense
+                              clearable
+                              ref="dataAbertura"
+                              :rules="formRules.dataAbertura"
+                              required
+                              prepend-inner-icon="mdi-calendar"
+                              v-bind="attrs"
+                              v-on="on"
+                              readonly
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                            v-model="form.dataAbertura"
+                            no-title
+                            color="primary"
+                            locale="pt-BR"
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                              text
+                              color="primary"
+                              @click="showDataAberturaPicker = false"
+                          >
+                            Cancelar
+                          </v-btn>
+                          <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.dataAberturaDialog.save(form.dataAbertura)"
+                          >
+                            Concluir
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
                     </v-col>
                     <v-col cols="6" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Hora</div>
                         <div>{{ formatStringFieldValue(form.horaAbertura) }}</div>
                       </div>
-                      <v-text-field
+                      <v-menu
                           v-else
-                          v-model="form.horaAbertura"
-                          label="Hora"
-                          outlined
-                          dense
-                          clearable
-                          ref="horaAbertura"
-                          :rules="formRules.horaAbertura"
-                          required
-                      ></v-text-field>
+                          ref="horaAberturaDialog"
+                          v-model="showHoraAberturaPicker"
+                          :close-on-content-click="false"
+                          :return-value.sync="form.horaAbertura"
+                          transition="fade"
+                          offset-y
+                          max-width="276px"
+                          min-width="290px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                              prepend-inner-icon="mdi-clock-time-four-outline"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                              v-model="form.horaAbertura"
+                              label="Hora"
+                              outlined
+                              dense
+                              clearable
+                              ref="horaAbertura"
+                              :rules="formRules.horaAbertura"
+                              required
+                          ></v-text-field>
+                        </template>
+                        <v-time-picker
+                            v-if="showHoraAberturaPicker"
+                            v-model="form.horaAbertura"
+                            format="24hr"
+                            locale="pt-BR"
+                            @click:minute="$refs.horaAberturaDialog.save(form.horaAbertura)"
+                        ></v-time-picker>
+                      </v-menu>
                     </v-col>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
@@ -122,6 +184,7 @@
                           ref="ativoId"
                           :rules="formRules.ativoId"
                           required
+                          :loading="isLoadingFilters"
                       >
                         <template v-slot:selection>{{ form.ativoCodigo }}</template>
                       </v-combobox>
@@ -142,6 +205,7 @@
                           clearable
                           ref="timeFrameId"
                           :rules="formRules.timeFrameId"
+                          :loading="isLoadingFilters"
                       >
                         <template v-slot:selection>{{ form.timeFrameNome }}</template>
                       </v-combobox>
@@ -162,6 +226,7 @@
                         clearable
                         ref="setupId"
                         :rules="formRules.setupId"
+                        :loading="isLoadingFilters"
                       >
                         <template v-slot:selection>{{ form.setupNome }}</template>
                       </v-combobox>
@@ -182,6 +247,7 @@
                           clearable
                           ref="gatilhoId"
                           :rules="formRules.gatilhoId"
+                          :loading="isLoadingFilters"
                       >
                         <template v-slot:selection>{{ form.gatilhoNome }}</template>
                       </v-combobox>
@@ -202,6 +268,7 @@
                           clearable
                           ref="tipoEntradaId"
                           :rules="formRules.tipoEntradaId"
+                          :loading="isLoadingFilters"
                       >
                         <template v-slot:selection>{{ form.tipoEntradaNome }}</template>
                       </v-combobox>
@@ -591,8 +658,8 @@ type FormType = Partial<TradeEntityProps> & {
   components: { DeleteTrade }
 })
 export default class ManageTrade extends Vue {
-  private detailTradeController = app.make<ManageTradeController>(TYPES.DetailTradeController);
-  private detailTradeState = this.detailTradeController.state;
+  private manageTradeController = app.make<ManageTradeController>(TYPES.DetailTradeController);
+  private manageTradeState = this.manageTradeController.state;
 
   private listTradeFilterController = app.make<ListTradeFilterController>(TYPES.ListTradeFilterController);
   private listTradeFilterState = this.listTradeFilterController.state;
@@ -611,6 +678,10 @@ export default class ManageTrade extends Vue {
   detailMode = false;
 
   form = this.defaultForm();
+
+  showDeleteDialog = false;
+  showDataAberturaPicker = false;
+  showHoraAberturaPicker = false;
 
   formIsValid = false;
 
@@ -638,8 +709,6 @@ export default class ManageTrade extends Vue {
     resultado: [],
     observacao: [],
   }
-
-  showDeleteDialog = false;
 
   getValorLocalizacao(localizacao: CampoCustomizavelEntity, valor: string): string {
     const valorCampoCustomizavel = localizacao.valores?.find((v) => v.valor === valor);
@@ -766,16 +835,20 @@ export default class ManageTrade extends Vue {
   }
 
   get isLoading(): boolean {
-    return this.detailTradeState.kind === 'DeletingTradeState';
+    return this.manageTradeState.kind === 'DeletingTradeState' || this.isLoadingFilters;
+  }
+
+  get isLoadingFilters(): boolean {
+    return this.listTradeFilterState.kind === 'LoadingListTradeFilterState';
   }
 
   get hasError(): boolean {
-    return this.detailTradeState.kind === 'ErrorDeleteTradeState';
+    return this.manageTradeState.kind === 'ErrorDeleteTradeState';
   }
 
   get error(): string | undefined {
     if (this.hasError) {
-      return this.detailTradeState.error;
+      return this.manageTradeState.error;
     }
     return undefined;
   }
@@ -929,11 +1002,14 @@ export default class ManageTrade extends Vue {
   }
 
   @Watch('show')
-  changeShow() {
+  changeShow(show: boolean) {
     this.reset();
     if (this.item) {
       this.detailMode = true;
       this.fillForm(this.item);
+    }
+    if (show) {
+      this.listTradeFilterController.loadFilterList();
     }
   }
 
@@ -973,10 +1049,8 @@ export default class ManageTrade extends Vue {
 
   validateForm() {
     const isValid = this.$refs.form.validate();
-    console.log({ isValid });
-    if (isValid) {
-      return true;
-    }
+
+    if (isValid) return true;
 
     const fields = [
       "ativoId",
@@ -1008,15 +1082,12 @@ export default class ManageTrade extends Vue {
     };
 
     const fieldWithError = fields.find((field) => {
-      console.log(field, this.$refs?.[field]);
       return this.$refs?.[field]?.hasError;
     });
 
     if (fieldWithError) {
       this.tab = fieldTab[fieldWithError];
     }
-
-    console.log({ fieldWithError });
 
     return isValid && !fieldWithError;
   }
@@ -1036,7 +1107,7 @@ export default class ManageTrade extends Vue {
   }
 
   changeDetailTradeState(state: ManageTradeState) {
-    this.detailTradeState = state;
+    this.manageTradeState = state;
   }
 
   changeListTradeFilterState(state: ListTradeFilterState) {
@@ -1044,12 +1115,12 @@ export default class ManageTrade extends Vue {
   }
 
   created() {
-    this.detailTradeController.subscribe(this.changeDetailTradeState);
+    this.manageTradeController.subscribe(this.changeDetailTradeState);
     this.listTradeFilterController.subscribe(this.changeListTradeFilterState);
   }
 
   beforeDestroy() {
-    this.detailTradeController.unsubscribe(this.changeState);
+    this.manageTradeController.unsubscribe(this.changeState);
     this.listTradeFilterController.unsubscribe(this.changeListTradeFilterState);
   }
 }
