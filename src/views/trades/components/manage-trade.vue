@@ -58,7 +58,7 @@
                     <v-col cols="6" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Data</div>
-                        <div>{{ formatStringFieldValue(form.dataAbertura) }}</div>
+                        <div>{{ formatDateFieldValue(form.dataAbertura) }}</div>
                       </div>
                       <v-menu
                           v-else
@@ -72,7 +72,7 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                              v-model="form.dataAbertura"
+                              :value="formatDateFieldValue(form.dataAbertura)"
                               label="Data"
                               outlined
                               dense
@@ -648,6 +648,7 @@ import DeleteTrade from "@/views/trades/components/delete-trade.vue";
 import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
 import { ListTradeFilterState } from "@/core/trade/presentation/states/list-trade-filter.state";
 import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
+import moment from "moment";
 
 type FormType = Partial<TradeEntityProps> & {
   horaAbertura?: string;
@@ -858,6 +859,13 @@ export default class ManageTrade extends Vue {
       return 'Não definido';
     }
     return value ? 'Sim' : 'Não';
+  }
+
+  formatDateFieldValue(value?: string): string {
+    if (value === undefined) {
+      return 'Não definido';
+    }
+    return moment(value).format('DD/MM/YYYY');
   }
 
   formatStringFieldValue(value?: string): string {

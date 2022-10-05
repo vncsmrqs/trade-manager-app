@@ -1,5 +1,6 @@
 import { TradeEntity, TradeResultadoType } from "@/core/trade/domain/entities/trade.entity";
 import { ListTradeUseCaseContract } from "@/core/trade/domain/use-cases/list-trade.use-case";
+import moment from "moment";
 
 export type ListTradeFilter<T = any> = Record<string, T> & {
   setupId?: string[];
@@ -59,7 +60,7 @@ export const initialListTradeState : ListTradeState = {
     gainPercentage: 0,
   },
   filter: {
-    startDate: '2022-01-01',
-    endDate: '2022-01-01',
+    startDate: moment().subtract(1, "month").format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
   },
 };

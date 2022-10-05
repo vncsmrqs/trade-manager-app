@@ -44,7 +44,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                  :value="formattedStartDate"
+                  :value="formatDateFieldValue(filter.startDate)"
                   label="Data inicial"
                   prepend-inner-icon="mdi-calendar"
                   readonly
@@ -61,6 +61,7 @@
                 no-title
                 color="primary"
                 locale="pt-BR"
+                :max="today"
             >
               <v-spacer></v-spacer>
               <v-btn
@@ -92,7 +93,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                  :value="formattedEndDate"
+                  :value="formatDateFieldValue(filter.endDate)"
                   label="Data inicial"
                   prepend-inner-icon="mdi-calendar"
                   readonly
@@ -109,6 +110,8 @@
                 no-title
                 color="primary"
                 locale="pt-BR"
+                :min="filter.startDate"
+                :max="today"
             >
               <v-spacer></v-spacer>
               <v-btn
@@ -384,6 +387,7 @@ import {
 import { ListTradeFilter, ListTradeState } from "@/core/trade/presentation/states/list-trade.state";
 import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
 import ManageTrade from "@/views/trades/components/manage-trade.vue";
+import moment from "moment";
 
 @Component({
   components: { ManageTrade, FilterTrades }
@@ -397,6 +401,8 @@ export default class ListTrade extends Vue {
   showEndDatePicker = false;
   showFilterDialog = false;
   filterFormAsList: FilterFormComplete[] = [];
+
+  today = moment().format('YYYY-MM-DD');
 
   itemToDetail?: TradeEntity = null;
   showDetailTradeDialog = false;
@@ -446,12 +452,11 @@ export default class ListTrade extends Vue {
     },
   ];
 
-  get formattedStartDate() {
-    return '01/01/2022';
-  }
-
-  get formattedEndDate() {
-    return '01/01/2022';
+  formatDateFieldValue(value?: string): string {
+    if (value === undefined) {
+      return '';
+    }
+    return moment(value).format('DD/MM/YYYY');
   }
 
   get isLoading(): boolean {
@@ -489,8 +494,8 @@ export default class ListTrade extends Vue {
 
   generateForm(): Required<ListTradeFilter> {
     return {
-      startDate: '',
-      endDate: '',
+      startDate: moment().subtract(1, "month").format('YYYY-MM-DD'),
+      endDate: moment().format('YYYY-MM-DD'),
       setupId: [],
       gatilhoId: [],
       tipoEntradaId: [],
