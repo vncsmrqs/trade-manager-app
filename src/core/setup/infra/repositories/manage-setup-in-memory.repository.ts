@@ -30,13 +30,14 @@ export class ManageSetupInMemoryRepository implements
     params: ListSetupRepositoryContract.Params
   ): Promise<ActionResult<ListSetupRepositoryContract.Response, any>> {
     return new Promise((resolve) => {
-      const items = chunkArray<SetupEntity>(mapSetupListToEntity(setupList), params.itemsPerPage);
+      const itemsPerPage = params.itemsPerPage || setupList.length;
+      const items = chunkArray<SetupEntity>(mapSetupListToEntity(setupList), itemsPerPage);
       const page = params.page || 1;
       setTimeout(() => {
         resolve(ActionResult.success({
           items: items[page-1],
           page,
-          pageCount: Math.ceil(setupList.length / (params.itemsPerPage || 1)),
+          pageCount: Math.ceil(setupList.length / (itemsPerPage)),
         }));
       }, 3000);
     });

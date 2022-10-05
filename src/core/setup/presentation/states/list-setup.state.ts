@@ -2,7 +2,7 @@ import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
 
 export type BaseSetupListState = {
   search?: string;
-  itemsPerPage: number;
+  itemsPerPage?: number;
   items: SetupEntity[];
   page: number;
   pageCount: number;

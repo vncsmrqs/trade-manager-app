@@ -30,13 +30,14 @@ export class ManageTipoEntradaInMemoryRepository implements
     params: ListTipoEntradaRepositoryContract.Params
   ): Promise<ActionResult<ListTipoEntradaRepositoryContract.Response, any>> {
     return new Promise((resolve) => {
-      const items = chunkArray<TipoEntradaEntity>(mapTipoEntradaListToEntity(tipoEntradaList), params.itemsPerPage);
+      const itemsPerPage = params.itemsPerPage || tipoEntradaList.length;
+      const items = chunkArray<TipoEntradaEntity>(mapTipoEntradaListToEntity(tipoEntradaList), itemsPerPage);
       const page = params.page || 1;
       setTimeout(() => {
         resolve(ActionResult.success({
           items: items[page-1],
           page,
-          pageCount: Math.ceil(tipoEntradaList.length / (params.itemsPerPage || 1)),
+          pageCount: Math.ceil(tipoEntradaList.length / (itemsPerPage)),
         }));
       }, 3000);
     });

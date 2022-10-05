@@ -11,7 +11,7 @@ export namespace ListGatilhoRepositoryContract {
   export type Params = {
     search?: string;
     page?: number;
-    itemsPerPage: number;
+    itemsPerPage?: number;
   }
 
   export type Response = {

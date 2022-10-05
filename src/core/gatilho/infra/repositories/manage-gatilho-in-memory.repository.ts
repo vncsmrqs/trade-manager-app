@@ -30,13 +30,14 @@ export class ManageGatilhoInMemoryRepository implements
     params: ListGatilhoRepositoryContract.Params
   ): Promise<ActionResult<ListGatilhoRepositoryContract.Response, any>> {
     return new Promise((resolve) => {
-      const items = chunkArray<GatilhoEntity>(mapGatilhoListToEntity(gatilhoList), params.itemsPerPage);
+      const itemsPerPage = params.itemsPerPage || gatilhoList.length;
+      const items = chunkArray<GatilhoEntity>(mapGatilhoListToEntity(gatilhoList), itemsPerPage);
       const page = params.page || 1;
       setTimeout(() => {
         resolve(ActionResult.success({
           items: items[page-1],
           page,
-          pageCount: Math.ceil(gatilhoList.length / (params.itemsPerPage || 1)),
+          pageCount: Math.ceil(gatilhoList.length / (itemsPerPage || 1)),
         }));
       }, 3000);
     });

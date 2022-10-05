@@ -2,7 +2,7 @@ import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entr
 
 export type BaseTipoEntradaListState = {
   search?: string;
-  itemsPerPage: number;
+  itemsPerPage?: number;
   items: TipoEntradaEntity[];
   page: number;
   pageCount: number;

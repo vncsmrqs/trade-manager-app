@@ -2,7 +2,7 @@ import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
 
 export type BaseGatilhoListState = {
   search?: string;
-  itemsPerPage: number;
+  itemsPerPage?: number;
   items: GatilhoEntity[];
   page: number;
   pageCount: number;
