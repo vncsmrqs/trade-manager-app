@@ -36,393 +36,472 @@
           <v-col>
             <v-tabs v-model="tab">
               <v-tabs-slider></v-tabs-slider>
-              <v-tab href="#dados-principais">Dados Principais</v-tab>
-              <v-tab href="#localizacao">Localização</v-tab>
-              <v-tab href="#encerramento">Encerramento</v-tab>
+              <v-tab :href="`#${availableTabs.DADOS_PRINCIPAIS}`">Dados Principais</v-tab>
+              <v-tab :href="`#${availableTabs.LOCALIZACAO}`">Localização</v-tab>
+              <v-tab :href="`#${availableTabs.ENCERRAMENTO}`">Encerramento</v-tab>
             </v-tabs>
           </v-col>
         </v-row>
       </template>
 
-      <v-container class="mt-4">
-        <v-tabs-items v-model="tab">
-          <v-tab-item value="dados-principais">
-              <v-card-text>
-                <v-row>
-                  <v-col cols="6" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Data</div>
-                      <div>{{ formatStringFieldValue(form.dataAbertura) }}</div>
-                    </div>
-                    <v-text-field
+      <v-form
+          ref="form"
+          @submit.prevent="saveTrade"
+          :disabled="isLoading"
+      >
+
+        <v-container class="mt-4">
+          <v-tabs-items v-model="tab">
+            <v-tab-item :value="availableTabs.DADOS_PRINCIPAIS">
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="6" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Data</div>
+                        <div>{{ formatStringFieldValue(form.dataAbertura) }}</div>
+                      </div>
+                      <v-text-field
+                          v-else
+                          v-model="form.dataAbertura"
+                          label="Data"
+                          outlined
+                          dense
+                          clearable
+                          ref="dataAbertura"
+                          :rules="formRules.dataAbertura"
+                          required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="6" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Hora</div>
+                        <div>{{ formatStringFieldValue(form.horaAbertura) }}</div>
+                      </div>
+                      <v-text-field
+                          v-else
+                          v-model="form.horaAbertura"
+                          label="Hora"
+                          outlined
+                          dense
+                          clearable
+                          ref="horaAbertura"
+                          :rules="formRules.horaAbertura"
+                          required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="4" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Lote</div>
+                        <div>{{ formatStringFieldValue(form.lote) }}</div>
+                      </div>
+                      <v-text-field
+                          v-else
+                          v-model="form.lote"
+                          label="Lote"
+                          outlined
+                          dense
+                          clearable
+                          ref="lote"
+                          :rules="formRules.lote"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="4" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Ativo</div>
+                        <div>{{ formatStringFieldValue(form.ativoCode) }}</div>
+                      </div>
+                      <v-combobox
+                          v-else
+                          :value="form.ativoId"
+                          @change="(obj) => selectItem('ativo', obj, 'Code')"
+                          :items="ativoList"
+                          label="Ativo"
+                          outlined
+                          dense
+                          clearable
+                          ref="ativoId"
+                          :rules="formRules.ativoId"
+                          required
+                      >
+                        <template v-slot:selection>{{ form.ativoCode }}</template>
+                      </v-combobox>
+                    </v-col>
+                    <v-col cols="4" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Time Frame</div>
+                        <div>{{ formatStringFieldValue(form.timeFrameNome) }}</div>
+                      </div>
+                      <v-combobox
+                          v-else
+                          :value="form.timeFrameId"
+                          @change="(obj) => selectItem('timeFrame', obj)"
+                          :items="timeFrameList"
+                          label="Time Frame"
+                          outlined
+                          dense
+                          clearable
+                          ref="timeFrameId"
+                          :rules="formRules.timeFrameId"
+                      >
+                        <template v-slot:selection>{{ form.timeFrameNome }}</template>
+                      </v-combobox>
+                    </v-col>
+                    <v-col cols="12" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Setup</div>
+                        <div>{{ formatStringFieldValue(form.setupNome) }}</div>
+                      </div>
+                      <v-combobox
                         v-else
-                        v-model="form.dataAbertura"
-                        label="Data"
-                        outlined
-                        dense
-                        clearable
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Hora</div>
-                      <div>{{ formatStringFieldValue(form.horaAbertura) }}</div>
-                    </div>
-                    <v-text-field
-                        v-else
-                        v-model="form.horaAbertura"
-                        label="Hora"
-                        outlined
-                        dense
-                        clearable
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="4" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Lote</div>
-                      <div>{{ formatStringFieldValue(form.lote) }}</div>
-                    </div>
-                    <v-text-field
-                        v-else
-                        v-model="form.lote"
-                        label="Lote"
-                        outlined
-                        dense
-                        clearable
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="4" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Ativo</div>
-                      <div>{{ formatStringFieldValue(form.ativoCode) }}</div>
-                    </div>
-                    <v-combobox
-                        v-else
-                        v-model="form.ativoId"
-                        :items="ativoList"
-                        label="Ativo"
-                        outlined
-                        dense
-                        clearable
-                    ></v-combobox>
-                  </v-col>
-                  <v-col cols="4" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Time Frame</div>
-                      <div>{{ formatStringFieldValue(form.timeFrameNome) }}</div>
-                    </div>
-                    <v-combobox
-                        v-else
-                        v-model="form.timeFrameId"
-                        :items="timeFrameList"
-                        label="Time Frame"
-                        outlined
-                        dense
-                        clearable
-                    ></v-combobox>
-                  </v-col>
-                  <v-col cols="12" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Setup</div>
-                      <div>{{ formatStringFieldValue(form.setupNome) }}</div>
-                    </div>
-                    <v-combobox
-                        v-else
-                        v-model="form.setupId"
+                        :value="form.setupId"
+                        @change="(obj) => selectItem('setup', obj)"
                         :items="setupList"
                         label="Setup"
                         outlined
                         dense
                         clearable
-                    ></v-combobox>
-                  </v-col>
-                  <v-col cols="12" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Gatilho</div>
-                      <div>{{ formatStringFieldValue(form.gatilhoNome) }}</div>
-                    </div>
-                    <v-combobox
-                        v-else
-                        v-model="form.gatilhoId"
-                        :items="gatilhoList"
-                        label="Gatilho"
-                        outlined
-                        dense
-                        clearable
-                    ></v-combobox>
-                  </v-col>
-                  <v-col cols="12" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Tipo de entrada</div>
-                      <div>{{ formatStringFieldValue(form.tipoEntradaNome) }}</div>
-                    </div>
-                    <v-combobox
-                        v-else
-                        v-model="form.tipoEntradaId"
-                        :items="tipoEntradaList"
-                        label="Tipo de entrada"
-                        outlined
-                        dense
-                        clearable
-                    ></v-combobox>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-          </v-tab-item>
+                        ref="setupId"
+                        :rules="formRules.setupId"
+                      >
+                        <template v-slot:selection>{{ form.setupNome }}</template>
+                      </v-combobox>
+                    </v-col>
+                    <v-col cols="12" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Gatilho</div>
+                        <div>{{ formatStringFieldValue(form.gatilhoNome) }}</div>
+                      </div>
+                      <v-combobox
+                          v-else
+                          :value="form.gatilhoId"
+                          @change="(obj) => selectItem('gatilho', obj)"
+                          :items="gatilhoList"
+                          label="Gatilho"
+                          outlined
+                          dense
+                          clearable
+                          ref="gatilhoId"
+                          :rules="formRules.gatilhoId"
+                      >
+                        <template v-slot:selection>{{ form.gatilhoNome }}</template>
+                      </v-combobox>
+                    </v-col>
+                    <v-col cols="12" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Tipo de entrada</div>
+                        <div>{{ formatStringFieldValue(form.tipoEntradaNome) }}</div>
+                      </div>
+                      <v-combobox
+                          v-else
+                          v-model="form.tipoEntradaId"
+                          :items="tipoEntradaList"
+                          label="Tipo de entrada"
+                          outlined
+                          dense
+                          clearable
+                          ref="tipoEntradaId"
+                          :rules="formRules.tipoEntradaId"
+                      >
+                        <template v-slot:selection>{{ form.tipoEntradaNome }}</template>
+                      </v-combobox>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+            </v-tab-item>
 
-          <v-tab-item value="localizacao">
-            VINICIUS
-          </v-tab-item>
-
-          <v-tab-item value="encerramento">
+            <v-tab-item :value="availableTabs.LOCALIZACAO">
               <v-card-text>
                 <v-row>
-                  <v-col cols="4" :class="{'py-0': !detailMode}">
+                  <v-col
+                      cols="6"
+                      :class="{'py-0': !detailMode}"
+                      v-for="campoCustomizavel in camposCustomizaveisList"
+                      :key="campoCustomizavel.id"
+                  >
                     <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">1 Alvo</div>
-                      <div>{{ formatBooleanFieldValue(form.primeiroAlvo) }}</div>
+                      <div class="font-weight-bold mb-2">{{ campoCustomizavel.nome }}</div>
+                      <div>{{ getCampoCustomizavelValue(campoCustomizavel.id) }}</div>
                     </div>
                     <div v-else>
-                      <span class="text-body-1 font-weight-bold">1 Alvo</span>
+                      <span class="text-body-1 font-weight-bold">{{ campoCustomizavel.nome }}</span>
                       <v-radio-group
-                          v-model="form.primeiroAlvo"
+                          v-model="form.localizacao[campoCustomizavel.id]"
                           column
                       >
                         <v-radio
-                            label="Sim"
-                            :value="true"
-                        ></v-radio>
-                        <v-radio
-                            label="Não"
-                            :value="false"
+                            v-for="valorDisponivel in campoCustomizavel.valoresDisponiveis"
+                            :label="valorDisponivel.nome"
+                            :value="valorDisponivel.valor"
+                            :key="`${campoCustomizavel.id}-${valorDisponivel.valor}`"
                         ></v-radio>
                       </v-radio-group>
                     </div>
-                  </v-col>
-                  <v-col cols="4" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">2 Alvo</div>
-                      <div>{{ formatBooleanFieldValue(form.segundoAlvo) }}</div>
-                    </div>
-                    <div v-else>
-                      <span class="text-body-1 font-weight-bold">2 Alvo</span>
-                      <v-radio-group
-                          v-model="form.segundoAlvo"
-                          column
-                      >
-                        <v-radio
-                            label="Sim"
-                            :value="true"
-                        ></v-radio>
-                        <v-radio
-                            label="Não"
-                            :value="false"
-                        ></v-radio>
-                      </v-radio-group>
-                    </div>
-                  </v-col>
-                  <v-col cols="4" :class="{'py-0': !detailMode, 'mb-4': true}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Seguiu o plano?</div>
-                      <div>{{ formatBooleanFieldValue(form.seguiuPlano) }}</div>
-                    </div>
-                    <div v-else>
-                      <span class="text-body-1 font-weight-bold">Seguiu o plano?</span>
-                      <v-radio-group
-                          v-model="form.seguiuPlano"
-                          column
-                      >
-                        <v-radio
-                            label="Sim"
-                            :value="true"
-                        ></v-radio>
-                        <v-radio
-                            label="Não"
-                            :value="false"
-                        ></v-radio>
-                      </v-radio-group>
-                    </div>
-                  </v-col>
-                  <v-col v-if="!detailMode" cols="12" class="py-0">
-                    <span class="text-body-1 font-weight-bold">Resultado</span>
-                    <v-row class="mt-2 mb-4">
-                      <v-col cols="4">
-                        <v-btn
-                          style="border-width: 2px"
-                          @click="() => changeResultado('gain')"
-                          v-bind="{
-                            [ form.resultado === 'gain' ? 'outlined' : 'tile']: true,
-                          }"
-                          :class="[
-                            getResultadoButtonColor('gain', 'blue', 'accent-1', true),
-                          ]"
-                          elevation="0"
-                          :color="getResultadoButtonColor('gain', 'blue', 'accent-1')"
-                          block
-                        >GAIN</v-btn>
-                      </v-col>
-                      <v-col cols="4">
-                        <v-btn
-                          style="border-width: 2px"
-                          @click="() => changeResultado('0x0')"
-                          v-bind="{
-                            [ form.resultado === '0x0' ? 'outlined' : 'tile']: true,
-                          }"
-                          :class="[
-                            getResultadoButtonColor('0x0', 'yellow', 'darken-1', true),
-                          ]"
-                          elevation="0"
-                          :color="getResultadoButtonColor('0x0', 'yellow', 'darken-1')"
-                          block
-                        >0x0</v-btn>
-                      </v-col>
-                      <v-col cols="4">
-                        <v-btn
-                          style="border-width: 2px"
-                          v-bind="{
-                            [ form.resultado === 'loss' ? 'outlined' : 'tile']: true,
-                          }"
-                          elevation="0"
-                          :class="[getResultadoButtonColor('loss', 'red', 'accent-1', true)]"
-                          @click="() => changeResultado('loss')"
-                          :color="getResultadoButtonColor('loss', 'red', 'accent-1')"
-                          block
-                        >LOSS</v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                  <v-col v-if="!detailMode" cols="12" class="py-0">
-                    <v-text-field
-                        v-model="form.pontuacao"
-                        label="Pontos"
-                        outlined
-                        dense
-                        type="number"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col v-if="detailMode" cols="4" class="text-body-1">
-                    <div class="font-weight-bold mb-2">Resultado</div>
-                    <div :class="formatResultadoTextColor(form.resultado)">
-                      {{ form.resultado ? form.resultado.toUpperCase() : 'Não definido' }}
-                    </div>
-                  </v-col>
-                  <v-col v-if="detailMode" cols="4" class="text-body-1">
-                    <div class="font-weight-bold mb-2">Pontos</div>
-                    <div :class="formatPontuacaoTextColor(form.pontuacao)">
-                      {{ form.pontuacao === undefined ? 'Não definido' : form.pontuacao.toFixed(2) }}
-                    </div>
-                  </v-col>
-                  <v-col v-if="!detailMode" cols="12">
-                    <span class="text-body-1 font-weight-bold">Como se sentiu?</span>
-                    <v-row class="mt-2 mb-4">
-                      <v-col cols="4">
-                        <v-btn
-                          style="border-width: 2px; height: 100px;"
-                          @click="() => changeSentimento('bem')"
-                          v-bind="{
-                            [ form.sentimento === 'bem' ? 'outlined' : 'tile']: true,
-                          }"
-                          :class="[
-                            'rounded-lg',
-                            getSentimentoButtonColor('bem', 'green', 'dark-3', true),
-                          ]"
-                          elevation="0"
-                          :color="getSentimentoButtonColor('bem', 'green', 'dark-3')"
-                          block
-                        >
-                          <v-icon x-large>mdi-emoticon-excited-outline</v-icon>
-                        </v-btn>
-                      </v-col>
-                      <v-col cols="4">
-                        <v-btn
-                          style="border-width: 2px; height: 100px;"
-                          @click="() => changeSentimento('neutro')"
-                          v-bind="{
-                            [ form.sentimento === 'neutro' ? 'outlined' : 'tile']: true,
-                          }"
-                          :class="[
-                            'rounded-lg',
-                            getSentimentoButtonColor('neutro', 'yellow', 'darken-1', true),
-                          ]"
-                          elevation="0"
-                          :color="getSentimentoButtonColor('neutro', 'yellow', 'darken-1')"
-                          block
-                        >
-                          <v-icon x-large>mdi-emoticon-neutral-outline</v-icon>
-                        </v-btn>
-                      </v-col>
-                      <v-col cols="4">
-                        <v-btn
-                          style="border-width: 2px; height: 100px;"
-                          v-bind="{
-                            [ form.sentimento === 'mal' ? 'outlined' : 'tile']: true,
-                          }"
-                          elevation="0"
-                          :class="[
-                            'rounded-lg',
-                            getSentimentoButtonColor('mal', 'red', 'accent-1', true)
-                          ]"
-                          @click="() => changeSentimento('mal')"
-                          :color="getSentimentoButtonColor('mal', 'red', 'accent-1')"
-                          block
-                        >
-                          <v-icon x-large>mdi-emoticon-cry-outline</v-icon>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                  <v-col v-if="detailMode" cols="4">
-                    <div  class="text-body-1">
-                      <div class="font-weight-bold mb-2">Como se sentiu?</div>
-                      <div>
-                        <v-icon v-if="form.sentimento" :class="formatSentimentoTextColor(form.sentimento)">
-                          {{ formatSentimentoFieldIcon(form.sentimento) }}
-                        </v-icon>
-                        <span v-else>Não definido</span>
-                      </div>
-                    </div>
-                  </v-col>
-                  <v-col cols="12" :class="{'py-0': !detailMode}">
-                    <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">Observação</div>
-                      <div>{{ formatStringFieldValue(form.observacao)  }}</div>
-                    </div>
-                    <v-textarea
-                        v-else
-                        v-model="form.observacao"
-                        label="Observação"
-                        outlined
-                    ></v-textarea>
-                  </v-col>
-                  <v-col cols="12" class="py-0 d-flex justify-end mb-8">
-                    <v-row class="mt-2 mb-4" justify="space-between">
-                      <v-col cols="6">
-                        <v-img v-if="form.imagemUrl" :src="form.imagemUrl"></v-img>
-                      </v-col>
-                      <v-col v-if="!detailMode" cols="auto">
-                        <v-btn
-                          color="primary"
-                          outlined
-                          @click="selectImagemUrl"
-                        >
-                          <v-icon left>mdi-image</v-icon>
-                          Enviar imagem
-                        </v-btn>
-                        <input
-                          ref="uploader"
-                          class="d-none"
-                          type="file"
-                          accept="image/*"
-                          @change="changeImagemUrl"
-                        >
-                      </v-col>
-                    </v-row>
                   </v-col>
                 </v-row>
               </v-card-text>
-          </v-tab-item>
-        </v-tabs-items>
-      </v-container>
+            </v-tab-item>
+
+            <v-tab-item :value="availableTabs.ENCERRAMENTO">
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="4" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">1 Alvo</div>
+                        <div>{{ formatBooleanFieldValue(form.primeiroAlvo) }}</div>
+                      </div>
+                      <div v-else>
+                        <span class="text-body-1 font-weight-bold">1 Alvo</span>
+                        <v-radio-group
+                            v-model="form.primeiroAlvo"
+                            column
+                        >
+                          <v-radio
+                              label="Sim"
+                              :value="true"
+                          ></v-radio>
+                          <v-radio
+                              label="Não"
+                              :value="false"
+                          ></v-radio>
+                        </v-radio-group>
+                      </div>
+                    </v-col>
+                    <v-col cols="4" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">2 Alvo</div>
+                        <div>{{ formatBooleanFieldValue(form.segundoAlvo) }}</div>
+                      </div>
+                      <div v-else>
+                        <span class="text-body-1 font-weight-bold">2 Alvo</span>
+                        <v-radio-group
+                            v-model="form.segundoAlvo"
+                            column
+                        >
+                          <v-radio
+                              label="Sim"
+                              :value="true"
+                          ></v-radio>
+                          <v-radio
+                              label="Não"
+                              :value="false"
+                          ></v-radio>
+                        </v-radio-group>
+                      </div>
+                    </v-col>
+                    <v-col cols="4" :class="{'py-0': !detailMode, 'mb-4': true}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Seguiu o plano?</div>
+                        <div>{{ formatBooleanFieldValue(form.seguiuPlano) }}</div>
+                      </div>
+                      <div v-else>
+                        <span class="text-body-1 font-weight-bold">Seguiu o plano?</span>
+                        <v-radio-group
+                            v-model="form.seguiuPlano"
+                            column
+                        >
+                          <v-radio
+                              label="Sim"
+                              :value="true"
+                          ></v-radio>
+                          <v-radio
+                              label="Não"
+                              :value="false"
+                          ></v-radio>
+                        </v-radio-group>
+                      </div>
+                    </v-col>
+                    <v-col v-if="!detailMode" cols="12" class="py-0">
+                      <span class="text-body-1 font-weight-bold">Resultado</span>
+                      <v-row class="mt-2 mb-4">
+                        <v-col cols="4">
+                          <v-btn
+                            style="border-width: 2px"
+                            @click="() => changeResultado('gain')"
+                            v-bind="{
+                              [ form.resultado === 'gain' ? 'outlined' : 'tile']: true,
+                            }"
+                            :class="[
+                              getResultadoButtonColor('gain', 'blue', 'accent-1', true),
+                            ]"
+                            elevation="0"
+                            :color="getResultadoButtonColor('gain', 'blue', 'accent-1')"
+                            block
+                          >GAIN</v-btn>
+                        </v-col>
+                        <v-col cols="4">
+                          <v-btn
+                            style="border-width: 2px"
+                            @click="() => changeResultado('0x0')"
+                            v-bind="{
+                              [ form.resultado === '0x0' ? 'outlined' : 'tile']: true,
+                            }"
+                            :class="[
+                              getResultadoButtonColor('0x0', 'yellow', 'darken-1', true),
+                            ]"
+                            elevation="0"
+                            :color="getResultadoButtonColor('0x0', 'yellow', 'darken-1')"
+                            block
+                          >0x0</v-btn>
+                        </v-col>
+                        <v-col cols="4">
+                          <v-btn
+                            style="border-width: 2px"
+                            v-bind="{
+                              [ form.resultado === 'loss' ? 'outlined' : 'tile']: true,
+                            }"
+                            elevation="0"
+                            :class="[getResultadoButtonColor('loss', 'red', 'accent-1', true)]"
+                            @click="() => changeResultado('loss')"
+                            :color="getResultadoButtonColor('loss', 'red', 'accent-1')"
+                            block
+                          >LOSS</v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <v-col v-if="!detailMode" cols="12" class="py-0">
+                      <v-text-field
+                          v-model="form.pontuacao"
+                          label="Pontos"
+                          outlined
+                          dense
+                          type="number"
+                          ref="pontuacao"
+                          :rules="formRules.pontuacao"
+                          required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col v-if="detailMode" cols="4" class="text-body-1">
+                      <div class="font-weight-bold mb-2">Resultado</div>
+                      <div :class="formatResultadoTextColor(form.resultado)">
+                        {{ form.resultado ? form.resultado.toUpperCase() : 'Não definido' }}
+                      </div>
+                    </v-col>
+                    <v-col v-if="detailMode" cols="4" class="text-body-1">
+                      <div class="font-weight-bold mb-2">Pontos</div>
+                      <div :class="formatPontuacaoTextColor(form.pontuacao)">
+                        {{ form.pontuacao === undefined ? 'Não definido' : form.pontuacao.toFixed(2) }}
+                      </div>
+                    </v-col>
+                    <v-col v-if="!detailMode" cols="12">
+                      <span class="text-body-1 font-weight-bold">Como se sentiu?</span>
+                      <v-row class="mt-2 mb-4">
+                        <v-col cols="4">
+                          <v-btn
+                            style="border-width: 2px; height: 100px;"
+                            @click="() => changeSentimento('bem')"
+                            v-bind="{
+                              [ form.sentimento === 'bem' ? 'outlined' : 'tile']: true,
+                            }"
+                            :class="[
+                              'rounded-lg',
+                              getSentimentoButtonColor('bem', 'green', 'dark-3', true),
+                            ]"
+                            elevation="0"
+                            :color="getSentimentoButtonColor('bem', 'green', 'dark-3')"
+                            block
+                          >
+                            <v-icon x-large>mdi-emoticon-excited-outline</v-icon>
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="4">
+                          <v-btn
+                            style="border-width: 2px; height: 100px;"
+                            @click="() => changeSentimento('neutro')"
+                            v-bind="{
+                              [ form.sentimento === 'neutro' ? 'outlined' : 'tile']: true,
+                            }"
+                            :class="[
+                              'rounded-lg',
+                              getSentimentoButtonColor('neutro', 'yellow', 'darken-1', true),
+                            ]"
+                            elevation="0"
+                            :color="getSentimentoButtonColor('neutro', 'yellow', 'darken-1')"
+                            block
+                          >
+                            <v-icon x-large>mdi-emoticon-neutral-outline</v-icon>
+                          </v-btn>
+                        </v-col>
+                        <v-col cols="4">
+                          <v-btn
+                            style="border-width: 2px; height: 100px;"
+                            v-bind="{
+                              [ form.sentimento === 'mal' ? 'outlined' : 'tile']: true,
+                            }"
+                            elevation="0"
+                            :class="[
+                              'rounded-lg',
+                              getSentimentoButtonColor('mal', 'red', 'accent-1', true)
+                            ]"
+                            @click="() => changeSentimento('mal')"
+                            :color="getSentimentoButtonColor('mal', 'red', 'accent-1')"
+                            block
+                          >
+                            <v-icon x-large>mdi-emoticon-cry-outline</v-icon>
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <v-col v-if="detailMode" cols="4">
+                      <div  class="text-body-1">
+                        <div class="font-weight-bold mb-2">Como se sentiu?</div>
+                        <div>
+                          <v-icon v-if="form.sentimento" :class="formatSentimentoTextColor(form.sentimento)">
+                            {{ formatSentimentoFieldIcon(form.sentimento) }}
+                          </v-icon>
+                          <span v-else>Não definido</span>
+                        </div>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Observação</div>
+                        <div>{{ formatStringFieldValue(form.observacao)  }}</div>
+                      </div>
+                      <v-textarea
+                          v-else
+                          v-model="form.observacao"
+                          label="Observação"
+                          outlined
+                          ref="observacao"
+                          :rules="formRules.observacao"
+                      ></v-textarea>
+                    </v-col>
+                    <v-col cols="12" class="py-0 d-flex justify-end mb-8">
+                      <v-row class="mt-2 mb-4" justify="space-between">
+                        <v-col cols="6">
+                          <v-img
+                            v-if="form.imagemUrl"
+                            :src="form.imagemUrl"
+                            max-width="200px"
+                            contain
+                          ></v-img>
+                        </v-col>
+                        <v-col v-if="!detailMode" cols="auto">
+                          <v-btn
+                            color="primary"
+                            outlined
+                            @click="selectImagemUrl"
+                          >
+                            <v-icon left>mdi-image</v-icon>
+                            Enviar imagem
+                          </v-btn>
+                          <input
+                            ref="uploader"
+                            class="d-none"
+                            type="file"
+                            accept="image/*"
+                            @change="changeImagemUrl"
+                          >
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-container>
+
+      </v-form>
 
       <template v-slot:append>
         <v-row v-if="hasError" class="pa-6">
@@ -501,6 +580,7 @@ import DeleteTrade from "@/views/trades/components/delete-trade.vue";
 
 type FormType = Partial<TradeEntityProps> & {
   horaAbertura?: string;
+  localizacao: Record<string, string>;
 };
 
 @Component({
@@ -510,16 +590,132 @@ export default class ManageTrade extends Vue {
   private detailTradeController = app.make<ManageTradeController>(TYPES.DetailTradeController);
   private detailTradeState = this.detailTradeController.state;
 
+  private readonly availableTabs = {
+    DADOS_PRINCIPAIS: '1',
+    LOCALIZACAO: '2',
+    ENCERRAMENTO: '3',
+  };
+
   @Prop() show!: boolean;
   @Prop() item?: TradeEntity;
 
-  tab = 'dados-principais';
+  tab = this.availableTabs.DADOS_PRINCIPAIS;
 
   detailMode = false;
 
   form = this.defaultForm();
 
+  formIsValid = false;
+
+  formRules = {
+    ativoId: [
+      (ativoId) => !!ativoId || 'Você precisa selecionar um ativo',
+    ],
+    setupId: [],
+    gatilhoId: [],
+    tipoEntradaId: [],
+    timeFrameId: [],
+    dataAbertura: [
+      (dataAbertura) => !!dataAbertura || 'Você precisa selecionar uma data',
+    ],
+    horaAbertura: [
+      (horaAbertura) => !!horaAbertura || 'Você precisa selecionar uma horário',
+    ],
+    lote: [
+      (lote) => !!lote || 'Você precisa informar um lote',
+    ],
+    pontuacao: [
+      (pontuacao) => pontuacao !== undefined || 'Você precisa informar uma pontuação',
+      (pontuacao) => pontuacao !== null || 'Você precisa informar uma pontuação',
+    ],
+    resultado: [],
+    observacao: [],
+  }
+
   showDeleteDialog = false;
+
+  camposCustomizaveisList = [
+    {
+      id: '1',
+      userId: '',
+      nome: 'MM89',
+      contexto: 'localizacao',
+      ativo: true,
+      valoresDisponiveis: [
+        {
+          campoCustomizavelId: '1',
+          valor: 'a-favor',
+          nome: 'A favor',
+        },
+        {
+          campoCustomizavelId: '1',
+          valor: 'contra',
+          nome: 'Contra',
+        },
+      ],
+    },
+    {
+      id: '2',
+      userId: '',
+      nome: 'MM20',
+      contexto: 'localizacao',
+      ativo: true,
+      valoresDisponiveis: [
+        {
+          campoCustomizavelId: '2',
+          valor: 'a-favor',
+          nome: 'A favor',
+        },
+        {
+          campoCustomizavelId: '2',
+          valor: 'contra',
+          nome: 'Contra',
+        },
+      ],
+    },
+    {
+      id: '3',
+      userId: '',
+      nome: 'MM200',
+      contexto: 'localizacao',
+      ativo: true,
+      valoresDisponiveis: [
+        {
+          campoCustomizavelId: '3',
+          valor: 'a-favor',
+          nome: 'A favor',
+        },
+        {
+          campoCustomizavelId: '3',
+          valor: 'contra',
+          nome: 'Contra',
+        },
+      ],
+    },
+    {
+      id: '4',
+      userId: '',
+      nome: 'Distância da MM200',
+      contexto: 'localizacao',
+      ativo: true,
+      valoresDisponiveis: [
+        {
+          campoCustomizavelId: '4',
+          valor: 'afastado+20',
+          nome: 'Afastado + 20%',
+        },
+        {
+          campoCustomizavelId: '4',
+          valor: 'nao-afastado',
+          nome: 'Não Afastado',
+        },
+      ],
+    },
+  ]
+
+  getCampoCustomizavelValue(campoCustomizavelId: string): string {
+    return 'Não definido: ' + campoCustomizavelId;
+  }
 
   defaultForm(): FormType {
     return {
@@ -544,6 +740,7 @@ export default class ManageTrade extends Vue {
       segundoAlvo: undefined,
       imagemUrl: undefined,
       observacao: undefined,
+      localizacao: {},
     };
   }
 
@@ -575,12 +772,12 @@ export default class ManageTrade extends Vue {
 
   get primaryButtonText(): string {
     if (this.item) return 'Salvar';
-    if (this.tab === 'encerramento') return 'Finalizar';
+    if (this.tab === this.availableTabs.ENCERRAMENTO) return 'Finalizar';
     return 'Próximo';
   }
 
   get secodaryButtonText(): string {
-    if (this.item || this.tab === 'encerramento') return 'Cancelar';
+    if (this.item || this.tab === this.availableTabs.DADOS_PRINCIPAIS) return 'Cancelar';
     return 'Anterior';
   }
 
@@ -588,6 +785,16 @@ export default class ManageTrade extends Vue {
     if (this.detailMode) return 'Detalhes do registro';
     if (this.item) return 'Editar registro';
     return 'Novo registro';
+  }
+
+  selectItem(field: string, item?: any, suffix = 'Nome') {
+    if (item) {
+      this.form[field + 'Id'] = item.value;
+      this.form[field + suffix] = item.text;
+      return;
+    }
+    this.form[field + 'Id'] = undefined;
+    this.form[field + suffix] = undefined;
   }
 
   get setupList() {
@@ -704,12 +911,12 @@ export default class ManageTrade extends Vue {
       this.close();
       return;
     }
-    if (this.tab === 'encerramento') {
-      this.tab = 'localizacao';
+    if (this.tab === this.availableTabs.ENCERRAMENTO) {
+      this.tab = this.availableTabs.LOCALIZACAO;
       return;
     }
-    if (this.tab === 'localizacao') {
-      this.tab = 'dados-principais';
+    if (this.tab === this.availableTabs.LOCALIZACAO) {
+      this.tab = this.availableTabs.DADOS_PRINCIPAIS;
       return;
     }
     this.close();
@@ -720,20 +927,23 @@ export default class ManageTrade extends Vue {
       this.saveTrade();
       return;
     }
-    if (this.tab === 'dados-principais') {
-      this.tab = 'localizacao';
+    if (this.tab === this.availableTabs.DADOS_PRINCIPAIS) {
+      this.tab = this.availableTabs.LOCALIZACAO;
       return;
     }
-    if (this.tab === 'localizacao') {
-      this.tab = 'encerramento';
+    if (this.tab === this.availableTabs.LOCALIZACAO) {
+      this.tab = this.availableTabs.ENCERRAMENTO;
       return;
     }
     this.saveTrade();
   }
 
   async saveTrade(): Promise<void> {
-    console.log(this.form);
-    this.close();
+    const isValid = this.validateForm();
+    console.log(isValid, this.form);
+    if (isValid) {
+      this.close();
+    }
   }
 
   getSentimentoButtonColor(sentimento: string, color: string, modifier: string, text?: boolean) {
@@ -813,8 +1023,59 @@ export default class ManageTrade extends Vue {
     };
   }
 
+  validateForm() {
+    const isValid = this.$refs.form.validate();
+    console.log({ isValid });
+    if (isValid) {
+      return true;
+    }
+
+    const fields = [
+      "ativoId",
+      "setupId",
+      "gatilhoId",
+      "tipoEntradaId",
+      "tradeImportacaoId",
+      "timeFrameId",
+      "dataAbertura",
+      "horaAbertura",
+      "lote",
+      "pontuacao",
+      "resultado",
+      "observacao",
+    ];
+
+    const fieldTab = {
+      ativoId: this.availableTabs.DADOS_PRINCIPAIS,
+      setupId: this.availableTabs.DADOS_PRINCIPAIS,
+      gatilhoId: this.availableTabs.DADOS_PRINCIPAIS,
+      tipoEntradaId: this.availableTabs.DADOS_PRINCIPAIS,
+      timeFrameId: this.availableTabs.DADOS_PRINCIPAIS,
+      dataAbertura: this.availableTabs.DADOS_PRINCIPAIS,
+      horaAbertura: this.availableTabs.DADOS_PRINCIPAIS,
+      lote: this.availableTabs.DADOS_PRINCIPAIS,
+      pontuacao: this.availableTabs.ENCERRAMENTO,
+      resultado: this.availableTabs.ENCERRAMENTO,
+      observacao: this.availableTabs.ENCERRAMENTO,
+    };
+
+    const fieldWithError = fields.find((field) => {
+      console.log(field, this.$refs?.[field]);
+      return this.$refs?.[field]?.hasError;
+    });
+
+    if (fieldWithError) {
+      this.tab = fieldTab[fieldWithError];
+    }
+
+    console.log({ fieldWithError });
+
+    return isValid && !fieldWithError;
+  }
+
   reset() {
-    this.tab = 'dados-principais';
+    this.$refs.form.resetValidation();
+    this.tab = this.availableTabs.DADOS_PRINCIPAIS;
     this.detailMode = false;
     this.form = this.defaultForm();
   }

@@ -38,7 +38,7 @@ function generateTrades(num = 500): Record<string, any>[] {
       sentimento : multiploDeTres ? 'neutro' : (par ? 'bem' : 'mal'),
       primeiroAlvo : par,
       segundoAlvo : !par,
-      imagemUrl : 'url-da-imagem',
+      imagemUrl : 'https://poderdoinvestimento.com/wp-content/uploads/2020/09/MUDAN%C3%87AS-TENDENCIA-MEDIAS.png',
       userNome: 'User ' + (i + 1),
       ativoNome: 'Contrato Indice Cheio ' + (i + 1),
       ativoCode: 'WIN' + (i + 1),
