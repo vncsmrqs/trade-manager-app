@@ -159,11 +159,16 @@ export class ManageTradeInMemoryRepository implements
     return new Promise(((resolve, reject) => {
       let loaded = 0;
       const interval = setInterval(() => {
+
         if (loaded >= params.fileSize) {
           clearInterval(interval);
-          resolve(ActionResult.success({
-            filePath: 'vinicius/aaa',
-          }));
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            resolve(ActionResult.success({
+              filePath: reader?.result?.toString() || '',
+            }));
+          }
+          reader.readAsDataURL(params.image);
         }
         loaded += (1024 * 128);
         if (params.uploadProgressCallback) params.uploadProgressCallback(params.fileSize, loaded);
