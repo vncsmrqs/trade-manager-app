@@ -6,6 +6,8 @@ import { v4 as uuid } from "uuid";
 import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
 import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delete-trade.repository";
 import { chunkArray } from "@/common/utils";
+import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
+import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
 
 let tradeList: Record<any, any>[] = generateTrades();
 
@@ -55,7 +57,9 @@ export class ManageTradeInMemoryRepository implements
   ListTradeRepositoryContract,
   CreateTradeRepositoryContract,
   UpdateTradeRepositoryContract,
-  DeleteTradeRepositoryContract
+  DeleteTradeRepositoryContract,
+  UploadFileToImportTradeRepositoryContract,
+  ImportUploadedFileTradeRepositoryContract
 {
   list(
     params: ListTradeRepositoryContract.Params
@@ -117,6 +121,34 @@ export class ManageTradeInMemoryRepository implements
         resolve(ActionResult.success());
       }, 1000);
     });
+  }
+
+  uploadFile(
+    params: UploadFileToImportTradeRepositoryContract.Params
+  ): Promise<ActionResult<UploadFileToImportTradeRepositoryContract.Response, string>> {
+    return new Promise(((resolve) => {
+      let loaded = 0;
+      const interval = setInterval(() => {
+        if (loaded >= params.fileSize) {
+          clearInterval(interval);
+          resolve(ActionResult.success({
+            totalItems: 20,
+            filePath: 'vinicius/aaa',
+          }));
+        }
+        loaded += 500;
+        params.uploadProgressCallback(params.fileSize, loaded);
+      }, 300);
+    }));
+  }
+
+  importFile(
+    params: ImportUploadedFileTradeRepositoryContract.Params
+  ): Promise<ActionResult<ImportUploadedFileTradeRepositoryContract.Response, string>> {
+    console.log('SaveImportedFileTradeUseCaseContract', params);
+    return new Promise(((resolve) => {
+      setTimeout(() => resolve(ActionResult.success()), 5000);
+    }));
   }
 }
 

@@ -40,7 +40,7 @@ import { ListAtivoUseCaseContract } from "@/core/ativo/domain/use-cases/list-ati
 import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
 import { ImportFileTradeController } from "@/core/trade/presentation/controllers/import-trade.controller";
 import { UploadFileToImportTradeUseCaseContract } from "@/core/trade/domain/use-cases/upload-file-to-import-trade.use-case";
-import { SaveImportedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/save-imported-file-trade.use-case";
+import { ImportUploadedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/import-uploaded-file-trade.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -180,7 +180,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     container.singleton(TYPES.ImportFileTradeController, () => {
       return new ImportFileTradeController(
         container.make<UploadFileToImportTradeUseCaseContract>(TYPES.UploadFileToImportTradeUseCaseContract),
-        container.make<SaveImportedFileTradeUseCaseContract>(TYPES.SaveImportedFileTradeUseCaseContract),
+        container.make<ImportUploadedFileTradeUseCaseContract>(TYPES.SaveImportedFileTradeUseCaseContract),
         container.make<NotificationController>(TYPES.NotificationController),
       );
     });

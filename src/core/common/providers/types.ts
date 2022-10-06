@@ -1,8 +1,3 @@
-import { UpdateSetupUseCaseContract } from "@/core/setup/domain/use-cases/update-setup.use-case";
-import { DeleteSetupController } from "@/core/setup/presentation/controllers/delete-setup.controller";
-import { ImportFileTradeController } from "@/core/trade/presentation/controllers/import-trade.controller";
-import { SaveImportedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/save-imported-file-trade.use-case";
-
 export const TYPES = {
   /* Service Providers */
 
@@ -55,6 +50,8 @@ export const TYPES = {
   CreateTradeRepositoryContract: Symbol('CreateTradeRepositoryContract'),
   UpdateTradeRepositoryContract: Symbol('UpdateTradeRepositoryContract'),
   DeleteTradeRepositoryContract: Symbol('DeleteTradeRepositoryContract'),
+  UploadFileToImportTradeRepositoryContract: Symbol('UploadFileToImportTradeRepositoryContract'),
+  ImportUploadedFileTradeRepositoryContract: Symbol('ImportUploadedFileTradeRepositoryContract'),
 
   ListAtivoRepositoryContract: Symbol('ListAtivoRepositoryContract'),
 

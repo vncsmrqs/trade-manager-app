@@ -33,6 +33,8 @@ import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizav
 import { ManageCampoCustomizavelInMemoryRepository } from "@/core/campo-customizavel/infra/repositories/manage-campo-customizavel-in-memory.repository";
 import { ManageAtivoInMemoryRepository } from "@/core/ativo/infra/repositories/manage-ativo-in-memory.repository";
 import { ManageTimeFrameInMemoryRepository } from "@/core/time-frame/infra/repositories/manage-time-frame-in-memory.repository";
+import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
+import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
@@ -71,6 +73,14 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<CreateTradeRepositoryContract>(TYPES.CreateTradeRepositoryContract, manageTradeRepository);
     container.instance<UpdateTradeRepositoryContract>(TYPES.UpdateTradeRepositoryContract, manageTradeRepository);
     container.instance<DeleteTradeRepositoryContract>(TYPES.DeleteTradeRepositoryContract, manageTradeRepository);
+    container.instance<UploadFileToImportTradeRepositoryContract>(
+      TYPES.UploadFileToImportTradeRepositoryContract,
+      manageTradeRepository
+    );
+    container.instance<ImportUploadedFileTradeRepositoryContract>(
+      TYPES.ImportUploadedFileTradeRepositoryContract,
+      manageTradeRepository
+    );
 
     const manageAtivoRepository = new ManageAtivoInMemoryRepository();
     container.instance<ListAtivoRepositoryContract>(TYPES.ListAtivoRepositoryContract, manageAtivoRepository);

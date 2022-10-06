@@ -1,13 +1,13 @@
 import { Controller } from "@/core/common/domain/controller";
 import { ImportFileTradeState, initialImportFileTradeState } from "@/core/trade/presentation/states/import-trade.state";
 import { UploadFileToImportTradeUseCaseContract } from "@/core/trade/domain/use-cases/upload-file-to-import-trade.use-case";
-import { SaveImportedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/save-imported-file-trade.use-case";
+import { ImportUploadedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/import-uploaded-file-trade.use-case";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 export class ImportFileTradeController extends Controller<ImportFileTradeState> {
   constructor(
     private uploadFileToImportTradeUseCase: UploadFileToImportTradeUseCaseContract,
-    private saveImportedFileTradeUseCase: SaveImportedFileTradeUseCaseContract,
+    private saveImportedFileTradeUseCase: ImportUploadedFileTradeUseCaseContract,
     private notificationController: NotificationController,
   ) {
     super(initialImportFileTradeState);

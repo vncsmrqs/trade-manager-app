@@ -62,8 +62,11 @@ import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/
 import { ListCampoCustomizavelUseCase } from "@/core/campo-customizavel/data/implementations/use-cases/list-campo-customizavel.use.case";
 import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
 import { UploadFileToImportTradeUseCaseContract } from "@/core/trade/domain/use-cases/upload-file-to-import-trade.use-case";
-import { SaveImportedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/save-imported-file-trade.use-case";
-import { ActionResult } from "@/core/common/domain/action-result";
+import { ImportUploadedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/import-uploaded-file-trade.use-case";
+import { UploadFileToImportTradeUseCase } from "@/core/trade/data/implementations/use-cases/upload-file-to-import-trade.use-case";
+import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
+import { ImportUploadedFileTradeUseCase } from "@/core/trade/data/implementations/use-cases/import-uploaded-file-trade.use-case";
+import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -181,39 +184,15 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     });
 
     container.bind<UploadFileToImportTradeUseCaseContract>(TYPES.UploadFileToImportTradeUseCaseContract, () => {
-      return {
-        execute(
-          params: UploadFileToImportTradeUseCaseContract.Params
-        ): Promise<ActionResult<UploadFileToImportTradeUseCaseContract.Response, string>> {
-          return new Promise(((resolve) => {
-            let loaded = 0;
-            const interval = setInterval(() => {
-              if (loaded >= params.fileSize) {
-                clearInterval(interval);
-                resolve(ActionResult.success({
-                  totalItems: 20,
-                  filePath: 'vinicius/aaa',
-                }));
-              }
-              loaded += 500;
-              params.uploadProgressCallback(params.fileSize, loaded);
-            }, 300);
-          }));
-        }
-      }
+      return new UploadFileToImportTradeUseCase(
+        container.make<UploadFileToImportTradeRepositoryContract>(TYPES.UploadFileToImportTradeRepositoryContract),
+      );
     });
 
-    container.bind<SaveImportedFileTradeUseCaseContract>(TYPES.SaveImportedFileTradeUseCaseContract, () => {
-      return {
-        execute(
-          params: SaveImportedFileTradeUseCaseContract.Params
-        ): Promise<ActionResult<SaveImportedFileTradeUseCaseContract.Response, string>> {
-          console.log('SaveImportedFileTradeUseCaseContract', params);
-          return new Promise(((resolve) => {
-            setTimeout(() => resolve(ActionResult.success()), 5000);
-          }));
-        }
-      }
+    container.bind<ImportUploadedFileTradeUseCaseContract>(TYPES.SaveImportedFileTradeUseCaseContract, () => {
+      return new ImportUploadedFileTradeUseCase(
+        container.make<ImportUploadedFileTradeRepositoryContract>(TYPES.ImportUploadedFileTradeRepositoryContract),
+      );
     });
   }
 
