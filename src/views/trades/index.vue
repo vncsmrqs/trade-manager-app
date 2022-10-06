@@ -282,7 +282,7 @@
 
                   <div v-if="header.name === 'tipo-entrada-time-frame'">
                     <div class="text-body-1">{{ trade.tipoEntradaNome }}</div>
-                    <div class="text-caption">{{ trade.timeFrame }}</div>
+                    <div class="text-caption">{{ trade.timeFrameNome }}</div>
                   </div>
 
                   <div

@@ -1,12 +1,13 @@
 <template>
     <v-navigation-drawer
         :value="show"
-        @close="close"
+        @input="close"
         width="650px"
         right
         fixed
         temporary
         class="rounded-l-lg"
+        :permanent="show"
     >
       <delete-trade
         v-if="!!item"
