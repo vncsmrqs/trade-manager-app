@@ -10,8 +10,8 @@
 
     <manage-trade
         :item="itemToDetail"
-        :show="showDetailTradeDialog"
-        @close="closeDetailDialog"
+        :show="showManageTradeDialog"
+        @close="closeManageTradeDialog"
     ></manage-trade>
 
     <v-form @submit.prevent="() => search()" :disabled="isLoading">
@@ -375,7 +375,7 @@ export default class ListTrade extends Vue {
   today = moment().format('YYYY-MM-DD');
 
   itemToDetail?: TradeEntity = null;
-  showDetailTradeDialog = false;
+  showManageTradeDialog = false;
 
   headers = [
     {
@@ -435,7 +435,7 @@ export default class ListTrade extends Vue {
 
   createItem() {
     this.itemToDetail = null;
-    this.showDetailTradeDialog = true;
+    this.showManageTradeDialog = true;
   }
 
   get showPagination(): boolean {
@@ -476,12 +476,12 @@ export default class ListTrade extends Vue {
 
   detailTrade(item: TradeEntity): void {
     this.itemToDetail = item;
-    this.showDetailTradeDialog = true;
+    this.showManageTradeDialog = true;
   }
 
-  closeDetailDialog(): void {
+  closeManageTradeDialog(): void {
     this.itemToDetail = null;
-    this.showDetailTradeDialog = false;
+    this.showManageTradeDialog = false;
   }
 
   closeFilterDialog() {
