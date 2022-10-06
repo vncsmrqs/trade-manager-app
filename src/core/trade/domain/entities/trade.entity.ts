@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export type TradeResultadoType = 'gain' | 'loss' | '0x0';
 export type TradeSentimentoType = 'bem' | 'neutro' | 'mal';
 
@@ -18,11 +20,12 @@ export type DefaultTradeEntityProps = {
   pontuacao: number;
   resultado: TradeResultadoType;
   seguiuPlano?: boolean;
-  sentimento?: string;
+  sentimento?: TradeSentimentoType;
   primeiroAlvo?: boolean;
   segundoAlvo?: boolean;
   imagemUrl?: string;
   observacao?: string;
+  localizacao: Record<string, string>;
 }
 
 export type TradeEntityProps = DefaultTradeEntityProps & {
@@ -125,15 +128,19 @@ export class TradeEntity {
     return this.props.observacao;
   }
 
+  get localizacao(): Record<string, string> {
+    return this.props.localizacao;
+  }
+
   get timeFrameNome(): string | undefined {
     return this.props.timeFrameNome;
   }
 
   get dataAberturaFormatted(): string {
-    return '01/01/2022';
+    return moment(this.props.dataAbertura).format('DD/MM/YYYY');
   }
 
-  get horaAberturaFormatted(): string {
-    return '00:00';
+  get horaAbertura(): string {
+    return moment(this.props.dataAbertura).format('HH:mm');
   }
 }

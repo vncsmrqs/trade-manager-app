@@ -72,7 +72,7 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                              :value="formatDateFieldValue(form.dataAbertura)"
+                              :value="formatDateFieldValue(form.dataAbertura, false)"
                               label="Data"
                               outlined
                               dense
@@ -91,23 +91,8 @@
                             no-title
                             color="primary"
                             locale="pt-BR"
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn
-                              text
-                              color="primary"
-                              @click="showDataAberturaPicker = false"
-                          >
-                            Cancelar
-                          </v-btn>
-                          <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.dataAberturaDialog.save(form.dataAbertura)"
-                          >
-                            Concluir
-                          </v-btn>
-                        </v-date-picker>
+                            @click:date="$refs.dataAberturaDialog.save(form.dataAbertura)"
+                        ></v-date-picker>
                       </v-menu>
                     </v-col>
                     <v-col cols="6" :class="{'py-0': !detailMode}">
@@ -305,6 +290,14 @@
                       </v-radio-group>
                     </div>
                   </v-col>
+                  <template v-if="isLoadingFilters">
+                    <v-col cols="6" v-for="i in 4" :key="i">
+                      <v-skeleton-loader
+                          boilerplate
+                          type="article"
+                      ></v-skeleton-loader>
+                    </v-col>
+                  </template>
                 </v-row>
               </v-card-text>
             </v-tab-item>
@@ -688,24 +681,23 @@ export default class ManageTrade extends Vue {
 
   formRules = {
     ativoId: [
-      (ativoId) => !!ativoId || 'Você precisa selecionar um ativo',
+      (ativoId) => !!ativoId || 'Ativo obrigatório',
     ],
     setupId: [],
     gatilhoId: [],
     tipoEntradaId: [],
     timeFrameId: [],
     dataAbertura: [
-      (dataAbertura) => !!dataAbertura || 'Você precisa selecionar uma data',
+      (dataAbertura) => !!dataAbertura || 'Data obrigatória',
     ],
     horaAbertura: [
-      (horaAbertura) => !!horaAbertura || 'Você precisa selecionar uma horário',
+      (horaAbertura) => !!horaAbertura || 'Hora obrigatória',
     ],
     lote: [
-      (lote) => !!lote || 'Você precisa informar um lote',
+      (lote) => !!lote || 'Lote obrigatório',
     ],
     pontuacao: [
-      (pontuacao) => pontuacao !== undefined || 'Você precisa informar uma pontuação',
-      (pontuacao) => pontuacao !== null || 'Você precisa informar uma pontuação',
+      (pontuacao) => (pontuacao !== undefined && pontuacao !== null) || 'Pontuação obrigatória',
     ],
     resultado: [],
     observacao: [],
@@ -861,9 +853,9 @@ export default class ManageTrade extends Vue {
     return value ? 'Sim' : 'Não';
   }
 
-  formatDateFieldValue(value?: string): string {
+  formatDateFieldValue(value?: string, showUndefined = true): string {
     if (value === undefined) {
-      return 'Não definido';
+      return showUndefined ? 'Não definido' : '';
     }
     return moment(value).format('DD/MM/YYYY');
   }
@@ -1052,6 +1044,8 @@ export default class ManageTrade extends Vue {
       tipoEntradaNome: item.tipoEntradaNome,
       ativoCodigo: item.ativoCodigo,
       timeFrameNome: item.timeFrameNome,
+      localizacao: item.localizacao,
+      horaAbertura: item.horaAbertura,
     };
   }
 

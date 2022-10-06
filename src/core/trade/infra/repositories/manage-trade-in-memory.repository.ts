@@ -46,6 +46,7 @@ function generateTrades(num = 500): Record<string, any>[] {
       gatilhoNome: 'Gatilho ' + (i + 1),
       tipoEntradaNome: 'Tipo Entrada ' + (i + 1),
       observacao: 'Observação ' + (i + 1),
+      localizacao: {},
     };
   });
 }
@@ -149,6 +150,7 @@ const mapTradeToEntity = (trade: Record<string, any>): TradeEntity => {
     ativoCodigo: trade.ativoCodigo,
     timeFrameNome: trade.timeFrameNome,
     observacao: trade.observacao,
+    localizacao: trade.localizacao,
   });
 }
 

@@ -62,23 +62,8 @@
                 color="primary"
                 locale="pt-BR"
                 :max="today"
-            >
-              <v-spacer></v-spacer>
-              <v-btn
-                  text
-                  color="primary"
-                  @click="showStartDatePicker = false"
-              >
-                Cancelar
-              </v-btn>
-              <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.startDate.save(filter.startDate)"
-              >
-                Concluir
-              </v-btn>
-            </v-date-picker>
+                @click:date="$refs.startDate.save(filter.startDate)"
+            ></v-date-picker>
           </v-menu>
         </v-col>
         <v-col cols="12" sm="6" md="3">
@@ -112,23 +97,8 @@
                 locale="pt-BR"
                 :min="filter.startDate"
                 :max="today"
-            >
-              <v-spacer></v-spacer>
-              <v-btn
-                  text
-                  color="primary"
-                  @click="showEndDatePicker = false"
-              >
-                Cancelar
-              </v-btn>
-              <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.endDate.save(filter.endDate)"
-              >
-                Concluir
-              </v-btn>
-            </v-date-picker>
+                @click:date="$refs.endDate.save(filter.endDate)"
+            ></v-date-picker>
           </v-menu>
         </v-col>
 
@@ -296,7 +266,7 @@
 
                   <div v-if="header.name === 'data-horario'">
                     <div class="text-body-1">{{ trade.dataAberturaFormatted }}</div>
-                    <div class="text-caption">{{ trade.horaAberturaFormatted }}</div>
+                    <div class="text-caption">{{ trade.horaAbertura }}</div>
                   </div>
 
                   <div v-if="header.name === 'setup-gatilho'">
