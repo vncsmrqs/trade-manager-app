@@ -67,6 +67,9 @@ import { UploadFileToImportTradeUseCase } from "@/core/trade/data/implementation
 import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
 import { ImportUploadedFileTradeUseCase } from "@/core/trade/data/implementations/use-cases/import-uploaded-file-trade.use-case";
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
+import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
+import { UploadTradeImageUseCase } from "@/core/trade/data/implementations/use-cases/upload-trade-image-use.case";
+import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -192,6 +195,12 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<ImportUploadedFileTradeUseCaseContract>(TYPES.SaveImportedFileTradeUseCaseContract, () => {
       return new ImportUploadedFileTradeUseCase(
         container.make<ImportUploadedFileTradeRepositoryContract>(TYPES.ImportUploadedFileTradeRepositoryContract),
+      );
+    });
+
+    container.bind<UploadTradeImageUseCaseContract>(TYPES.UploadTradeImageUseCaseContract, () => {
+      return new UploadTradeImageUseCase(
+        container.make<UploadTradeImageRepositoryContract>(TYPES.UploadTradeImageRepositoryContract),
       );
     });
   }

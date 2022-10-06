@@ -35,6 +35,7 @@ import { ManageAtivoInMemoryRepository } from "@/core/ativo/infra/repositories/m
 import { ManageTimeFrameInMemoryRepository } from "@/core/time-frame/infra/repositories/manage-time-frame-in-memory.repository";
 import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
+import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
@@ -79,6 +80,10 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     );
     container.instance<ImportUploadedFileTradeRepositoryContract>(
       TYPES.ImportUploadedFileTradeRepositoryContract,
+      manageTradeRepository
+    );
+    container.instance<UploadTradeImageRepositoryContract>(
+      TYPES.UploadTradeImageRepositoryContract,
       manageTradeRepository
     );
 

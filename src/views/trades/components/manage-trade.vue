@@ -529,7 +529,10 @@
                     </v-col>
                     <v-col cols="12" class="py-0 d-flex justify-end mb-8">
                       <v-row class="mt-2 mb-4" justify="space-between">
-                        <v-col cols="6">
+                        <v-col
+                            cols="6"
+                            v-if="detailMode || !manageTradeState.isUploadingImage"
+                        >
                           <v-img
                             v-if="form.imagemUrl"
                             :src="form.imagemUrl"
@@ -537,14 +540,24 @@
                             contain
                           ></v-img>
                         </v-col>
+                        <v-col cols="6" v-if="!detailMode && manageTradeState.isUploadingImage">
+                          Enviando imagem...
+                          <v-progress-linear
+                              :value="manageTradeState.uploadImagePercentage"
+                              height="8px"
+                              rounded
+                          ></v-progress-linear>
+                          {{ manageTradeState.uploadImagePercentage }}%
+                        </v-col>
                         <v-col v-if="!detailMode" cols="auto">
                           <v-btn
                             color="primary"
                             outlined
+                            :disabled="manageTradeState.isUploadingImage"
                             @click="selectImagemUrl"
                           >
                             <v-icon left>mdi-image</v-icon>
-                            Enviar imagem
+                            {{ form.imagemUrl?.length ? 'Atualizar' : 'Enviar' }} imagem
                           </v-btn>
                           <input
                             ref="uploader"
@@ -983,9 +996,12 @@ export default class ManageTrade extends Vue {
     this.$refs.uploader.click();
   }
 
-  changeImagemUrl(e: any) {
+  async changeImagemUrl(e: any) {
     const fileSelected = e.target.files[0] as File;
-    console.log({ fileSelected });
+    const result = await this.manageTradeController.uploadImage(fileSelected);
+    if (result.successful) {
+      this.form.imagemUrl = result.value;
+    }
   }
 
   closeDeleteDialog(deleted?: boolean) {

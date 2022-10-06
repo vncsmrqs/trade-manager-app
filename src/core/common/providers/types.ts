@@ -1,3 +1,5 @@
+import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
+
 export const TYPES = {
   /* Service Providers */
 
@@ -23,6 +25,7 @@ export const TYPES = {
   DeleteTradeUseCaseContract: Symbol('DeleteTradeUseCaseContract'),
   UploadFileToImportTradeUseCaseContract: Symbol('UploadFileToImportTradeUseCaseContract'),
   SaveImportedFileTradeUseCaseContract: Symbol('SaveImportedFileTradeUseCaseContract'),
+  UploadTradeImageUseCaseContract: Symbol('UploadTradeImageUseCaseContract'),
 
   ListAtivoUseCaseContract: Symbol('ListAtivoUseCaseContract'),
 
@@ -52,6 +55,7 @@ export const TYPES = {
   DeleteTradeRepositoryContract: Symbol('DeleteTradeRepositoryContract'),
   UploadFileToImportTradeRepositoryContract: Symbol('UploadFileToImportTradeRepositoryContract'),
   ImportUploadedFileTradeRepositoryContract: Symbol('ImportUploadedFileTradeRepositoryContract'),
+  UploadTradeImageRepositoryContract: Symbol('UploadTradeImageRepositoryContract'),
 
   ListAtivoRepositoryContract: Symbol('ListAtivoRepositoryContract'),
 

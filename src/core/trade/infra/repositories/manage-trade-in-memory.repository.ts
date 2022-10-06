@@ -8,6 +8,7 @@ import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delet
 import { chunkArray } from "@/common/utils";
 import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
+import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
 
 let tradeList: Record<any, any>[] = generateTrades();
 
@@ -59,7 +60,8 @@ export class ManageTradeInMemoryRepository implements
   UpdateTradeRepositoryContract,
   DeleteTradeRepositoryContract,
   UploadFileToImportTradeRepositoryContract,
-  ImportUploadedFileTradeRepositoryContract
+  ImportUploadedFileTradeRepositoryContract,
+  UploadTradeImageRepositoryContract
 {
   list(
     params: ListTradeRepositoryContract.Params
@@ -137,7 +139,7 @@ export class ManageTradeInMemoryRepository implements
           }));
         }
         loaded += 500;
-        params.uploadProgressCallback(params.fileSize, loaded);
+        params?.uploadProgressCallback(params.fileSize, loaded);
       }, 300);
     }));
   }
@@ -148,6 +150,24 @@ export class ManageTradeInMemoryRepository implements
     console.log('SaveImportedFileTradeUseCaseContract', params);
     return new Promise(((resolve) => {
       setTimeout(() => resolve(ActionResult.success()), 5000);
+    }));
+  }
+
+  uploadImage(
+    params: UploadTradeImageRepositoryContract.Params
+  ): Promise<ActionResult<UploadTradeImageRepositoryContract.Response, string>> {
+    return new Promise(((resolve, reject) => {
+      let loaded = 0;
+      const interval = setInterval(() => {
+        if (loaded >= params.fileSize) {
+          clearInterval(interval);
+          resolve(ActionResult.success({
+            filePath: 'vinicius/aaa',
+          }));
+        }
+        loaded += (1024 * 128);
+        if (params.uploadProgressCallback) params.uploadProgressCallback(params.fileSize, loaded);
+      }, 300);
     }));
   }
 }

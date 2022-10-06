@@ -3,6 +3,9 @@ import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
 export type BaseManageTradeState = {
   item?: TradeEntity;
   error?: string;
+  isUploadingImage: boolean;
+  uploadImagePercentage: number;
+  uploadImageError?: string;
 }
 export type InitialManageTradeState = {
   kind: "InitialManageTradeState";
@@ -30,4 +33,6 @@ export type ManageTradeState = (
 export const initialManageTradeState: ManageTradeState = {
   kind: "InitialManageTradeState",
   error: undefined,
+  uploadImagePercentage: 0,
+  isUploadingImage: false,
 };

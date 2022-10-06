@@ -41,6 +41,7 @@ import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/
 import { ImportFileTradeController } from "@/core/trade/presentation/controllers/import-trade.controller";
 import { UploadFileToImportTradeUseCaseContract } from "@/core/trade/domain/use-cases/upload-file-to-import-trade.use-case";
 import { ImportUploadedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/import-uploaded-file-trade.use-case";
+import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -161,7 +162,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
 
     container.singleton(TYPES.DetailTradeController, () => {
       return new ManageTradeController(
-        { execute(params: any): Promise<void> { return new Promise((resolve) => resolve() ) }},
+        container.make<UploadTradeImageUseCaseContract>(TYPES.UploadTradeImageUseCaseContract),
         container.make<NotificationController>(TYPES.NotificationController),
       );
     });

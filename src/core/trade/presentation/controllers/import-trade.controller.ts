@@ -13,9 +13,10 @@ export class ImportFileTradeController extends Controller<ImportFileTradeState> 
     super(initialImportFileTradeState);
   }
 
-  public updateProcess(total: number, loaded: number): void {
+  public updateUploadProgress(total: number, loaded: number): void {
+    const percentage = Math.round((loaded / total) * 100);
     this.changeState({
-      uploadProgress: Math.round((loaded / total) * 100),
+      uploadProgress: percentage <= 100 ? percentage : 100,
     });
   }
 
@@ -54,7 +55,7 @@ export class ImportFileTradeController extends Controller<ImportFileTradeState> 
         file: this.state.file,
         fileName: this.state.fileName,
         fileSize: this.state.fileSize,
-        uploadProgressCallback: this.updateProcess.bind(this),
+        uploadProgressCallback: this.updateUploadProgress.bind(this),
       });
       if (result.successful) {
         this.changeState({
