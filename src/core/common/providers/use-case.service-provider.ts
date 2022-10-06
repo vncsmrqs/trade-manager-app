@@ -61,6 +61,9 @@ import { ListTimeFrameRepositoryContract } from "@/core/time-frame/data/contract
 import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
 import { ListCampoCustomizavelUseCase } from "@/core/campo-customizavel/data/implementations/use-cases/list-campo-customizavel.use.case";
 import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
+import { UploadFileToImportTradeUseCaseContract } from "@/core/trade/domain/use-cases/upload-file-to-import-trade.use-case";
+import { SaveImportedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/save-imported-file-trade.use-case";
+import { ActionResult } from "@/core/common/domain/action-result";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -175,6 +178,42 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
       return new DeleteTradeUseCase(
         container.make<DeleteTradeRepositoryContract>(TYPES.DeleteTradeRepositoryContract),
       );
+    });
+
+    container.bind<UploadFileToImportTradeUseCaseContract>(TYPES.UploadFileToImportTradeUseCaseContract, () => {
+      return {
+        execute(
+          params: UploadFileToImportTradeUseCaseContract.Params
+        ): Promise<ActionResult<UploadFileToImportTradeUseCaseContract.Response, string>> {
+          return new Promise(((resolve) => {
+            let loaded = 0;
+            const interval = setInterval(() => {
+              if (loaded >= params.fileSize) {
+                clearInterval(interval);
+                resolve(ActionResult.success({
+                  totalItems: 20,
+                  filePath: 'vinicius/aaa',
+                }));
+              }
+              loaded += 500;
+              params.uploadProgressCallback(params.fileSize, loaded);
+            }, 300);
+          }));
+        }
+      }
+    });
+
+    container.bind<SaveImportedFileTradeUseCaseContract>(TYPES.SaveImportedFileTradeUseCaseContract, () => {
+      return {
+        execute(
+          params: SaveImportedFileTradeUseCaseContract.Params
+        ): Promise<ActionResult<SaveImportedFileTradeUseCaseContract.Response, string>> {
+          console.log('SaveImportedFileTradeUseCaseContract', params);
+          return new Promise(((resolve) => {
+            setTimeout(() => resolve(ActionResult.success()), 5000);
+          }));
+        }
+      }
     });
   }
 

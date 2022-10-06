@@ -9,10 +9,15 @@
     ></filter-trades>
 
     <manage-trade
-        :item="itemToDetail"
+        :item="itemToManage"
         :show="showManageTradeDialog"
         @close="closeManageTradeDialog"
     ></manage-trade>
+
+    <import-trade
+        :show="showImportTradeDialog"
+        @close="closeImportTradeDialog"
+    ></import-trade>
 
     <v-form @submit.prevent="() => search()" :disabled="isLoading">
       <v-row>
@@ -137,6 +142,7 @@
                 min-width="0"
                 block
                 style="height: 100%;"
+                @click="importTrade"
             >
               <v-icon>mdi-upload</v-icon>
             </v-btn>
@@ -308,7 +314,7 @@
                       icon
                       elevation="0"
                       :disabled="isLoading"
-                      @click="() => detailTrade(trade)"
+                      @click="() => manageTrade(trade)"
                     >
                       <v-icon large>mdi-chevron-right</v-icon>
                     </v-btn>
@@ -358,9 +364,10 @@ import { ListTradeFilter, ListTradeState } from "@/core/trade/presentation/state
 import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
 import ManageTrade from "@/views/trades/components/manage-trade.vue";
 import moment from "moment";
+import ImportTrade from "@/views/trades/components/import-trade.vue";
 
 @Component({
-  components: { ManageTrade, FilterTrades }
+  components: { ImportTrade, ManageTrade, FilterTrades }
 })
 export default class ListTrade extends Vue {
   private listTradeController = app.make<ListTradeController>(TYPES.ListTradeController);
@@ -374,8 +381,9 @@ export default class ListTrade extends Vue {
 
   today = moment().format('YYYY-MM-DD');
 
-  itemToDetail?: TradeEntity = null;
+  itemToManage?: TradeEntity = null;
   showManageTradeDialog = false;
+  showImportTradeDialog = false;
 
   headers = [
     {
@@ -434,7 +442,7 @@ export default class ListTrade extends Vue {
   }
 
   createItem() {
-    this.itemToDetail = null;
+    this.itemToManage = null;
     this.showManageTradeDialog = true;
   }
 
@@ -474,14 +482,22 @@ export default class ListTrade extends Vue {
     };
   }
 
-  detailTrade(item: TradeEntity): void {
-    this.itemToDetail = item;
+  manageTrade(item: TradeEntity): void {
+    this.itemToManage = item;
     this.showManageTradeDialog = true;
   }
 
   closeManageTradeDialog(): void {
-    this.itemToDetail = null;
+    this.itemToManage = null;
     this.showManageTradeDialog = false;
+  }
+
+  importTrade(): void {
+    this.showImportTradeDialog = true;
+  }
+
+  closeImportTradeDialog(): void {
+    this.showImportTradeDialog = false;
   }
 
   closeFilterDialog() {
