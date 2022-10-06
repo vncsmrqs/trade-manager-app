@@ -19,6 +19,12 @@
         @close="closeImportTradeDialog"
     ></import-trade>
 
+    <single-image-viewer
+        :show="showImageViewerDialog"
+        :src="imageToViewSrc"
+        @close="() => { showImageViewerDialog = false; imageToViewSrc = null }"
+    ></single-image-viewer>
+
     <v-form @submit.prevent="() => search()" :disabled="isLoading">
       <v-row>
         <v-col cols="12" md="auto">
@@ -304,6 +310,7 @@
                       v-if="trade.imagemUrl?.length"
                       icon
                       :disabled="isLoading"
+                      @click="() => { showImageViewerDialog = true; imageToViewSrc = trade.imagemUrl}"
                     >
                       <v-icon >mdi-image-area</v-icon>
                     </v-btn>
@@ -365,9 +372,10 @@ import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
 import ManageTrade from "@/views/trades/components/manage-trade.vue";
 import moment from "moment";
 import ImportTrade from "@/views/trades/components/import-trade.vue";
+import SingleImageViewer from "@/common/components/single-image-viewer.vue";
 
 @Component({
-  components: { ImportTrade, ManageTrade, FilterTrades }
+  components: { SingleImageViewer, ImportTrade, ManageTrade, FilterTrades }
 })
 export default class ListTrade extends Vue {
   private listTradeController = app.make<ListTradeController>(TYPES.ListTradeController);
@@ -377,10 +385,13 @@ export default class ListTrade extends Vue {
   showStartDatePicker = false;
   showEndDatePicker = false;
   showFilterDialog = false;
+  showImageViewerDialog = false;
+
   filterFormAsList: FilterFormComplete[] = [];
 
   today = moment().format('YYYY-MM-DD');
 
+  imageToViewSrc?: string = null;
   itemToManage?: TradeEntity = null;
   showManageTradeDialog = false;
   showImportTradeDialog = false;

@@ -16,6 +16,12 @@
         @close="closeDeleteDialog"
       ></delete-trade>
 
+      <single-image-viewer
+          :show="showImageViewerDialog"
+          :src="imageToViewSrc"
+          @close="() => { showImageViewerDialog = false; imageToViewSrc = null }"
+      ></single-image-viewer>
+
       <template v-slot:prepend>
         <v-card-title>
           <span class="text-h5">{{ dialogTitle }}</span>
@@ -534,12 +540,28 @@
                             cols="6"
                             v-if="detailMode || !manageTradeState.isUploadingImage"
                         >
-                          <v-img
-                            v-if="form.imagemUrl"
-                            :src="form.imagemUrl"
-                            max-width="200px"
-                            contain
-                          ></v-img>
+                          <v-hover v-if="form.imagemUrl">
+                            <template v-slot:default="{ hover }">
+                              <div style="position: relative; display: inline-block">
+                                <v-img
+                                    :src="form.imagemUrl"
+                                    max-width="200px"
+                                    contain
+                                ></v-img>
+                                <v-fade-transition>
+                                  <v-overlay v-if="hover" absolute>
+                                    <v-btn
+                                        color="white"
+                                        @click="() => { showImageViewerDialog = true; imageToViewSrc = form.imagemUrl}"
+                                        class="black--text"
+                                    >
+                                      Ver
+                                    </v-btn>
+                                  </v-overlay>
+                                </v-fade-transition>
+                              </div>
+                            </template>
+                          </v-hover>
                         </v-col>
                         <v-col cols="6" v-if="!detailMode && manageTradeState.isUploadingImage">
                           Enviando imagem...
@@ -656,6 +678,7 @@ import { ListTradeFilterController } from "@/core/trade/presentation/controllers
 import { ListTradeFilterState } from "@/core/trade/presentation/states/list-trade-filter.state";
 import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
 import moment from "moment";
+import SingleImageViewer from "@/common/components/single-image-viewer.vue";
 
 type FormType = Partial<TradeEntityProps> & {
   horaAbertura?: string;
@@ -663,7 +686,7 @@ type FormType = Partial<TradeEntityProps> & {
 };
 
 @Component({
-  components: { DeleteTrade }
+  components: { SingleImageViewer, DeleteTrade }
 })
 export default class ManageTrade extends Vue {
   private manageTradeController = app.make<ManageTradeController>(TYPES.DetailTradeController);
@@ -690,6 +713,9 @@ export default class ManageTrade extends Vue {
   showDeleteDialog = false;
   showDataAberturaPicker = false;
   showHoraAberturaPicker = false;
+  showImageViewerDialog = false;
+
+  imageToViewSrc?: string = null;
 
   formIsValid = false;
 
