@@ -1,8 +1,95 @@
 <template>
   <v-container class="pa-8">
+    <v-row class="mb-4">
+      <v-col cols="12" sm="5" md="3">
+        <v-menu
+            ref="startDate"
+            v-model="showStartDatePicker"
+            :close-on-content-click="false"
+            :return-value.sync="filter.startDate"
+            transition="fade"
+            offset-y
+            min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+                :value="formatDateFieldValue(filter.startDate)"
+                label="Data inicial"
+                prepend-inner-icon="mdi-calendar"
+                readonly
+                outlined
+                full-width
+                dense
+                v-bind="attrs"
+                v-on="on"
+                hide-details
+                style="background-color: white"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+              v-model="filter.startDate"
+              no-title
+              color="primary"
+              locale="pt-BR"
+              :max="today"
+              @click:date="$refs.startDate.save(filter.startDate)"
+          ></v-date-picker>
+        </v-menu>
+      </v-col>
+      <v-col cols="12" sm="6" md="3">
+        <v-menu
+            ref="endDate"
+            v-model="showEndDatePicker"
+            :close-on-content-click="false"
+            :return-value.sync="filter.endDate"
+            transition="fade"
+            offset-y
+            min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+                :value="formatDateFieldValue(filter.endDate)"
+                label="Data inicial"
+                prepend-inner-icon="mdi-calendar"
+                readonly
+                outlined
+                full-width
+                dense
+                v-bind="attrs"
+                v-on="on"
+                hide-details
+                style="background-color: white"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+              v-model="filter.endDate"
+              no-title
+              color="primary"
+              locale="pt-BR"
+              :min="filter.startDate"
+              :max="today"
+              @click:date="$refs.endDate.save(filter.endDate)"
+          ></v-date-picker>
+        </v-menu>
+      </v-col>
+
+      <v-col cols="12" sm="auto">
+        <v-btn
+            outlined
+            color="primary"
+            style="height: 40px; background-color: white"
+            @click="() => search()"
+            block
+            :disabled="isLoading"
+        >
+          <v-icon left>mdi-magnify</v-icon>
+          <span>Buscar</span>
+        </v-btn>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="12" md="6">
-        <v-card elevation="8" class="rounded-lg" min-height="100%">
+        <v-card elevation="2" class="rounded-lg" min-height="100%">
           <v-card-title>
             Ranking por setup
           </v-card-title>
@@ -24,7 +111,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="6">
-        <v-card elevation="8" class="rounded-lg" min-height="100%">
+        <v-card elevation="2" class="rounded-lg" min-height="100%">
           <v-card-title class="mb-0 pb-0">
             Dias da semana
           </v-card-title>
@@ -40,7 +127,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
-        <v-card elevation="8" class="rounded-lg" min-height="100%">
+        <v-card elevation="2" class="rounded-lg" min-height="100%">
           <v-card-title class="mb-0 pb-0">
             Gain / Loss / 0x0
           </v-card-title>
@@ -56,7 +143,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
-        <v-card elevation="8" class="rounded-lg" min-height="100%">
+        <v-card elevation="2" class="rounded-lg" min-height="100%">
           <v-card-title class="mb-0 pb-0">
             Gain / Loss - Manhã
           </v-card-title>
@@ -72,7 +159,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4">
-        <v-card elevation="8" class="rounded-lg" min-height="100%">
+        <v-card elevation="2" class="rounded-lg" min-height="100%">
           <v-card-title class="mb-0 pb-0">
             Gain / Loss - Tarde
           </v-card-title>
@@ -88,7 +175,7 @@
         </v-card>
       </v-col>
       <v-col cols="12">
-        <v-card elevation="8" class="rounded-lg" min-height="100%">
+        <v-card elevation="2" class="rounded-lg" min-height="100%">
           <v-card-title class="mb-0 pb-0">
             Registros por intervalo - 30 min
           </v-card-title>
@@ -111,9 +198,34 @@
 import { Component, Vue } from "vue-property-decorator";
 import VueApexCharts from 'vue-apexcharts';
 import { ApexOptions } from "apexcharts";
+import moment from "moment";
 
 @Component({ VueApexCharts })
 export default class DashboardView extends Vue {
+  filter = {
+    startDate: moment().subtract(1, 'month').format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
+  }
+
+  showStartDatePicker = false;
+  showEndDatePicker = false;
+
+  formatDateFieldValue(date: string): string {
+    return moment(date).format('DD/MM/YYYY');
+  }
+
+  get today(): string {
+    return moment().format('YYYY-MM-DD');
+  }
+
+  get isLoading(): boolean {
+    return false;
+  }
+
+  search(): void {
+
+  }
+
   rankingOfSetups = {
     items: [
       {

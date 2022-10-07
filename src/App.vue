@@ -2,6 +2,8 @@
   <v-app id="inspire">
     <v-navigation-drawer
       v-model="systemState.navigationDrawer"
+      class="elevation-3"
+      style="border-color: transparent"
       app
     >
       <template v-slot:prepend>
@@ -71,12 +73,19 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar app color="white">
-      <v-app-bar-nav-icon @click="() => systemController.toggleNavigationDrawer()"></v-app-bar-nav-icon>
-      <v-toolbar-title>{{ systemState.pageTitle }}</v-toolbar-title>
-    </v-app-bar>
+<!--    <v-app-bar app color="white" elevation="0" class="grey lighten-5">-->
+<!--      -->
+<!--      <v-toolbar-title>{{ systemState.pageTitle }}</v-toolbar-title>-->
+<!--    </v-app-bar>-->
 
-    <v-main>
+    <v-main class="grey lighten-5">
+      <v-container class="px-8 pt-9 pb-4">
+        <v-row>
+          <v-col>
+            <h1 class="font-weight-medium">{{ systemState.pageTitle }}</h1>
+          </v-col>
+        </v-row>
+      </v-container>
       <router-view/>
     </v-main>
     <notification></notification>

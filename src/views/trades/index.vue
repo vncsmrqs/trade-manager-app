@@ -35,7 +35,7 @@
                 color="primary"
                 min-width="0"
                 block
-                style="height: 100%;"
+                style="height: 100%; background-color: white"
                 :disabled="isLoading"
                 @click="openFilterDialog"
             >
@@ -65,6 +65,7 @@
                   v-bind="attrs"
                   v-on="on"
                   hide-details
+                  style="background-color: white"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -99,6 +100,7 @@
                   v-bind="attrs"
                   v-on="on"
                   hide-details
+                  style="background-color: white"
               ></v-text-field>
             </template>
             <v-date-picker
@@ -117,7 +119,7 @@
           <v-btn
               outlined
               color="primary"
-              style="height: 40px"
+              style="height: 40px; background-color: white"
               @click="() => search()"
               block
               :disabled="isLoading"
@@ -147,7 +149,7 @@
                 color="primary"
                 min-width="0"
                 block
-                style="height: 100%;"
+                style="height: 100%; background-color: white"
                 @click="importTrade"
             >
               <v-icon>mdi-upload</v-icon>

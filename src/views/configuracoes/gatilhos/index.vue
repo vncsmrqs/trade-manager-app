@@ -9,13 +9,14 @@
               outlined
               dense
               label="Busca"
+              style="background-color: white"
           ></v-text-field>
         </v-col>
         <v-col cols="4" sm="2">
           <v-btn
               outlined
               color="primary"
-              style="height: 40px"
+              style="height: 40px; background-color: white"
               @click="search"
               block
               :disabled="isLoading"
