@@ -1,5 +1,9 @@
 <template>
   <v-app id="inspire">
+    <logout
+        :show="showLogoutDialog"
+        @close="closeLogout"
+    ></logout>
     <v-navigation-drawer
       v-model="systemState.navigationDrawer"
       class="elevation-3"
@@ -60,11 +64,11 @@
       <template v-slot:append>
         <div class="pa-2">
           <v-list dense nav>
-            <v-list-item link>
+            <v-list-item @click="logout">
               <v-list-item-icon>
                 <v-icon>mdi-logout</v-icon>
               </v-list-item-icon>
-              <v-list-item-title @click="logout">
+              <v-list-item-title>
                 <v-list-item-title>Sair</v-list-item-title>
               </v-list-item-title>
             </v-list-item>
@@ -99,9 +103,10 @@ import Notification from "@/common/components/notifier.vue";
 import { app, TYPES } from "@/core/common/container";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
+import Logout from "@/common/components/logout.vue";
 
 @Component({
-  components: { Notification },
+  components: { Logout, Notification },
 })
 export default class App extends Vue {
   private systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
@@ -110,8 +115,14 @@ export default class App extends Vue {
   private systemState = this.systemController.state;
   private authState = this.authController.state;
 
+  showLogoutDialog = false;
+
   logout() {
-    //confirmar saída
+    this.showLogoutDialog = true;
+  }
+
+  closeLogout() {
+    this.showLogoutDialog = false;
   }
 
   private updateSystemState(newState) {
