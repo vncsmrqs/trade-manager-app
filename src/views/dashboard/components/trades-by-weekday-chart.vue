@@ -17,12 +17,26 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { ApexOptions } from "apexcharts";
+import { app, TYPES } from "@/core/common/container";
+import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
+import { DashboardState, WeekdayEnum } from "@/core/dashboard/presentation/state/dashboard.state";
 
 @Component({})
-export default class TradesByDayOfWeekChart extends Vue {
+export default class TradesByWeekdayChart extends Vue {
+  private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
+  private dashboardState = this.dashboardController.state;
+
+  private readonly weekdaysAvailable: WeekdayEnum[] = [
+    WeekdayEnum.SEG,
+    WeekdayEnum.TER,
+    WeekdayEnum.QUA,
+    WeekdayEnum.QUI,
+    WeekdayEnum.SEX,
+  ];
+
   options: ApexOptions = {
     chart: {
-      id: 'vuechart-example',
+      id: 'trades-by-weekday-chart',
       stacked: true,
       toolbar: {
         show: false
@@ -35,7 +49,7 @@ export default class TradesByDayOfWeekChart extends Vue {
       show: false,
     },
     xaxis: {
-      categories: ['SEG', 'TER', 'QUA', 'QUI', 'SEX']
+      categories: this.weekdaysAvailable,
     },
     colors: ['#FBC02D', '#FF8A80', '#448AFF'],
     dataLabels: {
@@ -58,20 +72,59 @@ export default class TradesByDayOfWeekChart extends Vue {
     },
   };
 
-  series = [
-    {
-      name: '0x0',
-      data: [11, 17, 15, 15, 21]
-    },
-    {
-      name: 'LOSS',
-      data: [13, 23, 20, 8, 13]
-    },
-    {
-      name: 'GAIN',
-      data: [44, 55, 41, 67, 22]
-    },
-  ];
+  get series() {
+    return [
+      {
+        name: '0x0',
+        data: this.weekdaysAvailable.map((weekday) => {
+          const sum = this.dashboardState.tradesByWeekday.items
+              .filter((w) => w.weekday === weekday)
+              .map((weekday) => weekday.items
+                  .filter((item) => item.name === '0x0')
+                  .reduce((total, item) => total + item.value, 0))
+              .reduce((total, value) => total + value, 0);
+          return sum || 0;
+        }),
+      },
+      {
+        name: 'Loss',
+        data: this.weekdaysAvailable.map((weekday) => {
+          const sum = this.dashboardState.tradesByWeekday.items
+              .filter((w) => w.weekday === weekday)
+              .map((weekday) => weekday.items
+                  .filter((item) => item.name === 'loss')
+                  .reduce((total, item) => total + item.value, 0))
+              .reduce((total, value) => total + value, 0);
+          return sum || 0;
+        }),
+      },
+      {
+        name: 'Gain',
+        data: this.weekdaysAvailable.map((weekday) => {
+          const sum = this.dashboardState.tradesByWeekday.items
+              .filter((w) => w.weekday === weekday)
+              .map((weekday) => weekday.items
+                  .filter((item) => item.name === 'gain')
+                  .reduce((total, item) => total + item.value, 0))
+              .reduce((total, value) => total + value, 0);
+          return sum || 0;
+        }),
+      },
+    ];
+  }
+
+  private updateState(newState: DashboardState) {
+    this.dashboardState = newState;
+  }
+
+  private created() {
+    this.dashboardController.subscribe(this.updateState);
+    this.dashboardController.resetState();
+  }
+
+  private beforeDestroy() {
+    this.dashboardController.unsubscribe(this.updateState);
+  }
 }
 </script>
 

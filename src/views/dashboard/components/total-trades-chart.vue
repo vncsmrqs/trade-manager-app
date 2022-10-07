@@ -17,12 +17,19 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { ApexOptions } from "apexcharts";
+import { app, TYPES } from "@/core/common/container";
+import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
+import { DashboardState } from "@/core/dashboard/presentation/state/dashboard.state";
 
 @Component({})
 export default class TotalTradesChart extends Vue {
+  private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
+  private dashboardState = this.dashboardController.state;
+
+  private readonly availableLabels = ['0x0', 'Loss', 'Gain'];
   options: ApexOptions = {
     chart: {
-      id: 'vuechart-example',
+      id: 'total-trades-chart',
       stacked: true,
       toolbar: {
         show: false
@@ -44,7 +51,7 @@ export default class TotalTradesChart extends Vue {
     legend: {
       show: false,
     },
-    labels: ['0x0', 'Loss', 'Gain'],
+    labels: this.availableLabels,
     colors: ['#FBC02D', '#FF8A80', '#448AFF'],
     plotOptions: {
       pie: {
@@ -69,9 +76,8 @@ export default class TotalTradesChart extends Vue {
         fontSize: '20px',
         colors: ['#fff'],
       },
-      formatter(value, context) {
-        const total = context.w.globals.series.reduce((total, v) => total + v, 0);
-        return `${(value / total * 100).toFixed(0)}%`;
+      formatter(value) {
+        return `${parseInt(value).toFixed(0)}%`;
       },
       dropShadow: {
         enabled: false,
@@ -79,7 +85,26 @@ export default class TotalTradesChart extends Vue {
     },
   };
 
-  series = [10, 10, 100];
+  get series(): number[] {
+    return this.availableLabels.map((label) => {
+      return this.dashboardState.totalTrades.items
+          .filter((item) => item.name === label.toLowerCase())
+          .reduce((total, item) => total + item.value, 0);
+    });
+  }
+
+  private updateState(newState: DashboardState) {
+    this.dashboardState = newState;
+  }
+
+  private created() {
+    this.dashboardController.subscribe(this.updateState);
+    this.dashboardController.resetState();
+  }
+
+  private beforeDestroy() {
+    this.dashboardController.unsubscribe(this.updateState);
+  }
 }
 </script>
 

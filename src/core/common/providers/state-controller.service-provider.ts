@@ -42,6 +42,12 @@ import { ImportFileTradeController } from "@/core/trade/presentation/controllers
 import { UploadFileToImportTradeUseCaseContract } from "@/core/trade/domain/use-cases/upload-file-to-import-trade.use-case";
 import { ImportUploadedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/import-uploaded-file-trade.use-case";
 import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
+import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
+import { ActionResult } from "@/core/common/domain/action-result";
+import { GetTradeSumBySetupUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-setup.use-case";
+import { GetTradeSumByWeekdayUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-weekday.use-case";
+import { GetTradeSumUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum.use-case";
+import { GetTradeSumByIntervalUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -55,6 +61,15 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     this.bootGatilhoControllers(container);
     this.bootTipoEntradaControllers(container);
     this.bootTradeControllers(container);
+
+    container.singleton(TYPES.DashboardController, () => {
+      return new DashboardController(
+        container.make<GetTradeSumBySetupUseCaseContract>(TYPES.GetTradeSumBySetupUseCaseContract),
+        container.make<GetTradeSumByWeekdayUseCaseContract>(TYPES.GetTradeSumByWeekdayUseCaseContract),
+        container.make<GetTradeSumUseCaseContract>(TYPES.GetTradeSumUseCaseContract),
+        container.make<GetTradeSumByIntervalUseCaseContract>(TYPES.GetTradeSumByIntervalUseCaseContract),
+      );
+    });
   }
 
   private bootSetupControllers(container: ContainerContract): void {

@@ -1001,7 +1001,6 @@ export default class ManageTrade extends Vue {
 
   async saveTrade(): Promise<void> {
     const isValid = this.validateForm();
-    console.log(isValid, this.form);
     if (isValid) {
       this.close();
     }

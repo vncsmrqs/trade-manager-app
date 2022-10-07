@@ -112,14 +112,16 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import VueApexCharts from 'vue-apexcharts';
 import moment from "moment";
 import RankingOfSetup from "@/views/dashboard/components/ranking-of-setup.vue";
-import TradesByDayOfWeekChart from "@/views/dashboard/components/trades-by-weekday-chart.vue";
+import TradesByWeekdayChart from "@/views/dashboard/components/trades-by-weekday-chart.vue";
 import TotalTradesChart from "@/views/dashboard/components/total-trades-chart.vue";
 import MorningTradesChart from "@/views/dashboard/components/morning-trades-chart.vue";
 import EveningTradesChart from "@/views/dashboard/components/evening-trades-chart.vue";
 import TradesByIntervalChart from "@/views/dashboard/components/trades-by-interval-chart.vue";
+import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
+import { app, TYPES } from "@/core/common/container";
+import { DashboardState } from "@/core/dashboard/presentation/state/dashboard.state";
 
 @Component({
   components: {
@@ -127,11 +129,14 @@ import TradesByIntervalChart from "@/views/dashboard/components/trades-by-interv
     EveningTradesChart,
     MorningTradesChart,
     TotalTradesChart,
-    TradesByDayOfWeekChart,
+    TradesByDayOfWeekChart: TradesByWeekdayChart,
     RankingOfSetup,
-  },
-  VueApexCharts })
+  }
+})
 export default class DashboardView extends Vue {
+  private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
+  private dashboardState = this.dashboardController.state;
+
   filter = {
     startDate: moment().subtract(1, 'month').format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
@@ -153,7 +158,24 @@ export default class DashboardView extends Vue {
   }
 
   search(): void {
+    this.dashboardController.search(this.filter);
+  }
 
+  mounted(): void {
+    this.search();
+  }
+
+  private updateState(newState: DashboardState) {
+    this.dashboardState = newState;
+  }
+
+  private created() {
+    this.dashboardController.subscribe(this.updateState);
+    this.dashboardController.resetState();
+  }
+
+  private beforeDestroy() {
+    this.dashboardController.unsubscribe(this.updateState);
   }
 }
 </script>

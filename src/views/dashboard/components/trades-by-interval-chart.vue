@@ -17,12 +17,47 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { ApexOptions } from "apexcharts";
+import { app, TYPES } from "@/core/common/container";
+import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
+import { DashboardState } from "@/core/dashboard/presentation/state/dashboard.state";
 
 @Component({})
 export default class TradesByIntervalChart extends Vue {
+  private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
+  private dashboardState = this.dashboardController.state;
+
+  private readonly availableLabels = [
+    'Loss',
+    'Gain',
+    // '0x0',
+  ];
+
+  private readonly availableTimeIntervals = [
+    '09:00 - 09:30',
+    '09:30 - 10:00',
+    '10:00 - 10:30',
+    '10:30 - 11:00',
+    '11:00 - 11:30',
+    '11:30 - 12:00',
+    '12:00 - 12:30',
+    '12:30 - 13:00',
+    '13:00 - 13:30',
+    '13:30 - 14:00',
+    '14:00 - 14:30',
+    '14:30 - 15:00',
+    '15:00 - 15:30',
+    '15:30 - 16:00',
+    '16:00 - 16:30',
+    '16:30 - 17:00',
+    '17:00 - 17:30',
+    '17:30 - 18:00',
+  ];
+
+  private readonly availableColors = ['#FF8A80', '#448AFF', '#FBC02D'];
+
   options: ApexOptions = {
     chart: {
-      id: 'vuechart-example',
+      id: 'trades-by-interval-chart',
       toolbar: {
         show: false
       },
@@ -30,8 +65,8 @@ export default class TradesByIntervalChart extends Vue {
         enabled: false,
       },
     },
-    labels: ['Loss', 'Gain'],
-    colors: ['#FF8A80', '#448AFF'],
+    labels: this.availableLabels,
+    colors: this.availableColors,
     plotOptions: {
       bar: {
         horizontal: true,
@@ -48,44 +83,42 @@ export default class TradesByIntervalChart extends Vue {
       offsetX: 18,
       style: {
         fontSize: '12px',
-        colors: ['#FF8A80', '#448AFF'],
+        colors: this.availableColors,
       },
     },
     legend: {
       show: false,
     },
     xaxis: {
-      categories: [
-        '09:00 - 09:30',
-        '09:30 - 10:00',
-        '10:00 - 10:30',
-        '10:30 - 11:00',
-        '11:00 - 11:30',
-        '11:30 - 12:00',
-        '12:00 - 12:30',
-        '12:30 - 13:00',
-        '13:00 - 13:30',
-        '13:30 - 14:00',
-        '14:00 - 14:30',
-        '14:30 - 15:00',
-        '15:00 - 15:30',
-        '15:30 - 16:00',
-        '16:00 - 16:30',
-        '16:30 - 17:00',
-        '17:00 - 17:30',
-        '17:30 - 18:00',
-      ],
+      categories: this.availableTimeIntervals,
     },
   };
 
-  series = [
-    {
-      data: [44, 55, 41, 64, 22, 43, 21,44, 55, 41, 64, 22, 43, 21,44, 55, 41, 64],
-    },
-    {
-      data: [53, 32, 33, 52, 13, 44, 32,53, 32, 33, 52, 13, 44, 32,53, 32, 33, 52],
-    }
-  ];
+  get series() {
+    return this.availableLabels.map((label) => ({
+      data: this.availableTimeIntervals.map((timeInterval) => {
+        return this.dashboardState.tradesByInterval.items
+            .filter(({ interval }) => interval === timeInterval)
+            .map((interval) => interval.items
+                .filter((item) => item.name === label.toLowerCase())
+                .reduce((total, item) => total + item.value, 0))
+            .reduce((total, value) => total + value, 0);
+      }),
+    }));
+  }
+
+  private updateState(newState: DashboardState) {
+    this.dashboardState = newState;
+  }
+
+  private created() {
+    this.dashboardController.subscribe(this.updateState);
+    this.dashboardController.resetState();
+  }
+
+  private beforeDestroy() {
+    this.dashboardController.unsubscribe(this.updateState);
+  }
 }
 </script>
 

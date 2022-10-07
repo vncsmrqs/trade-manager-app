@@ -17,9 +17,17 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { ApexOptions } from "apexcharts";
+import { DashboardState } from "@/core/dashboard/presentation/state/dashboard.state";
+import { app, TYPES } from "@/core/common/container";
+import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
 
 @Component({})
 export default class MorningTradesChart extends Vue {
+  private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
+  private dashboardState = this.dashboardController.state;
+
+  private readonly availableLabels = ['0x0', 'Loss', 'Gain'];
+
   options: ApexOptions = {
     chart: {
       id: 'vuechart-example',
@@ -40,7 +48,7 @@ export default class MorningTradesChart extends Vue {
         }
       },
     },
-    labels: ['0x0', 'Loss', 'Gain'],
+    labels: this.availableLabels,
     colors: ['#FBC02D', '#FF8A80', '#448AFF'],
     plotOptions: {
       pie: {
@@ -79,7 +87,26 @@ export default class MorningTradesChart extends Vue {
     },
   };
 
-  series = [55, 45, 45];
+  get series(): number[] {
+    return this.availableLabels.map((label) => {
+      return this.dashboardState.morningTrades.items
+          .filter((item) => item.name === label.toLowerCase())
+          .reduce((total, item) => total + item.value, 0);
+    });
+  }
+
+  private updateState(newState: DashboardState) {
+    this.dashboardState = newState;
+  }
+
+  private created() {
+    this.dashboardController.subscribe(this.updateState);
+    this.dashboardController.resetState();
+  }
+
+  private beforeDestroy() {
+    this.dashboardController.unsubscribe(this.updateState);
+  }
 }
 </script>
 

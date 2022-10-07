@@ -73,7 +73,7 @@ import { DeleteTradeController } from "@/core/trade/presentation/controllers/del
 import { DeleteTradeState } from "@/core/trade/presentation/states/delete-trade.state";
 
 @Component({})
-export default class DeleteTrade extends Vue {
+export default class Logout extends Vue {
   private controller = app.make<DeleteTradeController>(TYPES.DeleteTradeController);
   private localState = this.controller.state;
 

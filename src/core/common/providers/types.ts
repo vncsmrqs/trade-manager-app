@@ -1,4 +1,5 @@
 import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
+import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
 
 export const TYPES = {
   /* Service Providers */
@@ -57,6 +58,11 @@ export const TYPES = {
   ImportUploadedFileTradeRepositoryContract: Symbol('ImportUploadedFileTradeRepositoryContract'),
   UploadTradeImageRepositoryContract: Symbol('UploadTradeImageRepositoryContract'),
 
+  GetTradeSumBySetupUseCaseContract: Symbol('GetTradeSumBySetupUseCaseContract'),
+  GetTradeSumByWeekdayUseCaseContract: Symbol('GetTradeSumByWeekdayUseCaseContract'),
+  GetTradeSumUseCaseContract: Symbol('GetTradeSumByWeekdayUseCaseContract'),
+  GetTradeSumByIntervalUseCaseContract: Symbol('GetTradeSumByIntervalUseCaseContract'),
+
   ListAtivoRepositoryContract: Symbol('ListAtivoRepositoryContract'),
 
   ListTimeFrameRepositoryContract: Symbol('ListTimeFrameRepositoryContract'),
@@ -86,4 +92,6 @@ export const TYPES = {
   DetailTradeController: Symbol('DetailTradeController'),
   ListTradeFilterController: Symbol('ListTradeFilterController'),
   ImportFileTradeController: Symbol('ImportFileTradeController'),
+
+  DashboardController: Symbol('DashboardController'),
 };

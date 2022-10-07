@@ -70,6 +70,14 @@ import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/con
 import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
 import { UploadTradeImageUseCase } from "@/core/trade/data/implementations/use-cases/upload-trade-image-use.case";
 import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
+import { GetTradeSumBySetupUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-setup.use-case";
+import { GetTradeSumByWeekdayUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-weekday.use-case";
+import { GetTradeSumUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum.use-case";
+import { GetTradeSumByIntervalUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
+import { GetTradeSumByIntervalUseCase } from "@/core/dashboard/data/implementations/use-cases/get-trade-sum-by-interval.use-case";
+import { GetTradeSumUseCase } from "@/core/dashboard/data/implementations/use-cases/get-trade-sum.use-case";
+import { GetTradeSumByWeekdayUseCase } from "@/core/dashboard/data/implementations/use-cases/get-trade-sum-by-weekday.use-case";
+import { GetTradeSumBySetupUseCase } from "@/core/dashboard/data/implementations/use-cases/get-trade-sum-by-setup.use-case";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -81,6 +89,7 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     this.bootAtivoUseCases(container);
     this.bootTimeFrameUseCases(container);
     this.bootCampoCustomizavelUseCases(container);
+    this.bootDashboardUseCases(container);
   }
 
   private bootSetupUseCases(container: ContainerContract): void {
@@ -226,6 +235,28 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
       return new ListCampoCustomizavelUseCase(
         container.make<ListCampoCustomizavelRepositoryContract>(TYPES.ListCampoCustomizavelRepositoryContract),
       );
+    });
+  }
+
+  private bootDashboardUseCases(container: ContainerContract) {
+    container.bind<GetTradeSumBySetupUseCaseContract>(TYPES.GetTradeSumBySetupUseCaseContract, () => {
+      return new GetTradeSumBySetupUseCase();
+      //todo: Implement repository
+    });
+
+    container.bind<GetTradeSumByWeekdayUseCaseContract>(TYPES.GetTradeSumByWeekdayUseCaseContract, () => {
+      return new GetTradeSumByWeekdayUseCase();
+      //todo: Implement repository
+    });
+
+    container.bind<GetTradeSumUseCaseContract>(TYPES.GetTradeSumUseCaseContract, () => {
+      return new GetTradeSumUseCase();
+      //todo: Implement repository
+    });
+
+    container.bind<GetTradeSumByIntervalUseCaseContract>(TYPES.GetTradeSumByIntervalUseCaseContract, () => {
+      return new GetTradeSumByIntervalUseCase();
+      //todo: Implement repository
     });
   }
 }

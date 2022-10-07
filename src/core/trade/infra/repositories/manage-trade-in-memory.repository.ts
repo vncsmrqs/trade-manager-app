@@ -72,7 +72,6 @@ export class ManageTradeInMemoryRepository implements
       const pageCount = Math.ceil(tradeList.length / itemsPerPage);
       const items = chunkArray<TradeEntity>(mapTradeListToEntity(tradeList), itemsPerPage);
       const page = params.page || 1;
-      console.log({ params });
       setTimeout(() => {
         resolve(ActionResult.success({
           items: items[page-1],
