@@ -36,6 +36,12 @@ import { ManageTimeFrameInMemoryRepository } from "@/core/time-frame/infra/repos
 import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
 import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
+import { GetTradeSumBySetupRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-setup.respository";
+import { GetTradeSumByWeekdayRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-weekday.respository";
+import { GetTradeSumByIntervalUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
+import { GetTradeSumRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum.repository";
+import { DashboardInMemoryRepository } from "@/core/dashboard/infra/dashboard-in-memory.repository";
+import { GetTradeSumByIntervalRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-interval.repository";
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
@@ -50,6 +56,24 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<CreateGatilhoRepositoryContract>(TYPES.CreateGatilhoRepositoryContract, manageGatilhoRepository);
     container.instance<UpdateGatilhoRepositoryContract>(TYPES.UpdateGatilhoRepositoryContract, manageGatilhoRepository);
     container.instance<DeleteGatilhoRepositoryContract>(TYPES.DeleteGatilhoRepositoryContract, manageGatilhoRepository);
+
+    const dashboardRepository = new DashboardInMemoryRepository();
+    container.instance<GetTradeSumBySetupRepositoryContract>(
+      TYPES.GetTradeSumBySetupRepositoryContract,
+      dashboardRepository
+    );
+    container.instance<GetTradeSumByWeekdayRepositoryContract>(
+      TYPES.GetTradeSumByWeekdayRepositoryContract,
+      dashboardRepository
+    );
+    container.instance<GetTradeSumByIntervalRepositoryContract>(
+      TYPES.GetTradeSumByIntervalRepositoryContract,
+      dashboardRepository
+    );
+    container.instance<GetTradeSumRepositoryContract>(
+      TYPES.GetTradeSumRepositoryContract,
+      dashboardRepository
+    );
 
     const manageTipoEntradaRepository = new ManageTipoEntradaInMemoryRepository();
     container.instance<ListTipoEntradaRepositoryContract>(

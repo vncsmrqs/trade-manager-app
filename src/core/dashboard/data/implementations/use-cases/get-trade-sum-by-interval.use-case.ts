@@ -1,55 +1,16 @@
 import { ActionResult } from "@/core/common/domain/action-result";
 import {
   GetTradeSumByIntervalUseCaseContract,
-  IntervalTradesItemType
 } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
+import { GetTradeSumByIntervalRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-interval.repository";
 
 export class GetTradeSumByIntervalUseCase implements GetTradeSumByIntervalUseCaseContract {
+  constructor(
+    private getTradeSumByIntervalRepository: GetTradeSumByIntervalRepositoryContract
+  ) {}
   execute(
     params: GetTradeSumByIntervalUseCaseContract.Params
   ): Promise<ActionResult<GetTradeSumByIntervalUseCaseContract.Response, string>> {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(ActionResult.success({ items })), 3000);
-    });
+    return this.getTradeSumByIntervalRepository.getTradeSumByInterval(params);
   }
 }
-
-const intervals = [
-  '09:00 - 09:30',
-  '09:30 - 10:00',
-  '10:00 - 10:30',
-  '10:30 - 11:00',
-  '11:00 - 11:30',
-  '11:30 - 12:00',
-  '12:00 - 12:30',
-  '12:30 - 13:00',
-  '13:00 - 13:30',
-  '13:30 - 14:00',
-  '14:00 - 14:30',
-  '14:30 - 15:00',
-  '15:00 - 15:30',
-  '15:30 - 16:00',
-  '16:00 - 16:30',
-  '16:30 - 17:00',
-  '17:00 - 17:30',
-  '17:30 - 18:00',
-];
-
-const items: IntervalTradesItemType[] = intervals.map((interval, index) => ({
-  interval,
-  items: [
-    {
-      name: 'loss',
-      value: 10 + index,
-    },
-    {
-      name: 'gain',
-      value: 10 + index,
-    },
-    {
-      name: '0x0',
-      value: 10 + index,
-    },
-  ],
-}));
-

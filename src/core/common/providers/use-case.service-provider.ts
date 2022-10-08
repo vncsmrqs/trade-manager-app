@@ -82,6 +82,10 @@ import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-cas
 import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
 import { LoginUseCase } from "@/core/auth/data/implementations/use-cases/login.use-case";
 import { GetCurrentUserUseCase } from "@/core/auth/data/implementations/use-cases/get-current-user.use-case";
+import { GetTradeSumBySetupRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-setup.respository";
+import { GetTradeSumByWeekdayRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-weekday.respository";
+import { GetTradeSumRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum.repository";
+import { GetTradeSumByIntervalRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-interval.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -257,23 +261,27 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
 
   private bootDashboardUseCases(container: ContainerContract) {
     container.bind<GetTradeSumBySetupUseCaseContract>(TYPES.GetTradeSumBySetupUseCaseContract, () => {
-      return new GetTradeSumBySetupUseCase();
-      //todo: Implement repository
+      return new GetTradeSumBySetupUseCase(
+        container.make<GetTradeSumBySetupRepositoryContract>(TYPES.GetTradeSumBySetupRepositoryContract)
+      );
     });
 
     container.bind<GetTradeSumByWeekdayUseCaseContract>(TYPES.GetTradeSumByWeekdayUseCaseContract, () => {
-      return new GetTradeSumByWeekdayUseCase();
-      //todo: Implement repository
+      return new GetTradeSumByWeekdayUseCase(
+        container.make<GetTradeSumByWeekdayRepositoryContract>(TYPES.GetTradeSumByWeekdayRepositoryContract)
+      );
     });
 
     container.bind<GetTradeSumUseCaseContract>(TYPES.GetTradeSumUseCaseContract, () => {
-      return new GetTradeSumUseCase();
-      //todo: Implement repository
+      return new GetTradeSumUseCase(
+        container.make<GetTradeSumRepositoryContract>(TYPES.GetTradeSumRepositoryContract)
+      );
     });
 
     container.bind<GetTradeSumByIntervalUseCaseContract>(TYPES.GetTradeSumByIntervalUseCaseContract, () => {
-      return new GetTradeSumByIntervalUseCase();
-      //todo: Implement repository
+      return new GetTradeSumByIntervalUseCase(
+        container.make<GetTradeSumByIntervalRepositoryContract>(TYPES.GetTradeSumByIntervalRepositoryContract)
+      );
     });
   }
 }

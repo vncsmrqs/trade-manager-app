@@ -4,101 +4,16 @@ import {
   TradesByWeekdayItemType
 } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-weekday.use-case";
 import { WeekdayEnum } from "@/core/dashboard/presentation/state/dashboard.state";
+import { GetTradeSumRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum.repository";
+import { GetTradeSumByWeekdayRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-weekday.respository";
 
 export class GetTradeSumByWeekdayUseCase implements GetTradeSumByWeekdayUseCaseContract {
+  constructor(
+    private getTradeSumByWeekdayRepository: GetTradeSumByWeekdayRepositoryContract
+  ) {}
   execute(
     params: GetTradeSumByWeekdayUseCaseContract.Params
   ): Promise<ActionResult<GetTradeSumByWeekdayUseCaseContract.Response, string>> {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(ActionResult.success({ items: tradeSumByWeekdayResult })), 3000);
-    });
+    return this.getTradeSumByWeekdayRepository.getTradeSumByWeekday(params);
   }
 }
-
-const tradeSumByWeekdayResult: TradesByWeekdayItemType[] = [
-  {
-    weekday: WeekdayEnum.SEG,
-    items: [
-      {
-        name: 'loss',
-        value: 10,
-      },
-      {
-        name: 'gain',
-        value: 20,
-      },
-      {
-        name: '0x0',
-        value: 30,
-      },
-    ]
-  },
-  {
-    weekday: WeekdayEnum.TER,
-    items: [
-      {
-        name: 'loss',
-        value: 10,
-      },
-      {
-        name: 'gain',
-        value: 20,
-      },
-      {
-        name: '0x0',
-        value: 30,
-      },
-    ]
-  },
-  {
-    weekday: WeekdayEnum.QUA,
-    items: [
-      {
-        name: 'loss',
-        value: 10,
-      },
-      {
-        name: 'gain',
-        value: 20,
-      },
-      {
-        name: '0x0',
-        value: 30,
-      },
-    ]
-  },
-  {
-    weekday: WeekdayEnum.QUI,
-    items: [
-      {
-        name: 'loss',
-        value: 10,
-      },
-      {
-        name: 'gain',
-        value: 20,
-      },
-      {
-        name: '0x0',
-        value: 30,
-      },
-    ]
-  },
-  {
-    weekday: WeekdayEnum.SEX,
-    items: [
-      {
-        name: 'loss',
-        value: 10,
-      },
-      {
-        name: 'gain',
-        value: 20,
-      },
-      {
-        name: '0x0',
-        value: 30,
-      },
-    ]
-  },
-];

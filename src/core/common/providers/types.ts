@@ -32,6 +32,11 @@ export const TYPES = {
   SaveImportedFileTradeUseCaseContract: Symbol('SaveImportedFileTradeUseCaseContract'),
   UploadTradeImageUseCaseContract: Symbol('UploadTradeImageUseCaseContract'),
 
+  GetTradeSumBySetupUseCaseContract: Symbol('GetTradeSumBySetupUseCaseContract'),
+  GetTradeSumByWeekdayUseCaseContract: Symbol('GetTradeSumByWeekdayUseCaseContract'),
+  GetTradeSumUseCaseContract: Symbol('GetTradeSumByWeekdayUseCaseContract'),
+  GetTradeSumByIntervalUseCaseContract: Symbol('GetTradeSumByIntervalUseCaseContract'),
+
   ListAtivoUseCaseContract: Symbol('ListAtivoUseCaseContract'),
 
   ListTimeFrameUseCaseContract: Symbol('ListTimeFrameUseCaseContract'),
@@ -62,10 +67,10 @@ export const TYPES = {
   ImportUploadedFileTradeRepositoryContract: Symbol('ImportUploadedFileTradeRepositoryContract'),
   UploadTradeImageRepositoryContract: Symbol('UploadTradeImageRepositoryContract'),
 
-  GetTradeSumBySetupUseCaseContract: Symbol('GetTradeSumBySetupUseCaseContract'),
-  GetTradeSumByWeekdayUseCaseContract: Symbol('GetTradeSumByWeekdayUseCaseContract'),
-  GetTradeSumUseCaseContract: Symbol('GetTradeSumByWeekdayUseCaseContract'),
-  GetTradeSumByIntervalUseCaseContract: Symbol('GetTradeSumByIntervalUseCaseContract'),
+  GetTradeSumBySetupRepositoryContract: Symbol('GetTradeSumBySetupRepositoryContract'),
+  GetTradeSumByWeekdayRepositoryContract: Symbol('GetTradeSumByWeekdayRepositoryContract'),
+  GetTradeSumRepositoryContract: Symbol('GetTradeSumByWeekdayRepositoryContract'),
+  GetTradeSumByIntervalRepositoryContract: Symbol('GetTradeSumByIntervalRepositoryContract'),
 
   ListAtivoRepositoryContract: Symbol('ListAtivoRepositoryContract'),
 
