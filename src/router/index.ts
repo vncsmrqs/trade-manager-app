@@ -11,6 +11,10 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/',
+    redirect: { name: 'dashboard' },
+  },
+  {
+    path: '/',
     component: () => import('../common/layouts/guest-layout.vue'),
     meta: {
       middlewares: [isGuest],

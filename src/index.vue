@@ -29,11 +29,12 @@ export default class App extends Vue {
   showSplash = true;
 
   get isLoadingSession() {
-    return this.authState.kind === "LoadingAuthState";
+    return this.authController.isLoadingSession;
   }
 
   @Watch('isLoadingSession')
   changeSplash(value: boolean) {
+    console.log('isLoadingSession', value);
     if (!value) {
       this.showSplash = false;
     }
@@ -45,6 +46,11 @@ export default class App extends Vue {
 
   private created() {
     this.authController.subscribe(this.updateAuthState);
+    if (!this.isLoadingSession) {
+      this.authController.loadSession().then(() => {
+        this.showSplash = false;
+      });
+    }
   }
 
   private beforeDestroy() {

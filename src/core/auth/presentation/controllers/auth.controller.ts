@@ -15,6 +15,10 @@ export class AuthController extends Controller<AuthState> {
     return !!this.state.token;
   }
 
+  public get isLoadingSession(): boolean {
+    return this.state.kind === "LoadingAuthState";
+  }
+
   public async login(email: string, password: string) {
     this.changeState({
       kind: "LoadingAuthState",
@@ -90,12 +94,13 @@ export class AuthController extends Controller<AuthState> {
   }
 
   public async loadSession(): Promise<void> {
-    if (this.isAuthenticated) {
+    if (this.isAuthenticated || this.isLoadingSession) {
       return;
     }
     const token = localStorage.getItem('token');
     if (token) {
       await this.getCurrentUser(token);
+      return;
     }
   }
 

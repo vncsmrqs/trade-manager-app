@@ -11,6 +11,7 @@ export abstract class Controller<S> {
   }
 
   changeState(state: Partial<S>) {
+    console.log('[change-state]', this.constructor.name, { state });
     this.internalState = {
       ...this.state,
       ...state,
