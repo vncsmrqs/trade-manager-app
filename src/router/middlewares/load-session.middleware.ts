@@ -2,12 +2,10 @@ import { NavigationGuard } from "vue-router/types/router";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
 import { app, TYPES } from "@/core/common/container";
 
-export const isAuthenticated: NavigationGuard = async (to, from, next) => {
+export const loadSession: NavigationGuard = async (to, from, next) => {
   const authController = app.make<AuthController>(TYPES.AuthController);
-  await authController.loadSession();
   if (!authController.isAuthenticated) {
-    next({ name: 'login' });
-  } else {
-    next();
+    await authController.loadSession();
   }
+  next();
 }

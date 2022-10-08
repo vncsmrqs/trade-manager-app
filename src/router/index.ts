@@ -4,6 +4,7 @@ import middlewarePipeline from "@/router/middleware-pipeline";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { app, TYPES } from "@/core/common/container";
 import { isAuthenticated, isGuest } from "@/router/middlewares";
+import { loadSession } from "@/router/middlewares/load-session.middleware";
 
 Vue.use(VueRouter);
 

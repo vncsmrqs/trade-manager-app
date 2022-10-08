@@ -17,7 +17,11 @@
             <v-img></v-img>
           </v-card-title>
           <v-card-text>
-            <v-form @submit.prevent="submit" class="mt-16">
+            <v-form
+              @submit.prevent="submit"
+              class="mt-16"
+              :disabled="isLoading"
+            >
               <v-row no-gutters justify="center">
                 <v-col cols="12" class="d-flex justify-center mb-16">
                   <v-avatar color="blue" size="120" class="font-weight-bold white--text text-h3">
@@ -55,6 +59,8 @@
                     block
                     type="submit"
                     class="white--text"
+                    :disabled="isLoading"
+                    :loading="isLoading"
                   >Entrar</v-btn>
                 </v-col>
               </v-row>
@@ -81,7 +87,7 @@ export default class Login extends Vue {
 
   backgroundSrc = "https://investorplace.com/wp-content/uploads/2019/07/TopTrades1600-768x432.jpg";
   showPassword = false;
-  error = false;
+
   form = {
     email: '',
     password: '',
@@ -90,12 +96,27 @@ export default class Login extends Vue {
     required: value => !!value || 'Campo obrigatório',
     min: v => v.length >= 8 || 'Mínimo 8 caracteres',
     validEmail: v => validateEmail(v) || 'Informe um email válido',
-    emailMatch: () => !this.error || 'Email ou senha incorretos',
+    emailMatch: () => !this.hasError || this.error,
   };
 
+  get isLoading(): boolean {
+    return this.authState.kind === "LoadingAuthState";
+  }
+
+  get error() {
+    return this.authState.error;
+  }
+
+  get hasError() {
+    return !!this.authState.error;
+  }
+
   async submit() {
-    await this.authController.login(this.form.email, this.form.password);
-    await this.$router.replace({ name: 'dashboard' });
+    await this.authController.login(this.form.email, this.form.password).then(() => {
+      if (this.authController.isAuthenticated) {
+        this.$router.replace({ name: 'dashboard' });
+      }
+    });
   }
 
   private updateAuthState(newState: AuthState) {

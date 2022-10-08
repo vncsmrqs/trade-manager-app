@@ -4,6 +4,7 @@ import { AuthController } from "@/core/auth/presentation/controllers/auth.contro
 
 export const isGuest: NavigationGuard = async (to, from, next) => {
   const authController = app.make<AuthController>(TYPES.AuthController);
+  await authController.loadSession();
   if (authController.isAuthenticated) {
     next({ name: 'dashboard' });
   } else {

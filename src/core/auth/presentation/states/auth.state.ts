@@ -1,27 +1,36 @@
-export type User = {
-  id: string
-  name: string;
-  initials: string;
-  lastname: string;
-  email: string;
-  imageUrl?: string;
-};
+import { UserEntity } from "@/core/auth/domain/entities/user.entity";
 
 export type BaseAuthState = {
   token?: string;
-  user?: User;
+  user?: UserEntity;
+  error?: string;
 }
 
 export type InitialAuthState = {
   kind: "InitialAuthState";
 }
 
-export type LoggedInAuthState = {
-  kind: "LoggedInAuthState";
-  user: User;
+export type LoadingAuthState = {
+  kind: "LoadingAuthState";
 }
 
-export type AuthState = (LoggedInAuthState | InitialAuthState) & BaseAuthState;
+export type LoggedInAuthState = {
+  kind: "LoggedInAuthState";
+  user: UserEntity;
+}
+
+export type ErrorAuthState = {
+  kind: "ErrorAuthState";
+  error: string;
+}
+
+
+export type AuthState = (
+  LoggedInAuthState |
+  InitialAuthState |
+  LoadingAuthState |
+  ErrorAuthState
+) & BaseAuthState;
 
 export const initialAuthState: AuthState = {
   kind: "InitialAuthState",

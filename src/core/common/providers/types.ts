@@ -1,10 +1,14 @@
 import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
 import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
+import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
 
 export const TYPES = {
   /* Service Providers */
 
   /* Use Cases */
+  LoginUseCaseContract: Symbol('LoginUseCaseContract'),
+  GetCurrentUserUseCaseContract: Symbol('GetCurrentUserUseCaseContract'),
+
   ListSetupUseCaseContract: Symbol('ListSetupUseCaseContract'),
   CreateSetupUseCaseContract: Symbol('CreateSetupUseCaseContract'),
   UpdateSetupUseCaseContract: Symbol('UpdateSetupUseCaseContract'),

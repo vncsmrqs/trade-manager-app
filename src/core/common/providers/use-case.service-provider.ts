@@ -78,10 +78,15 @@ import { GetTradeSumByIntervalUseCase } from "@/core/dashboard/data/implementati
 import { GetTradeSumUseCase } from "@/core/dashboard/data/implementations/use-cases/get-trade-sum.use-case";
 import { GetTradeSumByWeekdayUseCase } from "@/core/dashboard/data/implementations/use-cases/get-trade-sum-by-weekday.use-case";
 import { GetTradeSumBySetupUseCase } from "@/core/dashboard/data/implementations/use-cases/get-trade-sum-by-setup.use-case";
+import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
+import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
+import { LoginUseCase } from "@/core/auth/data/implementations/use-cases/login.use-case";
+import { GetCurrentUserUseCase } from "@/core/auth/data/implementations/use-cases/get-current-user.use-case";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
   boot(container: ContainerContract): void {
+    this.bootAuthUseCases(container);
     this.bootSetupUseCases(container);
     this.bootGatilhoUseCases(container);
     this.bootTipoEntradaUseCases(container);
@@ -90,6 +95,18 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     this.bootTimeFrameUseCases(container);
     this.bootCampoCustomizavelUseCases(container);
     this.bootDashboardUseCases(container);
+  }
+
+  private bootAuthUseCases(container: ContainerContract) {
+    container.bind<LoginUseCaseContract>(TYPES.LoginUseCaseContract, () => {
+      return new LoginUseCase();
+      //todo: Implement repository
+    });
+
+    container.bind<GetCurrentUserUseCaseContract>(TYPES.GetCurrentUserUseCaseContract, () => {
+      return new GetCurrentUserUseCase();
+      //todo: Implement repository
+    });
   }
 
   private bootSetupUseCases(container: ContainerContract): void {

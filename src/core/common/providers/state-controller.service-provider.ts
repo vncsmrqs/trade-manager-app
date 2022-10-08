@@ -48,15 +48,22 @@ import { GetTradeSumBySetupUseCaseContract } from "@/core/dashboard/domain/use-c
 import { GetTradeSumByWeekdayUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-weekday.use-case";
 import { GetTradeSumUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum.use-case";
 import { GetTradeSumByIntervalUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
+import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
+import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
     container.singleton(TYPES.NotificationController, () => new NotificationController());
     container.singleton(TYPES.SystemController, () => new SystemController());
-    container.singleton(TYPES.AuthController, () => new AuthController());
+
   }
   boot(container: ContainerContract): void {
+    container.singleton(TYPES.AuthController, () => new AuthController(
+      container.make<LoginUseCaseContract>(TYPES.LoginUseCaseContract),
+      container.make<GetCurrentUserUseCaseContract>(TYPES.GetCurrentUserUseCaseContract),
+    ));
+
     this.bootSetupControllers(container);
     this.bootGatilhoControllers(container);
     this.bootTipoEntradaControllers(container);

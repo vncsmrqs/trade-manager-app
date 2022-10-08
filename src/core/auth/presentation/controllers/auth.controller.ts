@@ -1,11 +1,14 @@
 import { Controller } from "@/core/common/domain/controller";
 import { AuthState, initialAuthState } from "@/core/auth/presentation/states/auth.state";
-import { v4 as uuid } from "uuid";
+import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
+import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
 
 export class AuthController extends Controller<AuthState> {
-  constructor() {
+  constructor(
+    private loginUseCase: LoginUseCaseContract,
+    private getCurrentUserUseCase: GetCurrentUserUseCaseContract
+  ) {
     super(initialAuthState);
-    this.loadSession();
   }
 
   public get isAuthenticated(): boolean {
@@ -13,51 +16,100 @@ export class AuthController extends Controller<AuthState> {
   }
 
   public async login(email: string, password: string) {
-    const user = {
-      id: uuid(),
-      name: 'Vinicius',
-      initials: 'VM',
-      lastname: 'Marques',
-      email,
-      imageUrl: 'https://randomuser.me/api/portraits/women/81.jpg',
-    };
-    const token = JSON.stringify(user);
     this.changeState({
-      kind: "LoggedInAuthState",
-      user,
-      token,
+      kind: "LoadingAuthState",
+      user: undefined,
+      token: undefined,
+      error: undefined,
     });
-    this.saveSession(token);
-  }
 
-  public async getUser(): Promise<void> {
-    if (this.state.token) {
+    try {
+      const loginResult = await this.loginUseCase.execute({ email, password });
+
+      if (loginResult.successful) {
+        await this.getCurrentUser(loginResult.value.token);
+        AuthController.saveSession(loginResult.value.token);
+        return;
+      }
+
       this.changeState({
-        kind: "LoggedInAuthState",
-        user: JSON.parse(this.state.token),
+        kind: "ErrorAuthState",
+        error: loginResult.error,
+      });
+    } catch (error: any) {
+      this.changeState({
+        kind: "ErrorAuthState",
+        user: undefined,
+        token: undefined,
+        error: 'Algo inexperado aconteceu durante o loging. Por favor, tente novamente.',
       });
     }
   }
 
-  private loadSession(): void {
+  public async getCurrentUser(token?: string): Promise<void> {
+    const currentToken = token || this.state.token;
+
+    if (!currentToken || !currentToken.length){
+      throw new Error('Você não está authenticado');
+    }
+
+    this.changeState({
+      kind: "LoadingAuthState",
+      user: undefined,
+      error: undefined,
+    });
+
+    try {
+      const getCurrentUserResult = await this.getCurrentUserUseCase.execute();
+
+      if (getCurrentUserResult.successful) {
+        this.changeState({
+          kind: "LoggedInAuthState",
+          user: getCurrentUserResult.value.user,
+          token: currentToken,
+        });
+        return;
+      }
+
+      this.changeState({
+        kind: "ErrorAuthState",
+        user: undefined,
+        token: undefined,
+        error: getCurrentUserResult.error,
+      });
+    } catch (error: any) {
+      this.changeState({
+        kind: "ErrorAuthState",
+        user: undefined,
+        token: undefined,
+        error: 'Algo inexperado aconteceu durante a authenticação.',
+      });
+    }
+
+    AuthController.removeSession();
+  }
+
+  public async loadSession(): Promise<void> {
+    if (this.isAuthenticated) {
+      return;
+    }
     const token = localStorage.getItem('token');
     if (token) {
-      this.changeState({ token });
-      this.getUser().finally(() => console.log());
+      await this.getCurrentUser(token);
     }
   }
 
-  private saveSession(token: string): void{
+  private static saveSession(token: string): void{
     localStorage.setItem('token', token);
   }
 
-  private removeSession() {
+  private static removeSession() {
     localStorage.removeItem('token');
   }
 
   public logout() {
-    this.removeSession();
     this.resetState();
+    AuthController.removeSession();
   }
 
   public resetState() {
