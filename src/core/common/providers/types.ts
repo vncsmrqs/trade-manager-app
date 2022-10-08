@@ -1,7 +1,3 @@
-import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
-import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
-import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
-
 export const TYPES = {
   /* Service Providers */
 
