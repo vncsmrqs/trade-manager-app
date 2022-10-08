@@ -41,11 +41,10 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-      - name: Set env variables
-        run: export BASE_URL=${{ env.url }}
-        
       - name: Build project
         run: npm run build
+        env:
+          BASE_URL: https://vncsmrqs.github.io/trade-manage-app/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
