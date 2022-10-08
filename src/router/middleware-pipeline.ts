@@ -32,7 +32,7 @@ const nextFactory = (
 const middlewarePipeline: NavigationGuard = async (to: Route, from: Route, next: NavigationGuardNext) => {
   const middlewares: NavigationGuard[] = to.matched.reduce((middlewares, record) => {
     if (record?.meta?.middlewares?.length) {
-      middlewares.concat(record.meta.middlewares);
+      middlewares = middlewares.concat(record.meta.middlewares);
     }
     return middlewares;
   }, []);

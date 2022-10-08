@@ -9,7 +9,6 @@ export class GetTradeSumUseCase implements GetTradeSumUseCaseContract{
     params: GetTradeSumUseCaseContract.Params
   ): Promise<ActionResult<GetTradeSumUseCaseContract.Response, string>> {
     return new Promise((resolve) => {
-      console.log({ params });
       setTimeout(() => resolve(ActionResult.success({ items: tradeSumResult })), 3000);
     });
   }

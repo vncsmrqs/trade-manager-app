@@ -3,14 +3,12 @@ import {
   GetTradeSumByIntervalUseCaseContract,
   IntervalTradesItemType
 } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
-import { ResultadoTradeValue } from "@/core/dashboard/domain/use-cases/get-trade-sum.use-case";
 
 export class GetTradeSumByIntervalUseCase implements GetTradeSumByIntervalUseCaseContract {
   execute(
     params: GetTradeSumByIntervalUseCaseContract.Params
   ): Promise<ActionResult<GetTradeSumByIntervalUseCaseContract.Response, string>> {
     return new Promise((resolve) => {
-      console.log({ params });
       setTimeout(() => resolve(ActionResult.success({ items })), 3000);
     });
   }

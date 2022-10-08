@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import App from './App.vue';
+import App from './index.vue';
 // import store from './store';
 import ability from './plugins/ability';
 import vuetify from './plugins/vuetify';

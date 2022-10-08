@@ -1,21 +1,21 @@
 <template>
-  <v-app id="inspire">
+  <div>
     <logout
         :show="showLogoutDialog"
         @close="closeLogout"
     ></logout>
     <v-navigation-drawer
-      v-model="systemState.navigationDrawer"
-      class="elevation-3"
-      style="border-color: transparent"
-      app
+        v-model="systemState.navigationDrawer"
+        class="elevation-3"
+        style="border-color: transparent"
+        app
     >
       <template v-slot:prepend>
         <v-row justify="center" class="my-4">
           <v-avatar
-            class="overflow-hidden"
-            color="grey"
-            size="164"
+              class="overflow-hidden"
+              color="grey"
+              size="164"
           >
             <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
           </v-avatar>
@@ -25,10 +25,10 @@
       <v-list dense nav>
         <div v-for="(item, i) in systemState.menuItems" :key="i">
           <v-list-item
-            v-if="!item.group"
-            :to="{ name: item.routeName }"
-            link
-            color="primary"
+              v-if="!item.group"
+              :to="{ name: item.routeName }"
+              link
+              color="primary"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
@@ -40,19 +40,19 @@
           </v-list-item>
 
           <v-list-group
-            v-else
-            :value="false"
-            :prepend-icon="item.icon"
+              v-else
+              :value="false"
+              :prepend-icon="item.icon"
           >
             <template v-slot:activator>
               <v-list-item-title>Configurações</v-list-item-title>
             </template>
 
             <v-list-item
-              v-for="({ title, routeName }, i) in item.group"
-              :key="i"
-              link
-              :to="{ name: routeName }"
+                v-for="({ title, routeName }, i) in item.group"
+                :key="i"
+                link
+                :to="{ name: routeName }"
             >
               <v-list-item-icon></v-list-item-icon>
               <v-list-item-title v-text="title"></v-list-item-title>
@@ -77,10 +77,10 @@
       </template>
     </v-navigation-drawer>
 
-<!--    <v-app-bar app color="white" elevation="0" class="grey lighten-5">-->
-<!--      -->
-<!--      <v-toolbar-title>{{ systemState.pageTitle }}</v-toolbar-title>-->
-<!--    </v-app-bar>-->
+    <!--    <v-app-bar app color="white" elevation="0" class="grey lighten-5">-->
+    <!--      -->
+    <!--      <v-toolbar-title>{{ systemState.pageTitle }}</v-toolbar-title>-->
+    <!--    </v-app-bar>-->
 
     <v-main class="grey lighten-5">
       <v-container class="px-8 pt-9 pb-4">
@@ -92,14 +92,13 @@
       </v-container>
       <router-view/>
     </v-main>
-    <notification></notification>
-  </v-app>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import Notification from "@/common/components/notifier.vue";
+import Notification from "@/common/components/notification.vue";
 import { app, TYPES } from "@/core/common/container";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
@@ -108,7 +107,7 @@ import Logout from "@/common/components/logout.vue";
 @Component({
   components: { Logout, Notification },
 })
-export default class App extends Vue {
+export default class AuthenticatedLayout extends Vue {
   private systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
   private authController: AuthController = app.make<AuthController>(TYPES.AuthController);
 
@@ -145,12 +144,6 @@ export default class App extends Vue {
 }
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style scoped>
+
 </style>

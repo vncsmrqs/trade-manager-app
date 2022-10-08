@@ -8,6 +8,7 @@ export type User = {
 };
 
 export type BaseAuthState = {
+  token?: string;
   user?: User;
 }
 
@@ -24,4 +25,6 @@ export type AuthState = (LoggedInAuthState | InitialAuthState) & BaseAuthState;
 
 export const initialAuthState: AuthState = {
   kind: "InitialAuthState",
+  user: undefined,
+  token: undefined,
 };

@@ -69,19 +69,20 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
-import { DeleteTradeController } from "@/core/trade/presentation/controllers/delete-trade.controller";
-import { DeleteTradeState } from "@/core/trade/presentation/states/delete-trade.state";
+import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
+import { AuthState } from "@/core/auth/presentation/states/auth.state";
 
 @Component({})
 export default class Logout extends Vue {
-  private controller = app.make<DeleteTradeController>(TYPES.DeleteTradeController);
+  private controller = app.make<AuthController>(TYPES.AuthController);
   private localState = this.controller.state;
 
   @Prop() show!: boolean;
 
   async confirmLogout() {
-    // await this.controller.deleteTrade(this.item.id);
     this.close();
+    await this.controller.logout();
+    await this.$router.replace({ name: 'login' });
   }
 
   get isLoading(): boolean {
@@ -106,7 +107,7 @@ export default class Logout extends Vue {
     this.$emit('close');
   }
 
-  changeState(state: DeleteTradeState) {
+  changeState(state: AuthState) {
     this.localState = state;
   }
 

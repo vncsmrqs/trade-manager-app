@@ -10,7 +10,6 @@ export class GetTradeSumByWeekdayUseCase implements GetTradeSumByWeekdayUseCaseC
     params: GetTradeSumByWeekdayUseCaseContract.Params
   ): Promise<ActionResult<GetTradeSumByWeekdayUseCaseContract.Response, string>> {
     return new Promise((resolve) => {
-      console.log({ params });
       setTimeout(() => resolve(ActionResult.success({ items: tradeSumByWeekdayResult })), 3000);
     });
   }

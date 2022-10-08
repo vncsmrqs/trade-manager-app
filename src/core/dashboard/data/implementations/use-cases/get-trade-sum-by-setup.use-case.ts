@@ -9,7 +9,6 @@ export class GetTradeSumBySetupUseCase implements GetTradeSumBySetupUseCaseContr
     params: GetTradeSumBySetupUseCaseContract.Params
   ): Promise<ActionResult<GetTradeSumBySetupUseCaseContract.Response, string>> {
     return new Promise((resolve) => {
-      console.log({ params });
       setTimeout(() => resolve(ActionResult.success({ items: tradeSumBySetup })), 3000);
     });
   }
