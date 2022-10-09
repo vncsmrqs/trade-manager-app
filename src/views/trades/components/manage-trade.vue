@@ -280,7 +280,7 @@
                   >
                     <div v-if="detailMode" class="text-body-1">
                       <div class="font-weight-bold mb-2">{{ campoCustomizavel.nome }}</div>
-                      <div>{{ getValorLocalizacao(campoCustomizavel.id) }}</div>
+                      <div>{{ getValorLocalizacao(campoCustomizavel) }}</div>
                     </div>
                     <div v-else>
                       <span class="text-body-1 font-weight-bold">{{ campoCustomizavel.nome }}</span>
@@ -744,7 +744,8 @@ export default class ManageTrade extends Vue {
     observacao: [],
   }
 
-  getValorLocalizacao(localizacao: CampoCustomizavelEntity, valor: string): string {
+  getValorLocalizacao(localizacao: CampoCustomizavelEntity): string {
+    const valor = this.form.localizacao?.[localizacao.id];
     const valorCampoCustomizavel = localizacao.valores?.find((v) => v.valor === valor);
     return valorCampoCustomizavel ? valorCampoCustomizavel.nome : 'Não definido';
   }
