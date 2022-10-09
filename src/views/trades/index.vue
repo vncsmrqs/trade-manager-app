@@ -182,7 +182,7 @@
     </v-row>
 
     <v-row class="mt-8">
-      <v-col cols="12" sm="4">
+      <v-col cols="12" sm="3">
         <v-alert
             border="left"
             colored-border
@@ -198,7 +198,7 @@
           </v-row>
         </v-alert>
       </v-col>
-      <v-col cols="12" sm="4">
+      <v-col cols="12" sm="3">
         <v-alert
             border="left"
             colored-border
@@ -217,7 +217,26 @@
           </v-row>
         </v-alert>
       </v-col>
-      <v-col cols="12" sm="4">
+      <v-col cols="12" sm="3">
+        <v-alert
+            border="left"
+            colored-border
+            color="yellow darken-1"
+            elevation="2"
+            class="py-2"
+        >
+          <v-row>
+            <v-col>
+              <div><h2>{{ listTradeState.metadata.drawCount }}</h2></div>
+              <span class="text-body-2">0x0</span>
+            </v-col>
+            <v-col class="d-flex align-center justify-end">
+              {{ listTradeState.metadata.drawPercentage }}%
+            </v-col>
+          </v-row>
+        </v-alert>
+      </v-col>
+      <v-col cols="12" sm="3">
         <v-alert
             border="left"
             colored-border
@@ -566,7 +585,7 @@ export default class ListTrade extends Vue {
   pointsTextColor(pontos: number): string {
     if (pontos > 0) return 'blue--text text--accent-1';
     if (pontos < 0) return 'red--text text--accent-1';
-    return 'grey--text text--lighter-2'
+    return 'yellow--text text--darken-1'
   }
 
   mounted() {

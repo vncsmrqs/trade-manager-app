@@ -92,9 +92,8 @@ export const TYPES = {
   DeleteTipoEntradaController: Symbol('DeleteTipoEntradaController'),
 
   ListTradeController: Symbol('ListTradeController'),
-  CreateOrUpdateTradeController: Symbol('CreateOrUpdateTradeController'),
   DeleteTradeController: Symbol('DeleteTradeController'),
-  DetailTradeController: Symbol('DetailTradeController'),
+  ManageTradeController: Symbol('ManageTradeController'),
   ListTradeFilterController: Symbol('ListTradeFilterController'),
   ImportFileTradeController: Symbol('ImportFileTradeController'),
 

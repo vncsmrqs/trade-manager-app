@@ -10,7 +10,7 @@ import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/con
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
 import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
 
-let tradeList: Record<any, any>[] = generateTrades();
+let tradeList: Record<any, any>[] = generateTrades(8);
 
 function generateTrades(num = 500): Record<string, any>[] {
   return Array.from(Array(num).keys()).map((i) => {
@@ -81,8 +81,10 @@ export class ManageTradeInMemoryRepository implements
             totalItems,
             lossCount: 45,
             gainCount: 45,
+            drawCount: 45,
             lossPercentage: 45,
             gainPercentage: 45,
+            drawPercentage: 45,
           }
         }));
       }, 3000);
@@ -99,6 +101,9 @@ export class ManageTradeInMemoryRepository implements
   }
 
   update(params: UpdateTradeRepositoryContract.Params): Promise<ActionResult<void, string>> {
+    console.log('[update-trade]', params);
+    //@ts-ignore
+    window.teste = params;
     return new Promise((resolve, reject) => {
       tradeList = tradeList.map((trade) => {
         if (params.id === trade.id) {

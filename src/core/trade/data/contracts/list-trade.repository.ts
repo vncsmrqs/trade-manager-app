@@ -32,8 +32,10 @@ export namespace ListTradeRepositoryContract {
       totalItems: number,
       lossCount: number,
       gainCount: number,
+      drawCount: number,
       lossPercentage: number,
       gainPercentage: number,
+      drawPercentage: number,
     },
   }
 }

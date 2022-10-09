@@ -3,14 +3,53 @@ import { NotificationController } from "@/core/notification/presentation/control
 import { ManageTradeState, initialManageTradeState } from "@/core/trade/presentation/states/manage-trade.state";
 import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
 import { ActionResult } from "@/core/common/domain/action-result";
+import { CreateTradeUseCaseContract } from "@/core/trade/domain/use-cases/create-trade.use-case";
+import { UpdateTradeUseCaseContract } from "@/core/trade/domain/use-cases/update-trade.use-case";
+import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
 
 
 export class ManageTradeController extends Controller<ManageTradeState> {
   constructor(
     private uploadTradeImageUseCase: UploadTradeImageUseCaseContract,
-    private notificationController: NotificationController
+    private notificationController: NotificationController,
+    private createTradeUseCase: CreateTradeUseCaseContract,
+    private updateTradeUseCase: UpdateTradeUseCaseContract,
   ) {
     super(initialManageTradeState);
+  }
+
+  public async createOrUpdateTrade(trade: TradeEntity): Promise<void> {
+    this.changeState({
+      kind: "LoadingManageTradeState",
+    });
+    console.log({ trade });
+    try {
+      const result = await this[
+        trade.id ? 'updateTradeUseCase' : 'createTradeUseCase'
+      ].execute(trade.toObject);
+
+      if (result.successful) {
+        this.changeState({
+          kind: "LoadedManageTradeState",
+        });
+        this.notificationController.push({
+          type: 'success',
+          message: 'Registro salvo com sucesso!',
+          timeout: 3000,
+        });
+        return;
+      }
+
+      this.changeState({
+        kind: "ErrorManageTradeState",
+        error: result.error,
+      });
+    } catch (error: any) {
+      this.changeState({
+        kind: "ErrorManageTradeState",
+        error: "Algo inexperado aconteceu ao salvar o registro.",
+      });
+    }
   }
 
   public async uploadImage(image: File): Promise<ActionResult<string, string>> {

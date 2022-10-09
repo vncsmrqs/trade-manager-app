@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Entity } from "@/core/common/domain/entity";
 
 export type TradeResultadoType = 'gain' | 'loss' | '0x0';
 export type TradeSentimentoType = 'bem' | 'neutro' | 'mal';
@@ -38,13 +39,7 @@ export type TradeEntityProps = DefaultTradeEntityProps & {
   timeFrameNome?: string;
 }
 
-export class TradeEntity {
-  private props: TradeEntityProps;
-
-  constructor(props: TradeEntityProps) {
-    this.props = props;
-  }
-
+export class TradeEntity extends Entity<TradeEntityProps>{
   get id(): string {
     return this.props.id;
   }
@@ -93,7 +88,7 @@ export class TradeEntity {
   get seguiuPlano(): boolean | undefined {
     return this.props.seguiuPlano;
   }
-  get sentimento(): string | undefined{
+  get sentimento(): TradeSentimentoType | undefined {
     return this.props.sentimento;
   }
   get primeiroAlvo(): boolean | undefined{

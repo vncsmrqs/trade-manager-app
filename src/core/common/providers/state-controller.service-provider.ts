@@ -29,7 +29,6 @@ import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-c
 import { ListTradeController } from "@/core/trade/presentation/controllers/list-trade.controller";
 import { ListTradeUseCaseContract } from "@/core/trade/domain/use-cases/list-trade.use-case";
 import { UpdateTradeUseCaseContract } from "@/core/trade/domain/use-cases/update-trade.use-case";
-import { CreateOrUpdateTradeController } from "@/core/trade/presentation/controllers/create-or-update-trade.controller";
 import { CreateTradeUseCaseContract } from "@/core/trade/domain/use-cases/create-trade.use-case";
 import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete-trade.use-case";
 import { DeleteTradeController } from "@/core/trade/presentation/controllers/delete-trade.controller";
@@ -166,15 +165,6 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       );
     });
 
-    container.singleton(TYPES.CreateOrUpdateTradeController, () => {
-      return new CreateOrUpdateTradeController(
-        container.make<CreateTradeUseCaseContract>(TYPES.CreateTradeUseCaseContract),
-        container.make<UpdateTradeUseCaseContract>(TYPES.UpdateTradeUseCaseContract),
-        container.make<ListTradeController>(TYPES.ListTradeController),
-        container.make<NotificationController>(TYPES.NotificationController),
-      );
-    });
-
     container.singleton(TYPES.DeleteTradeController, () => {
       return new DeleteTradeController(
         container.make<DeleteTradeUseCaseContract>(TYPES.DeleteTradeUseCaseContract),
@@ -182,10 +172,12 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       );
     });
 
-    container.singleton(TYPES.DetailTradeController, () => {
+    container.singleton(TYPES.ManageTradeController, () => {
       return new ManageTradeController(
         container.make<UploadTradeImageUseCaseContract>(TYPES.UploadTradeImageUseCaseContract),
         container.make<NotificationController>(TYPES.NotificationController),
+        container.make<CreateTradeUseCaseContract>(TYPES.CreateTradeUseCaseContract),
+        container.make<UpdateTradeUseCaseContract>(TYPES.UpdateTradeUseCaseContract),
       );
     });
 

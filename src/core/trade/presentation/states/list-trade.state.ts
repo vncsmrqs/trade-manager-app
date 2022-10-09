@@ -56,8 +56,10 @@ export const initialListTradeState : ListTradeState = {
     totalItems: 0,
     lossCount: 0,
     gainCount: 0,
+    drawCount: 0,
     lossPercentage: 0,
     gainPercentage: 0,
+    drawPercentage: 0,
   },
   filter: {
     startDate: moment().subtract(1, "month").format('YYYY-MM-DD'),

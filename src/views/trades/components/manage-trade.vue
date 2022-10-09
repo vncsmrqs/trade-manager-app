@@ -428,7 +428,8 @@
                     </v-col>
                     <v-col v-if="!detailMode" cols="12" class="py-0">
                       <v-text-field
-                          v-model="form.pontuacao"
+                          :value="form.pontuacao"
+                          @input="(v) => form.pontuacao = Number(v)"
                           label="Pontos"
                           outlined
                           dense
@@ -689,7 +690,7 @@ type FormType = Partial<TradeEntityProps> & {
   components: { SingleImageViewer, DeleteTrade }
 })
 export default class ManageTrade extends Vue {
-  private manageTradeController = app.make<ManageTradeController>(TYPES.DetailTradeController);
+  private manageTradeController = app.make<ManageTradeController>(TYPES.ManageTradeController);
   private manageTradeState = this.manageTradeController.state;
 
   private listTradeFilterController = app.make<ListTradeFilterController>(TYPES.ListTradeFilterController);
@@ -1002,6 +1003,7 @@ export default class ManageTrade extends Vue {
   async saveTrade(): Promise<void> {
     const isValid = this.validateForm();
     if (isValid) {
+      await this.manageTradeController.createOrUpdateTrade(new TradeEntity(this.form));
       this.close();
     }
   }

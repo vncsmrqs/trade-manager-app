@@ -34,7 +34,6 @@ export default class App extends Vue {
 
   @Watch('isLoadingSession')
   changeSplash(value: boolean) {
-    console.log('isLoadingSession', value);
     if (!value) {
       this.showSplash = false;
     }
