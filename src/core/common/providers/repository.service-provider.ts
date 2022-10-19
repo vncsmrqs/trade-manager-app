@@ -39,8 +39,10 @@ import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/
 import { GetTradeSumBySetupRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-setup.respository";
 import { GetTradeSumByWeekdayRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-weekday.respository";
 import { GetTradeSumRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum.repository";
-import { DashboardInMemoryRepository } from "@/core/dashboard/infra/dashboard-in-memory.repository";
 import { GetTradeSumByIntervalRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-interval.repository";
+import { DashboardApiRepository } from "@/core/dashboard/infra/dashboard-api.repository";
+
+const apiBaseUrl =  process.env.BASE_URL || 'http://localhost:8000/api';
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
@@ -56,7 +58,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<UpdateGatilhoRepositoryContract>(TYPES.UpdateGatilhoRepositoryContract, manageGatilhoRepository);
     container.instance<DeleteGatilhoRepositoryContract>(TYPES.DeleteGatilhoRepositoryContract, manageGatilhoRepository);
 
-    const dashboardRepository = new DashboardInMemoryRepository();
+    const dashboardRepository = new DashboardApiRepository(apiBaseUrl);
     container.instance<GetTradeSumBySetupRepositoryContract>(
       TYPES.GetTradeSumBySetupRepositoryContract,
       dashboardRepository
