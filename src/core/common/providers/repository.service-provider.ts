@@ -19,7 +19,6 @@ import { UpdateTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/co
 import { DeleteTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/delete-tipo-entrada.repository";
 
 //implementations
-import { ManageSetupInMemoryRepository } from "@/core/setup/infra/repositories/manage-setup-in-memory.repository";
 import { ManageGatilhoInMemoryRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-in-memory.repository";
 import { ManageTipoEntradaInMemoryRepository } from "@/core/tipo-entrada/infra/repositories/manage-tipo-entrada-in-memory.repository";
 import { ManageTradeInMemoryRepository } from "@/core/trade/infra/repositories/manage-trade-in-memory.repository";
@@ -44,6 +43,7 @@ import { DashboardApiRepository } from "@/core/dashboard/infra/dashboard-api.rep
 import { AuthApiRepository } from "@/core/auth/infra/auth-api.repository";
 import { LoginRepositoryContract } from "@/core/auth/data/contracts/login.repository";
 import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get-current-user.repository";
+import { ManageSetupApiRepository } from "@/core/setup/infra/repositories/manage-setup-api.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -53,7 +53,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<LoginRepositoryContract>(TYPES.LoginRepositoryContract, authApiRepository);
     container.instance<GetCurrentUserRepositoryContract>(TYPES.GetCurrentUserRepositoryContract, authApiRepository);
 
-    const manageSetupRepository = new ManageSetupInMemoryRepository();
+    const manageSetupRepository = new ManageSetupApiRepository(apiBaseUrl);
     container.instance<ListSetupRepositoryContract>(TYPES.ListSetupRepositoryContract, manageSetupRepository);
     container.instance<CreateSetupRepositoryContract>(TYPES.CreateSetupRepositoryContract, manageSetupRepository);
     container.instance<UpdateSetupRepositoryContract>(TYPES.UpdateSetupRepositoryContract, manageSetupRepository);

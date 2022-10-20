@@ -45,4 +45,15 @@ export class SetupEntity {
   get updatedAt(): string {
     return this.props.updatedAt;
   }
+
+  public static createFromRaw(raw: any): SetupEntity {
+    return new SetupEntity({
+      id: raw.id,
+      nome: raw.nome,
+      createdAt: raw.created_at,
+      updatedAt: raw.updated_at,
+      ativo: raw.ativo,
+      userId: raw.user_id,
+    });
+  }
 }

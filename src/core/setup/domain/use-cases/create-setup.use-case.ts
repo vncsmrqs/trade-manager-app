@@ -6,8 +6,8 @@ export interface CreateSetupUseCaseContract {
 
 export namespace CreateSetupUseCaseContract {
   export type Params = {
-    name: string,
-    active?: boolean,
+    nome: string;
+    ativo: boolean;
   };
   export type Response = void;
 }
