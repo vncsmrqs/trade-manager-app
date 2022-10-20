@@ -35,6 +35,7 @@
                     type="email"
                     outlined
                     required
+                    :validate-on-blur="true"
                     :rules="[rules.required, rules.validEmail]"
                     v-model="form.email"
                   ></v-text-field>
@@ -51,6 +52,7 @@
                     name="input-10-2"
                     v-model="form.password"
                     @click:append="showPassword = !showPassword"
+                    :validate-on-blur="true"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="8" class="mt-16">
@@ -92,10 +94,11 @@ export default class Login extends Vue {
     email: '',
     password: '',
   };
+
   rules = {
-    required: value => !!value || 'Campo obrigatório',
-    min: v => v.length >= 8 || 'Mínimo 8 caracteres',
-    validEmail: v => validateEmail(v) || 'Informe um email válido',
+    required: (value: string) => !!value || 'Campo obrigatório',
+    min: (value: string) => value.length >= 8 || 'Mínimo 8 caracteres',
+    validEmail: (value: string) => validateEmail(value) || 'Informe um email válido',
     emailMatch: () => !this.hasError || this.error,
   };
 

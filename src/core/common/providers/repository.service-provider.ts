@@ -41,11 +41,18 @@ import { GetTradeSumByWeekdayRepositoryContract } from "@/core/dashboard/data/co
 import { GetTradeSumRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum.repository";
 import { GetTradeSumByIntervalRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-interval.repository";
 import { DashboardApiRepository } from "@/core/dashboard/infra/dashboard-api.repository";
+import { AuthApiRepository } from "@/core/auth/infra/auth-api.repository";
+import { LoginRepositoryContract } from "@/core/auth/data/contracts/login.repository";
+import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get-current-user.repository";
 
-const apiBaseUrl =  process.env.BASE_URL || 'http://localhost:8000/api';
+const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
+    const authApiRepository = new AuthApiRepository(apiBaseUrl);
+    container.instance<LoginRepositoryContract>(TYPES.LoginRepositoryContract, authApiRepository);
+    container.instance<GetCurrentUserRepositoryContract>(TYPES.GetCurrentUserRepositoryContract, authApiRepository);
+
     const manageSetupRepository = new ManageSetupInMemoryRepository();
     container.instance<ListSetupRepositoryContract>(TYPES.ListSetupRepositoryContract, manageSetupRepository);
     container.instance<CreateSetupRepositoryContract>(TYPES.CreateSetupRepositoryContract, manageSetupRepository);

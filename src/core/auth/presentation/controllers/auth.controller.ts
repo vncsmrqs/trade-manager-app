@@ -64,7 +64,9 @@ export class AuthController extends Controller<AuthState> {
     });
 
     try {
-      const getCurrentUserResult = await this.getCurrentUserUseCase.execute();
+      const getCurrentUserResult = await this.getCurrentUserUseCase.execute({
+        token: currentToken,
+      });
 
       if (getCurrentUserResult.successful) {
         this.changeState({

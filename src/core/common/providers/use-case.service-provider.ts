@@ -86,6 +86,8 @@ import { GetTradeSumBySetupRepositoryContract } from "@/core/dashboard/data/cont
 import { GetTradeSumByWeekdayRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-weekday.respository";
 import { GetTradeSumRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum.repository";
 import { GetTradeSumByIntervalRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-interval.repository";
+import { LoginRepositoryContract } from "@/core/auth/data/contracts/login.repository";
+import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get-current-user.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -103,13 +105,15 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
 
   private bootAuthUseCases(container: ContainerContract) {
     container.bind<LoginUseCaseContract>(TYPES.LoginUseCaseContract, () => {
-      return new LoginUseCase();
-      //todo: Implement repository
+      return new LoginUseCase(
+        container.make<LoginRepositoryContract>(TYPES.LoginRepositoryContract),
+      );
     });
 
     container.bind<GetCurrentUserUseCaseContract>(TYPES.GetCurrentUserUseCaseContract, () => {
-      return new GetCurrentUserUseCase();
-      //todo: Implement repository
+      return new GetCurrentUserUseCase(
+        container.make<GetCurrentUserRepositoryContract>(TYPES.GetCurrentUserRepositoryContract),
+      );
     });
   }
 

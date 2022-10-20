@@ -40,6 +40,9 @@ export const TYPES = {
   ListCampoCustomizavelUseCaseContract: Symbol('ListCampoCustomizavelUseCaseContract'),
 
   /* Repositories */
+  LoginRepositoryContract: Symbol('LoginRepositoryContract'),
+  GetCurrentUserRepositoryContract: Symbol('GetCurrentUserRepositoryContract'),
+
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
   UpdateSetupRepositoryContract: Symbol('UpdateSetupRepositoryContract'),

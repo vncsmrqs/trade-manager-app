@@ -39,7 +39,8 @@ export class DashboardController extends Controller<DashboardState> {
     } catch (error: any) {
       this.changeState({
         kind: "ErrorDashboardState",
-        error: 'Algo inexperado ocorreu ao atualizar o dashboard.'
+        error: 'Algo inexperado ocorreu ao atualizar o dashboard.',
+
       });
     }
   }

@@ -37,8 +37,10 @@ export abstract class HttpClient {
 
   private handleRequests = (request: AxiosRequestConfig) => {
     request.headers = {
-      ...request.headers,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
       'Authorization': window.localStorage.getItem('token'),
+      ...request.headers,
     };
     return request;
   }
