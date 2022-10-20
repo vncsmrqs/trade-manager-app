@@ -51,7 +51,7 @@ export class AuthApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if (error.code === '401') {
+      if (error.code === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
       return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
