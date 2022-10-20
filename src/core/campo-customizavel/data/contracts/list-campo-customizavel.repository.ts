@@ -1,5 +1,5 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
+import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
 
 export interface ListCampoCustomizavelRepositoryContract {
   list(
@@ -8,15 +8,6 @@ export interface ListCampoCustomizavelRepositoryContract {
 }
 
 export namespace ListCampoCustomizavelRepositoryContract {
-  export type Params = {
-    search?: string;
-    page?: number;
-    itemsPerPage?: number;
-  }
-
-  export type Response = {
-    items: CampoCustomizavelEntity[];
-    page: number;
-    pageCount: number;
-  }
+  export type Params = ListCampoCustomizavelUseCaseContract.Params;
+  export type Response = ListCampoCustomizavelUseCaseContract.Response;
 }

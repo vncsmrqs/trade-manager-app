@@ -57,4 +57,17 @@ export class CampoCustomizavelEntity {
   get valores(): ValorCampoCustomizavelEntity[] {
     return this.props.valores;
   }
+
+  public static createFromRaw(raw: any): CampoCustomizavelEntity {
+    return new CampoCustomizavelEntity({
+      id: raw.id,
+      nome: raw.nome,
+      createdAt: raw.created_at,
+      updatedAt: raw.updated_at,
+      ativo: raw.ativo,
+      userId: raw.user_id,
+      contexto: raw.contexto,
+      valores: raw.valores.map((valor: any) => ValorCampoCustomizavelEntity.createFromRaw(valor)),
+    });
+  }
 }

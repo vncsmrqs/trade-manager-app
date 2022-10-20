@@ -44,7 +44,7 @@
             <v-tabs v-model="tab">
               <v-tabs-slider></v-tabs-slider>
               <v-tab :href="`#${availableTabs.DADOS_PRINCIPAIS}`">Dados Principais</v-tab>
-              <v-tab :href="`#${availableTabs.LOCALIZACAO}`">Localização</v-tab>
+              <v-tab :href="`#${availableTabs.FILTRO}`">Filtro</v-tab>
               <v-tab :href="`#${availableTabs.ENCERRAMENTO}`">Encerramento</v-tab>
             </v-tabs>
           </v-col>
@@ -269,30 +269,30 @@
                 </v-card-text>
             </v-tab-item>
 
-            <v-tab-item :value="availableTabs.LOCALIZACAO">
+            <v-tab-item :value="availableTabs.FILTRO">
               <v-card-text>
                 <v-row>
                   <v-col
                       cols="6"
                       :class="{'py-0': !detailMode}"
-                      v-for="campoCustomizavel in localizacaoList"
-                      :key="campoCustomizavel.id"
+                      v-for="filtro in filtroList"
+                      :key="filtro.id"
                   >
                     <div v-if="detailMode" class="text-body-1">
-                      <div class="font-weight-bold mb-2">{{ campoCustomizavel.nome }}</div>
-                      <div>{{ getValorLocalizacao(campoCustomizavel) }}</div>
+                      <div class="font-weight-bold mb-2">{{ filtro.nome }}</div>
+                      <div>{{ getValorFiltro(filtro) }}</div>
                     </div>
                     <div v-else>
-                      <span class="text-body-1 font-weight-bold">{{ campoCustomizavel.nome }}</span>
+                      <span class="text-body-1 font-weight-bold">{{ filtro.nome }}</span>
                       <v-radio-group
-                          v-model="form.localizacao[campoCustomizavel.id]"
+                          v-model="form.filtro[campoCustomizavel.id]"
                           column
                       >
                         <v-radio
                             v-for="valorDisponivel in campoCustomizavel.valores"
                             :label="valorDisponivel.nome"
-                            :value="valorDisponivel.valor"
-                            :key="`${campoCustomizavel.id}-${valorDisponivel.valor}`"
+                            :value="valorDisponivel.id"
+                            :key="`${campoCustomizavel.id}-${valorDisponivel.id}`"
                         ></v-radio>
                       </v-radio-group>
                     </div>
@@ -683,7 +683,7 @@ import SingleImageViewer from "@/common/components/single-image-viewer.vue";
 
 type FormType = Partial<TradeEntityProps> & {
   horaAbertura?: string;
-  localizacao: Record<string, string>;
+  filtro: Record<string, string>;
 };
 
 @Component({
@@ -698,7 +698,7 @@ export default class ManageTrade extends Vue {
 
   private readonly availableTabs = {
     DADOS_PRINCIPAIS: '1',
-    LOCALIZACAO: '2',
+    FILTRO: '2',
     ENCERRAMENTO: '3',
   };
 
@@ -744,9 +744,9 @@ export default class ManageTrade extends Vue {
     observacao: [],
   }
 
-  getValorLocalizacao(localizacao: CampoCustomizavelEntity): string {
-    const valor = this.form.localizacao?.[localizacao.id];
-    const valorCampoCustomizavel = localizacao.valores?.find((v) => v.valor === valor);
+  getValorFiltro(filtro: CampoCustomizavelEntity): string {
+    const valorSelecionadoId = this.form.filtro?.[filtro.id];
+    const valorCampoCustomizavel = filtro.valores?.find((v) => v.id === valorSelecionadoId);
     return valorCampoCustomizavel ? valorCampoCustomizavel.nome : 'Não definido';
   }
 
@@ -773,7 +773,7 @@ export default class ManageTrade extends Vue {
       segundoAlvo: undefined,
       imagemUrl: undefined,
       observacao: undefined,
-      localizacao: {},
+      filtro: {},
     };
   }
 
@@ -865,8 +865,8 @@ export default class ManageTrade extends Vue {
     }));
   }
 
-  get localizacaoList() {
-    return this.listTradeFilterState.localizacaoList;
+  get filtroList() {
+    return this.listTradeFilterState.filtroList;
   }
 
   get isLoading(): boolean {
@@ -975,10 +975,10 @@ export default class ManageTrade extends Vue {
       return;
     }
     if (this.tab === this.availableTabs.ENCERRAMENTO) {
-      this.tab = this.availableTabs.LOCALIZACAO;
+      this.tab = this.availableTabs.FILTRO;
       return;
     }
-    if (this.tab === this.availableTabs.LOCALIZACAO) {
+    if (this.tab === this.availableTabs.FILTRO) {
       this.tab = this.availableTabs.DADOS_PRINCIPAIS;
       return;
     }
@@ -991,10 +991,10 @@ export default class ManageTrade extends Vue {
       return;
     }
     if (this.tab === this.availableTabs.DADOS_PRINCIPAIS) {
-      this.tab = this.availableTabs.LOCALIZACAO;
+      this.tab = this.availableTabs.FILTRO;
       return;
     }
-    if (this.tab === this.availableTabs.LOCALIZACAO) {
+    if (this.tab === this.availableTabs.FILTRO) {
       this.tab = this.availableTabs.ENCERRAMENTO;
       return;
     }
@@ -1089,7 +1089,7 @@ export default class ManageTrade extends Vue {
       tipoEntradaNome: item.tipoEntradaNome,
       ativoCodigo: item.ativoCodigo,
       timeFrameNome: item.timeFrameNome,
-      localizacao: item.localizacao,
+      filtro: item.filtro,
       horaAbertura: item.horaAbertura,
     };
   }

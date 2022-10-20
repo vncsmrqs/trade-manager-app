@@ -11,7 +11,7 @@ export type BaseListTradeFilterState = {
   tipoEntradaList: TipoEntradaEntity[];
   ativoList: AtivoEntity[];
   timeFrameList: TimeFrameEntity[];
-  localizacaoList: CampoCustomizavelEntity[];
+  filtroList: CampoCustomizavelEntity[];
   error?: string;
 }
 export type InitialListTradeFilterState = {
@@ -44,6 +44,6 @@ export const initialListTradeFilterState: ListTradeFilterState = {
   tipoEntradaList: [],
   ativoList: [],
   timeFrameList: [],
-  localizacaoList: [],
+  filtroList: [],
   error: undefined,
 };

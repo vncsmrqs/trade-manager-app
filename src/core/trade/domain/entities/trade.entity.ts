@@ -26,7 +26,7 @@ export type DefaultTradeEntityProps = {
   segundoAlvo?: boolean;
   imagemUrl?: string;
   observacao?: string;
-  localizacao: Record<string, string>;
+  filtro: Record<string, string>;
 }
 
 export type TradeEntityProps = DefaultTradeEntityProps & {
@@ -123,8 +123,8 @@ export class TradeEntity extends Entity<TradeEntityProps>{
     return this.props.observacao;
   }
 
-  get localizacao(): Record<string, string> {
-    return this.props.localizacao;
+  get filtro(): Record<string, string> {
+    return this.props.filtro;
   }
 
   get timeFrameNome(): string | undefined {

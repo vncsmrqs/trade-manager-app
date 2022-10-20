@@ -18,7 +18,7 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
     private listTipoEntradaUseCase: ListTipoEntradaUseCaseContract,
     private listTimeFrameUseCase: ListTimeFrameUseCaseContract,
     private listAtivoUseCase: ListAtivoUseCaseContract,
-    private listLocalizacaoUseCase: ListCampoCustomizavelUseCaseContract,
+    private listFiltroUseCase: ListCampoCustomizavelUseCaseContract,
   ) {
     super(initialListTradeFilterState);
   }
@@ -36,14 +36,14 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
         tipoEntradaResult,
         timeFrameResult,
         ativoResult,
-        localizacaoResult,
+        filtroResult,
       ] = await Promise.all([
         this.listSetupUseCase.execute({}),
         this.listGatilhoUseCase.execute({}),
         this.listTipoEntradaUseCase.execute({}),
         this.listTimeFrameUseCase.execute({}),
         this.listAtivoUseCase.execute({}),
-        this.listLocalizacaoUseCase.execute({}),
+        this.listFiltroUseCase.execute({}),
       ]);
 
       const mainResult = ActionResult.combine([
@@ -52,7 +52,7 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
         tipoEntradaResult,
         timeFrameResult,
         ativoResult,
-        localizacaoResult,
+        filtroResult,
       ]);
 
       if (mainResult.successful) {
@@ -63,7 +63,7 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
           tipoEntradaList: tipoEntradaResult.value.items,
           ativoList: ativoResult.value.items,
           timeFrameList: timeFrameResult.value.items,
-          localizacaoList: localizacaoResult.value.items,
+          filtroList: filtroResult.value.items,
         });
 
         return;

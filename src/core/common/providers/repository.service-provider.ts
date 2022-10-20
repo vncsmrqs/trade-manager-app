@@ -27,7 +27,6 @@ import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delet
 import { ListAtivoRepositoryContract } from "@/core/ativo/data/contracts/list-ativo.repository";
 import { ListTimeFrameRepositoryContract } from "@/core/time-frame/data/contracts/list-time-frame.repository";
 import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
-import { ManageCampoCustomizavelInMemoryRepository } from "@/core/campo-customizavel/infra/repositories/manage-campo-customizavel-in-memory.repository";
 import { ManageTimeFrameInMemoryRepository } from "@/core/time-frame/infra/repositories/manage-time-frame-in-memory.repository";
 import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
@@ -44,6 +43,7 @@ import { ManageSetupApiRepository } from "@/core/setup/infra/repositories/manage
 import { ManageTipoEntradaApiRepository } from "@/core/tipo-entrada/infra/repositories/manage-tipo-entrada-api.repository";
 import { ManageGatilhoApiRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-api.repository";
 import { ManageAtivoApiRepository } from "@/core/ativo/infra/repositories/manage-ativo-api.repository";
+import { ManageCampoCustomizavelApiRepository } from "@/core/campo-customizavel/infra/repositories/manage-campo-customizavel-api.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -128,7 +128,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
       manageTimeFrameRepository
     );
 
-    const manageCampoCustomizavelRepository = new ManageCampoCustomizavelInMemoryRepository();
+    const manageCampoCustomizavelRepository = new ManageCampoCustomizavelApiRepository(apiBaseUrl);
     container.instance<ListCampoCustomizavelRepositoryContract>(
       TYPES.ListCampoCustomizavelRepositoryContract,
       manageCampoCustomizavelRepository

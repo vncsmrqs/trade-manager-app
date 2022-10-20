@@ -10,6 +10,7 @@ export namespace ListCampoCustomizavelUseCaseContract {
     search?: string;
     page?: number;
     itemsPerPage?: number;
+    contexto?: string;
   }
 
   export type Response = {
