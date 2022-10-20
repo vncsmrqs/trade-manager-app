@@ -7,8 +7,8 @@ export interface CreateTipoEntradaUseCaseContract {
 
 export namespace CreateTipoEntradaUseCaseContract {
   export type Params = {
-    name: string,
-    active?: boolean,
+    nome: string;
+    ativo: boolean;
   };
   export type Response = void;
 }

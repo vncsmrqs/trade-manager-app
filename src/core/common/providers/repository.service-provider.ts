@@ -44,6 +44,7 @@ import { AuthApiRepository } from "@/core/auth/infra/auth-api.repository";
 import { LoginRepositoryContract } from "@/core/auth/data/contracts/login.repository";
 import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get-current-user.repository";
 import { ManageSetupApiRepository } from "@/core/setup/infra/repositories/manage-setup-api.repository";
+import { ManageTipoEntradaApiRepository } from "@/core/tipo-entrada/infra/repositories/manage-tipo-entrada-api.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -83,7 +84,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
       dashboardRepository
     );
 
-    const manageTipoEntradaRepository = new ManageTipoEntradaInMemoryRepository();
+    const manageTipoEntradaRepository = new ManageTipoEntradaApiRepository(apiBaseUrl);
     container.instance<ListTipoEntradaRepositoryContract>(
       TYPES.ListTipoEntradaRepositoryContract,
       manageTipoEntradaRepository
