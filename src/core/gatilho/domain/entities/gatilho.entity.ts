@@ -45,4 +45,15 @@ export class GatilhoEntity {
   get updatedAt(): string {
     return this.props.updatedAt;
   }
+
+  public static createFromRaw(raw: any): GatilhoEntity {
+    return new GatilhoEntity({
+      id: raw.id,
+      nome: raw.nome,
+      createdAt: raw.createdAt,
+      updatedAt: raw.updatedAt,
+      ativo: raw.ativo,
+      userId: raw.userId,
+    });
+  }
 }

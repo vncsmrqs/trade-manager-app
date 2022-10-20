@@ -7,8 +7,8 @@ export interface CreateGatilhoUseCaseContract {
 
 export namespace CreateGatilhoUseCaseContract {
   export type Params = {
-    name: string,
-    active?: boolean,
+    nome: string;
+    ativo: boolean;
   };
   export type Response = void;
 }

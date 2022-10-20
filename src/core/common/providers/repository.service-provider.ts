@@ -19,8 +19,6 @@ import { UpdateTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/co
 import { DeleteTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/delete-tipo-entrada.repository";
 
 //implementations
-import { ManageGatilhoInMemoryRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-in-memory.repository";
-import { ManageTipoEntradaInMemoryRepository } from "@/core/tipo-entrada/infra/repositories/manage-tipo-entrada-in-memory.repository";
 import { ManageTradeInMemoryRepository } from "@/core/trade/infra/repositories/manage-trade-in-memory.repository";
 import { ListTradeRepositoryContract } from "@/core/trade/data/contracts/list-trade.repository";
 import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/create-trade.repository";
@@ -45,6 +43,7 @@ import { LoginRepositoryContract } from "@/core/auth/data/contracts/login.reposi
 import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get-current-user.repository";
 import { ManageSetupApiRepository } from "@/core/setup/infra/repositories/manage-setup-api.repository";
 import { ManageTipoEntradaApiRepository } from "@/core/tipo-entrada/infra/repositories/manage-tipo-entrada-api.repository";
+import { ManageGatilhoApiRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-api.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -60,7 +59,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<UpdateSetupRepositoryContract>(TYPES.UpdateSetupRepositoryContract, manageSetupRepository);
     container.instance<DeleteSetupRepositoryContract>(TYPES.DeleteSetupRepositoryContract, manageSetupRepository);
 
-    const manageGatilhoRepository = new ManageGatilhoInMemoryRepository();
+    const manageGatilhoRepository = new ManageGatilhoApiRepository(apiBaseUrl);
     container.instance<ListGatilhoRepositoryContract>(TYPES.ListGatilhoRepositoryContract, manageGatilhoRepository);
     container.instance<CreateGatilhoRepositoryContract>(TYPES.CreateGatilhoRepositoryContract, manageGatilhoRepository);
     container.instance<UpdateGatilhoRepositoryContract>(TYPES.UpdateGatilhoRepositoryContract, manageGatilhoRepository);

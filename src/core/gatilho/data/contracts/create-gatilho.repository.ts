@@ -1,13 +1,13 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
+import { CreateGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/create-gatilho.use-case";
 
 export interface CreateGatilhoRepositoryContract {
-  create(params: CreateGatilhoRepositoryContract.Params): Promise<ActionResult<void, any>>
+  create(
+    params: CreateGatilhoRepositoryContract.Params
+  ): Promise<ActionResult<CreateGatilhoRepositoryContract.Response, any>>
 }
 
 export namespace CreateGatilhoRepositoryContract {
-  export type Params = {
-    name: string;
-    description?: string;
-  };
+  export type Params = CreateGatilhoUseCaseContract.Params;
+  export type Response = CreateGatilhoUseCaseContract.Response;
 }
