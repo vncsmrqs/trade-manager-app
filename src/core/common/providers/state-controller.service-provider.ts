@@ -34,7 +34,6 @@ import { DeleteTradeUseCaseContract } from "@/core/trade/domain/use-cases/delete
 import { DeleteTradeController } from "@/core/trade/presentation/controllers/delete-trade.controller";
 import { ManageTradeController } from "@/core/trade/presentation/controllers/manage-trade.controller";
 import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
-import { ListTimeFrameUseCaseContract } from "@/core/time-frame/domain/use-cases/list-time-frame.use-case";
 import { ListAtivoUseCaseContract } from "@/core/ativo/domain/use-cases/list-ativo.use-case";
 import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
 import { ImportFileTradeController } from "@/core/trade/presentation/controllers/import-trade.controller";
@@ -42,7 +41,6 @@ import { UploadFileToImportTradeUseCaseContract } from "@/core/trade/domain/use-
 import { ImportUploadedFileTradeUseCaseContract } from "@/core/trade/domain/use-cases/import-uploaded-file-trade.use-case";
 import { UploadTradeImageUseCaseContract } from "@/core/trade/domain/use-cases/upload-trade-image.use-case";
 import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
-import { ActionResult } from "@/core/common/domain/action-result";
 import { GetTradeSumBySetupUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-setup.use-case";
 import { GetTradeSumByWeekdayUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-weekday.use-case";
 import { GetTradeSumUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum.use-case";
@@ -186,7 +184,6 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
         container.make<ListSetupUseCaseContract>(TYPES.ListSetupUseCaseContract),
         container.make<ListGatilhoUseCaseContract>(TYPES.ListGatilhoUseCaseContract),
         container.make<ListTipoEntradaUseCaseContract>(TYPES.ListTipoEntradaUseCaseContract),
-        container.make<ListTimeFrameUseCaseContract>(TYPES.ListTimeFrameUseCaseContract),
         container.make<ListAtivoUseCaseContract>(TYPES.ListAtivoUseCaseContract),
         container.make<ListCampoCustomizavelUseCaseContract>(TYPES.ListCampoCustomizavelUseCaseContract),
       );

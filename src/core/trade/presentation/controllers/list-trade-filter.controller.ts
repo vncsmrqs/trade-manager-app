@@ -6,7 +6,6 @@ import {
 import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/list-setup.use-case";
 import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
 import { ListAtivoUseCaseContract } from "@/core/ativo/domain/use-cases/list-ativo.use-case";
-import { ListTimeFrameUseCaseContract } from "@/core/time-frame/domain/use-cases/list-time-frame.use-case";
 import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
 import { ListGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/list-gatilho.use-case";
 import { ActionResult } from "@/core/common/domain/action-result";
@@ -16,7 +15,6 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
     private listSetupUseCase: ListSetupUseCaseContract,
     private listGatilhoUseCase: ListGatilhoUseCaseContract,
     private listTipoEntradaUseCase: ListTipoEntradaUseCaseContract,
-    private listTimeFrameUseCase: ListTimeFrameUseCaseContract,
     private listAtivoUseCase: ListAtivoUseCaseContract,
     private listFiltroUseCase: ListCampoCustomizavelUseCaseContract,
   ) {
@@ -34,14 +32,12 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
         setupResult,
         gatilhoResult,
         tipoEntradaResult,
-        timeFrameResult,
         ativoResult,
         filtroResult,
       ] = await Promise.all([
         this.listSetupUseCase.execute({}),
         this.listGatilhoUseCase.execute({}),
         this.listTipoEntradaUseCase.execute({}),
-        this.listTimeFrameUseCase.execute({}),
         this.listAtivoUseCase.execute({}),
         this.listFiltroUseCase.execute({}),
       ]);
@@ -50,7 +46,6 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
         setupResult,
         gatilhoResult,
         tipoEntradaResult,
-        timeFrameResult,
         ativoResult,
         filtroResult,
       ]);
@@ -62,7 +57,6 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
           gatilhoList: gatilhoResult.value.items,
           tipoEntradaList: tipoEntradaResult.value.items,
           ativoList: ativoResult.value.items,
-          timeFrameList: timeFrameResult.value.items,
           filtroList: filtroResult.value.items,
         });
 

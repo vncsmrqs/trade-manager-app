@@ -35,8 +35,6 @@ export const TYPES = {
 
   ListAtivoUseCaseContract: Symbol('ListAtivoUseCaseContract'),
 
-  ListTimeFrameUseCaseContract: Symbol('ListTimeFrameUseCaseContract'),
-
   ListCampoCustomizavelUseCaseContract: Symbol('ListCampoCustomizavelUseCaseContract'),
 
   /* Repositories */
@@ -72,8 +70,6 @@ export const TYPES = {
   GetTradeSumByIntervalRepositoryContract: Symbol('GetTradeSumByIntervalRepositoryContract'),
 
   ListAtivoRepositoryContract: Symbol('ListAtivoRepositoryContract'),
-
-  ListTimeFrameRepositoryContract: Symbol('ListTimeFrameRepositoryContract'),
 
   ListCampoCustomizavelRepositoryContract: Symbol('ListCampoCustomizavelRepositoryContract'),
 

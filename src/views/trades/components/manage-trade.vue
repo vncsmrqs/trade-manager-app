@@ -45,7 +45,7 @@
             <v-tabs v-model="tab">
               <v-tabs-slider></v-tabs-slider>
               <v-tab :href="`#${availableTabs.DADOS_PRINCIPAIS}`">Dados Principais</v-tab>
-              <v-tab :href="`#${availableTabs.FILTRO}`">Filtro</v-tab>
+              <v-tab :href="`#${availableTabs.FILTROS}`">Filtros</v-tab>
               <v-tab :href="`#${availableTabs.ENCERRAMENTO}`">Encerramento</v-tab>
             </v-tabs>
           </v-col>
@@ -66,27 +66,27 @@
                     <v-col cols="6" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Data</div>
-                        <div>{{ formatDateFieldValue(form.dataAbertura) }}</div>
+                        <div>{{ formatDateFieldValue(form.dataTrade) }}</div>
                       </div>
                       <v-menu
                           v-else
-                          ref="dataAberturaDialog"
-                          v-model="showDataAberturaPicker"
+                          ref="dataTradeDialog"
+                          v-model="showDataTradePicker"
                           :close-on-content-click="false"
-                          :return-value.sync="form.dataAbertura"
+                          :return-value.sync="form.dataTrade"
                           transition="fade"
                           offset-y
                           min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                              :value="formatDateFieldValue(form.dataAbertura, false)"
+                              :value="formatDateFieldValue(form.dataTrade, false)"
                               label="Data"
                               outlined
                               dense
                               clearable
-                              ref="dataAbertura"
-                              :rules="formRules.dataAbertura"
+                              ref="dataTrade"
+                              :rules="formRules.dataTrade"
                               required
                               prepend-inner-icon="mdi-calendar"
                               v-bind="attrs"
@@ -95,25 +95,25 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                            v-model="form.dataAbertura"
+                            v-model="form.dataTrade"
                             no-title
                             color="primary"
                             locale="pt-BR"
-                            @click:date="$refs.dataAberturaDialog.save(form.dataAbertura)"
+                            @click:date="$refs.dataTradeDialog.save(form.dataTrade)"
                         ></v-date-picker>
                       </v-menu>
                     </v-col>
                     <v-col cols="6" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Hora</div>
-                        <div>{{ formatStringFieldValue(form.horaAbertura) }}</div>
+                        <div>{{ formatStringFieldValue(form.horaTrade) }}</div>
                       </div>
                       <v-menu
                           v-else
-                          ref="horaAberturaDialog"
-                          v-model="showHoraAberturaPicker"
+                          ref="horaTradeDialog"
+                          v-model="showHoraTradePicker"
                           :close-on-content-click="false"
-                          :return-value.sync="form.horaAbertura"
+                          :return-value.sync="form.horaTrade"
                           transition="fade"
                           offset-y
                           max-width="276px"
@@ -125,26 +125,26 @@
                               readonly
                               v-bind="attrs"
                               v-on="on"
-                              v-model="form.horaAbertura"
+                              v-model="form.horaTrade"
                               label="Hora"
                               outlined
                               dense
                               clearable
-                              ref="horaAbertura"
-                              :rules="formRules.horaAbertura"
+                              ref="horaTrade"
+                              :rules="formRules.horaTrade"
                               required
                           ></v-text-field>
                         </template>
                         <v-time-picker
-                            v-if="showHoraAberturaPicker"
-                            v-model="form.horaAbertura"
+                            v-if="showHoraTradePicker"
+                            v-model="form.horaTrade"
                             format="24hr"
                             locale="pt-BR"
-                            @click:minute="$refs.horaAberturaDialog.save(form.horaAbertura)"
+                            @click:minute="$refs.horaTradeDialog.save(form.horaTrade)"
                         ></v-time-picker>
                       </v-menu>
                     </v-col>
-                    <v-col cols="4" :class="{'py-0': !detailMode}">
+                    <v-col cols="6" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Lote</div>
                         <div>{{ formatStringFieldValue(form.lote) }}</div>
@@ -160,7 +160,7 @@
                           :rules="formRules.lote"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="4" :class="{'py-0': !detailMode}">
+                    <v-col cols="6" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Ativo</div>
                         <div>{{ formatStringFieldValue(form.ativoCodigo) }}</div>
@@ -180,27 +180,6 @@
                           :loading="isLoadingFilters"
                       >
                         <template v-slot:selection>{{ form.ativoCodigo }}</template>
-                      </v-combobox>
-                    </v-col>
-                    <v-col cols="4" :class="{'py-0': !detailMode}">
-                      <div v-if="detailMode" class="text-body-1">
-                        <div class="font-weight-bold mb-2">Time Frame</div>
-                        <div>{{ formatStringFieldValue(form.timeFrameNome) }}</div>
-                      </div>
-                      <v-combobox
-                          v-else
-                          :value="form.timeFrameId"
-                          @change="(obj) => selectItem('timeFrame', obj)"
-                          :items="timeFrameList"
-                          label="Time Frame"
-                          outlined
-                          dense
-                          clearable
-                          ref="timeFrameId"
-                          :rules="formRules.timeFrameId"
-                          :loading="isLoadingFilters"
-                      >
-                        <template v-slot:selection>{{ form.timeFrameNome }}</template>
                       </v-combobox>
                     </v-col>
                     <v-col cols="12" :class="{'py-0': !detailMode}">
@@ -266,11 +245,53 @@
                         <template v-slot:selection>{{ form.tipoEntradaNome }}</template>
                       </v-combobox>
                     </v-col>
+                    <v-col cols="12" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Tipo de Stop</div>
+                        <div>{{ formatStringFieldValue(form.tipoStopNome) }}</div>
+                      </div>
+                      <v-combobox
+                          v-else
+                          :value="form.tipoStopNome"
+                          @change="(obj) => selectItem('tipoStop', obj)"
+                          :items="tipoStopList"
+                          label="Tipo de stop"
+                          outlined
+                          dense
+                          clearable
+                          ref="tipoStopId"
+                          :rules="formRules.tipoStopId"
+                          :loading="isLoadingFilters"
+                      >
+                        <template v-slot:selection>{{ form.tipoStopNome }}</template>
+                      </v-combobox>
+                    </v-col>
+                    <v-col cols="12" :class="{'py-0': !detailMode}">
+                      <div v-if="detailMode" class="text-body-1">
+                        <div class="font-weight-bold mb-2">Local do Stop</div>
+                        <div>{{ formatStringFieldValue(form.localStopNome) }}</div>
+                      </div>
+                      <v-combobox
+                          v-else
+                          :value="form.localStopNome"
+                          @change="(obj) => selectItem('localStop', obj)"
+                          :items="localStopList"
+                          label="Local do stop"
+                          outlined
+                          dense
+                          clearable
+                          ref="localStopId"
+                          :rules="formRules.localStopId"
+                          :loading="isLoadingFilters"
+                      >
+                        <template v-slot:selection>{{ form.localStopNome }}</template>
+                      </v-combobox>
+                    </v-col>
                   </v-row>
                 </v-card-text>
             </v-tab-item>
 
-            <v-tab-item :value="availableTabs.FILTRO">
+            <v-tab-item :value="availableTabs.FILTROS">
               <v-card-text>
                 <v-row>
                   <v-col
@@ -286,7 +307,7 @@
                     <div v-else>
                       <span class="text-body-1 font-weight-bold">{{ filtro.nome }}</span>
                       <v-radio-group
-                          v-model="form.filtro[filtro.id]"
+                          v-model="form.filtros[filtro.id]"
                           column
                       >
                         <v-radio
@@ -427,7 +448,7 @@
                         </v-col>
                       </v-row>
                     </v-col>
-                    <v-col v-if="!detailMode" cols="12" class="py-0">
+                    <v-col v-if="!detailMode" cols="6" class="py-0">
                       <v-text-field
                           :value="form.pontuacao"
                           @input="(v) => form.pontuacao = Number(v)"
@@ -440,6 +461,19 @@
                           required
                       ></v-text-field>
                     </v-col>
+                    <v-col v-if="!detailMode" cols="6" class="py-0">
+                      <v-text-field
+                          :value="form.valorResultado"
+                          @input="(v) => form.valorResultado = Number(v)"
+                          label="Resultado em R$"
+                          outlined
+                          dense
+                          type="number"
+                          ref="valorResultado"
+                          :rules="formRules.valorResultado"
+                          required
+                      ></v-text-field>
+                    </v-col>
                     <v-col v-if="detailMode" cols="4" class="text-body-1">
                       <div class="font-weight-bold mb-2">Resultado</div>
                       <div :class="formatResultadoTextColor(form.resultado)">
@@ -448,8 +482,14 @@
                     </v-col>
                     <v-col v-if="detailMode" cols="4" class="text-body-1">
                       <div class="font-weight-bold mb-2">Pontos</div>
-                      <div :class="formatPontuacaoTextColor(form.pontuacao)">
+                      <div :class="formatNumberTextColor(form.pontuacao)">
                         {{ form.pontuacao === undefined ? 'Não definido' : form.pontuacao.toFixed(2) }}
+                      </div>
+                    </v-col>
+                    <v-col v-if="detailMode" cols="4" class="text-body-1">
+                      <div class="font-weight-bold mb-2">Resultado em R$</div>
+                      <div :class="formatNumberTextColor(form.valorResultado)">
+                        {{ form.valorResultado === undefined ? 'Não definido' : form.valorResultado.toFixed(2) }}
                       </div>
                     </v-col>
                     <v-col v-if="!detailMode" cols="12">
@@ -457,7 +497,7 @@
                       <v-row class="mt-2 mb-4">
                         <v-col cols="4">
                           <v-btn
-                            style="border-width: 2px; height: 100px;"
+                            style="border-width: 2px; height: 50px;"
                             @click="() => changeSentimento('bem')"
                             v-bind="{
                               [ form.sentimento === 'bem' ? 'outlined' : 'tile']: true,
@@ -470,12 +510,12 @@
                             :color="getSentimentoButtonColor('bem', 'green', 'dark-3')"
                             block
                           >
-                            <v-icon x-large>mdi-emoticon-excited-outline</v-icon>
+                            <v-icon large>mdi-emoticon-excited-outline</v-icon>
                           </v-btn>
                         </v-col>
                         <v-col cols="4">
                           <v-btn
-                            style="border-width: 2px; height: 100px;"
+                            style="border-width: 2px; height: 50px;"
                             @click="() => changeSentimento('neutro')"
                             v-bind="{
                               [ form.sentimento === 'neutro' ? 'outlined' : 'tile']: true,
@@ -488,12 +528,12 @@
                             :color="getSentimentoButtonColor('neutro', 'yellow', 'darken-1')"
                             block
                           >
-                            <v-icon x-large>mdi-emoticon-neutral-outline</v-icon>
+                            <v-icon large>mdi-emoticon-neutral-outline</v-icon>
                           </v-btn>
                         </v-col>
                         <v-col cols="4">
                           <v-btn
-                            style="border-width: 2px; height: 100px;"
+                            style="border-width: 2px; height: 50px;"
                             v-bind="{
                               [ form.sentimento === 'mal' ? 'outlined' : 'tile']: true,
                             }"
@@ -506,7 +546,7 @@
                             :color="getSentimentoButtonColor('mal', 'red', 'accent-1')"
                             block
                           >
-                            <v-icon x-large>mdi-emoticon-cry-outline</v-icon>
+                            <v-icon large>mdi-emoticon-cry-outline</v-icon>
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -554,7 +594,7 @@
                                   <v-overlay v-if="hover" absolute>
                                     <v-btn
                                         color="white"
-                                        @click="() => { showImageViewerDialog = true; imageToViewSrc = form.imagemUrl}"
+                                        @click="() => { showImageViewerDialog = true; imageToViewSrc = form.imagemUrl }"
                                         class="black--text"
                                     >
                                       Ver
@@ -683,7 +723,7 @@ import moment from "moment";
 import SingleImageViewer from "@/common/components/single-image-viewer.vue";
 
 type FormType = Partial<TradeEntityProps> & {
-  horaAbertura?: string;
+  horaTrade?: string;
   filtro: Record<string, string>;
 };
 
@@ -699,7 +739,7 @@ export default class ManageTrade extends Vue {
 
   private readonly availableTabs = {
     DADOS_PRINCIPAIS: '1',
-    FILTRO: '2',
+    FILTROS: '2',
     ENCERRAMENTO: '3',
   };
 
@@ -713,8 +753,8 @@ export default class ManageTrade extends Vue {
   form = this.defaultForm();
 
   showDeleteDialog = false;
-  showDataAberturaPicker = false;
-  showHoraAberturaPicker = false;
+  showDataTradePicker = false;
+  showHoraTradePicker = false;
   showImageViewerDialog = false;
 
   imageToViewSrc?: string = null;
@@ -728,12 +768,11 @@ export default class ManageTrade extends Vue {
     setupId: [],
     gatilhoId: [],
     tipoEntradaId: [],
-    timeFrameId: [],
-    dataAbertura: [
-      (dataAbertura) => !!dataAbertura || 'Data obrigatória',
+    dataTrade: [
+      (dataTrade) => !!dataTrade || 'Data obrigatória',
     ],
-    horaAbertura: [
-      (horaAbertura) => !!horaAbertura || 'Hora obrigatória',
+    horaTrade: [
+      (horaTrade) => !!horaTrade || 'Hora obrigatória',
     ],
     lote: [
       (lote) => !!lote || 'Lote obrigatório',
@@ -741,12 +780,15 @@ export default class ManageTrade extends Vue {
     pontuacao: [
       (pontuacao) => (pontuacao !== undefined && pontuacao !== null) || 'Pontuação obrigatória',
     ],
+    valorResultado: [
+      (valorResultado) => (valorResultado !== undefined && valorResultado !== null) || 'Resultado em R$ obrigatório',
+    ],
     resultado: [],
     observacao: [],
   }
 
   getValorFiltro(filtro: CampoCustomizavelEntity): string {
-    const valorSelecionadoId = this.form.filtro?.[filtro.id];
+    const valorSelecionadoId = this.form?.filtros?.[filtro.id];
     const valorCampoCustomizavel = filtro.valores?.find((v) => v.id === valorSelecionadoId);
     return valorCampoCustomizavel ? valorCampoCustomizavel.nome : 'Não definido';
   }
@@ -760,13 +802,13 @@ export default class ManageTrade extends Vue {
       gatilhoId: undefined,
       tipoEntradaId: undefined,
       tradeImportacaoId: undefined,
-      timeFrameId: undefined,
       createdAt: undefined,
       updatedAt: undefined,
-      dataAbertura: undefined,
-      dataFechamento: undefined,
+      dataTrade: undefined,
+      horaTrade: undefined,
       lote: undefined,
       pontuacao: undefined,
+      valorResultado: undefined,
       resultado: undefined,
       seguiuPlano: undefined,
       sentimento: undefined,
@@ -774,33 +816,7 @@ export default class ManageTrade extends Vue {
       segundoAlvo: undefined,
       imagemUrl: undefined,
       observacao: undefined,
-      filtro: {},
-    };
-  }
-
-  filledForm() {
-    return {
-      id: 'AA',
-      userId: 'aa',
-      ativoId: 'aa',
-      setupId: 'aa',
-      gatilhoId: 'aa',
-      tipoEntradaId: 'aa',
-      tradeImportacaoId: 'aa',
-      timeFrameId: 'aa',
-      createdAt: '2022-01-01T00:00:00-03',
-      updatedAt: '2022-01-01T00:00:00-03',
-      dataAbertura: '2022-01-01T00:00:00-03',
-      dataFechamento: '2022-01-01T00:00:00-03',
-      lote: '1',
-      pontuacao: 100.00,
-      resultado: 'gain',
-      seguiuPlano: true,
-      sentimento: 'bem',
-      primeiroAlvo: true,
-      segundoAlvo: false,
-      imagemUrl: 'undefined',
-      observacao: 'Vincius é um cara bonitão. Esta é apenas uma mensagem de teste e não necessariamente representa a realidade',
+      filtros: {},
     };
   }
 
@@ -859,8 +875,15 @@ export default class ManageTrade extends Vue {
     }));
   }
 
-  get timeFrameList() {
-    return this.listTradeFilterState.timeFrameList.map((item) => ({
+  get tipoStopList() {
+    return this.listTradeFilterState.tipoStopList.map((item) => ({
+      text: item.nome,
+      value: item.id,
+    }));
+  }
+
+  get localStopList() {
+    return this.listTradeFilterState.localStopList.map((item) => ({
       text: item.nome,
       value: item.id,
     }));
@@ -952,7 +975,7 @@ export default class ManageTrade extends Vue {
     return mappedValues[value];
   }
 
-  formatPontuacaoTextColor(value?: number): string {
+  formatNumberTextColor(value?: number): string {
     if (value === undefined) return '';
     if (value > 0) return 'blue--text';
     if (value < 0) return 'red--text';
@@ -976,10 +999,10 @@ export default class ManageTrade extends Vue {
       return;
     }
     if (this.tab === this.availableTabs.ENCERRAMENTO) {
-      this.tab = this.availableTabs.FILTRO;
+      this.tab = this.availableTabs.FILTROS;
       return;
     }
-    if (this.tab === this.availableTabs.FILTRO) {
+    if (this.tab === this.availableTabs.FILTROS) {
       this.tab = this.availableTabs.DADOS_PRINCIPAIS;
       return;
     }
@@ -992,10 +1015,10 @@ export default class ManageTrade extends Vue {
       return;
     }
     if (this.tab === this.availableTabs.DADOS_PRINCIPAIS) {
-      this.tab = this.availableTabs.FILTRO;
+      this.tab = this.availableTabs.FILTROS;
       return;
     }
-    if (this.tab === this.availableTabs.FILTRO) {
+    if (this.tab === this.availableTabs.FILTROS) {
       this.tab = this.availableTabs.ENCERRAMENTO;
       return;
     }
@@ -1067,19 +1090,22 @@ export default class ManageTrade extends Vue {
       setupId: item.setupId,
       gatilhoId: item.gatilhoId,
       tipoEntradaId: item.tipoEntradaId,
-      tradeImportacaoId: item.timeFrameId,
-      timeFrameId: item.timeFrameId,
+      tradeImportacaoId: item.tradeImportacaoId,
+      tipoStopId: item.tipoStopId,
+      localStopId: item.localStopId,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
-      dataAbertura: item.dataAbertura,
-      dataFechamento: item.dataFechamento,
+      dataTrade: item.dataTrade,
+      horaTrade: item.horaTrade,
       lote: item.lote,
       pontuacao: item.pontuacao,
+      valorResultado: item.valorResultado,
       resultado: item.resultado,
       seguiuPlano: item.seguiuPlano,
       sentimento: item.sentimento,
       primeiroAlvo: item.primeiroAlvo,
       segundoAlvo: item.segundoAlvo,
+      imagemPath: item.imagemPath,
       imagemUrl: item.imagemUrl,
       observacao: item.observacao,
       userNome: item.userNome,
@@ -1087,10 +1113,10 @@ export default class ManageTrade extends Vue {
       setupNome: item.setupNome,
       gatilhoNome: item.gatilhoNome,
       tipoEntradaNome: item.tipoEntradaNome,
+      tipoStopNome: item.tipoStopNome,
+      localStopNome: item.localStopNome,
       ativoCodigo: item.ativoCodigo,
-      timeFrameNome: item.timeFrameNome,
-      filtro: item.filtro,
-      horaAbertura: item.horaAbertura,
+      filtros: item.filtros,
     };
   }
 
@@ -1104,12 +1130,14 @@ export default class ManageTrade extends Vue {
       "setupId",
       "gatilhoId",
       "tipoEntradaId",
+      "tipoStopId",
+      "localStopId",
       "tradeImportacaoId",
-      "timeFrameId",
-      "dataAbertura",
-      "horaAbertura",
+      "dataTrade",
+      "horaTrade",
       "lote",
       "pontuacao",
+      "valorResultado",
       "resultado",
       "observacao",
     ];
@@ -1119,11 +1147,13 @@ export default class ManageTrade extends Vue {
       setupId: this.availableTabs.DADOS_PRINCIPAIS,
       gatilhoId: this.availableTabs.DADOS_PRINCIPAIS,
       tipoEntradaId: this.availableTabs.DADOS_PRINCIPAIS,
-      timeFrameId: this.availableTabs.DADOS_PRINCIPAIS,
-      dataAbertura: this.availableTabs.DADOS_PRINCIPAIS,
-      horaAbertura: this.availableTabs.DADOS_PRINCIPAIS,
+      tipoStopId: this.availableTabs.DADOS_PRINCIPAIS,
+      localStopId: this.availableTabs.DADOS_PRINCIPAIS,
+      dataTrade: this.availableTabs.DADOS_PRINCIPAIS,
+      horaTrade: this.availableTabs.DADOS_PRINCIPAIS,
       lote: this.availableTabs.DADOS_PRINCIPAIS,
       pontuacao: this.availableTabs.ENCERRAMENTO,
+      valorResultado: this.availableTabs.ENCERRAMENTO,
       resultado: this.availableTabs.ENCERRAMENTO,
       observacao: this.availableTabs.ENCERRAMENTO,
     };

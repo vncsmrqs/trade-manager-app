@@ -24,9 +24,7 @@ import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/creat
 import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
 import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delete-trade.repository";
 import { ListAtivoRepositoryContract } from "@/core/ativo/data/contracts/list-ativo.repository";
-import { ListTimeFrameRepositoryContract } from "@/core/time-frame/data/contracts/list-time-frame.repository";
 import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
-import { ManageTimeFrameInMemoryRepository } from "@/core/time-frame/infra/repositories/manage-time-frame-in-memory.repository";
 import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
 import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
@@ -121,12 +119,6 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
 
     const manageAtivoRepository = new ManageAtivoApiRepository(apiBaseUrl);
     container.instance<ListAtivoRepositoryContract>(TYPES.ListAtivoRepositoryContract, manageAtivoRepository);
-
-    const manageTimeFrameRepository = new ManageTimeFrameInMemoryRepository();
-    container.instance<ListTimeFrameRepositoryContract>(
-      TYPES.ListTimeFrameRepositoryContract,
-      manageTimeFrameRepository
-    );
 
     const manageCampoCustomizavelRepository = new ManageCampoCustomizavelApiRepository(apiBaseUrl);
     container.instance<ListCampoCustomizavelRepositoryContract>(

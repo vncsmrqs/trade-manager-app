@@ -3,14 +3,14 @@ import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
 import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
 import { AtivoEntity } from "@/core/ativo/domain/entities/ativo.entity";
-import { TimeFrameEntity } from "@/core/time-frame/domain/entities/time-frame.entity";
 
 export type BaseListTradeFilterState = {
   setupList: SetupEntity[];
   gatilhoList: GatilhoEntity[];
   tipoEntradaList: TipoEntradaEntity[];
   ativoList: AtivoEntity[];
-  timeFrameList: TimeFrameEntity[];
+  tipoStopList: Record<string, any>[],
+  localStopList: Record<string, any>[],
   filtroList: CampoCustomizavelEntity[];
   error?: string;
 }
@@ -43,7 +43,8 @@ export const initialListTradeFilterState: ListTradeFilterState = {
   gatilhoList: [],
   tipoEntradaList: [],
   ativoList: [],
-  timeFrameList: [],
+  tipoStopList: [],
+  localStopList: [],
   filtroList: [],
   error: undefined,
 };

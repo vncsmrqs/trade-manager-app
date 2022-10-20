@@ -55,9 +55,6 @@ import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delet
 import { ListAtivoUseCaseContract } from "@/core/ativo/domain/use-cases/list-ativo.use-case";
 import { ListAtivoUseCase } from "@/core/ativo/data/implementations/use-cases/list-ativo.use.case";
 import { ListAtivoRepositoryContract } from "@/core/ativo/data/contracts/list-ativo.repository";
-import { ListTimeFrameUseCaseContract } from "@/core/time-frame/domain/use-cases/list-time-frame.use-case";
-import { ListTimeFrameUseCase } from "@/core/time-frame/data/implementations/use-cases/list-time-frame.use.case";
-import { ListTimeFrameRepositoryContract } from "@/core/time-frame/data/contracts/list-time-frame.repository";
 import { ListCampoCustomizavelUseCaseContract } from "@/core/campo-customizavel/domain/use-cases/list-campo-customizavel.use-case";
 import { ListCampoCustomizavelUseCase } from "@/core/campo-customizavel/data/implementations/use-cases/list-campo-customizavel.use.case";
 import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
@@ -98,7 +95,6 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     this.bootTipoEntradaUseCases(container);
     this.bootTradeUseCases(container);
     this.bootAtivoUseCases(container);
-    this.bootTimeFrameUseCases(container);
     this.bootCampoCustomizavelUseCases(container);
     this.bootDashboardUseCases(container);
   }
@@ -243,14 +239,6 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<ListAtivoUseCaseContract>(TYPES.ListAtivoUseCaseContract, () => {
       return new ListAtivoUseCase(
         container.make<ListAtivoRepositoryContract>(TYPES.ListAtivoRepositoryContract),
-      );
-    });
-  }
-
-  private bootTimeFrameUseCases(container: ContainerContract): void {
-    container.bind<ListTimeFrameUseCaseContract>(TYPES.ListTimeFrameUseCaseContract, () => {
-      return new ListTimeFrameUseCase(
-        container.make<ListTimeFrameRepositoryContract>(TYPES.ListTimeFrameRepositoryContract),
       );
     });
   }
