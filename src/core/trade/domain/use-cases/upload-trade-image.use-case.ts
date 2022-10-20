@@ -15,6 +15,7 @@ export namespace UploadTradeImageUseCaseContract {
   };
   export type Response = {
     filePath: string;
+    imageUrl: string;
   };
 
   export type UploadProgressCallback = (total: number, loaded: number) => void

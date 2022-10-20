@@ -19,7 +19,6 @@ import { UpdateTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/co
 import { DeleteTipoEntradaRepositoryContract } from "@/core/tipo-entrada/data/contracts/delete-tipo-entrada.repository";
 
 //implementations
-import { ManageTradeInMemoryRepository } from "@/core/trade/infra/repositories/manage-trade-in-memory.repository";
 import { ListTradeRepositoryContract } from "@/core/trade/data/contracts/list-trade.repository";
 import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/create-trade.repository";
 import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
@@ -44,6 +43,7 @@ import { ManageTipoEntradaApiRepository } from "@/core/tipo-entrada/infra/reposi
 import { ManageGatilhoApiRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-api.repository";
 import { ManageAtivoApiRepository } from "@/core/ativo/infra/repositories/manage-ativo-api.repository";
 import { ManageCampoCustomizavelApiRepository } from "@/core/campo-customizavel/infra/repositories/manage-campo-customizavel-api.repository";
+import { ManageTradeApiRepository } from "@/core/trade/infra/repositories/manage-trade-api.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -101,7 +101,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
       manageTipoEntradaRepository
     );
 
-    const manageTradeRepository = new ManageTradeInMemoryRepository();
+    const manageTradeRepository = new ManageTradeApiRepository(apiBaseUrl);
     container.instance<ListTradeRepositoryContract>(TYPES.ListTradeRepositoryContract, manageTradeRepository);
     container.instance<CreateTradeRepositoryContract>(TYPES.CreateTradeRepositoryContract, manageTradeRepository);
     container.instance<UpdateTradeRepositoryContract>(TYPES.UpdateTradeRepositoryContract, manageTradeRepository);

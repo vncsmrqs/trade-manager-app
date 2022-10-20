@@ -101,6 +101,7 @@ export class ImportFileTradeController extends Controller<ImportFileTradeState> 
     try {
       const result = await this.saveImportedFileTradeUseCase.execute({
         filePath: this.state.filePath,
+        filename: this.state.fileName,
       });
       if (result.successful) {
         this.changeState({

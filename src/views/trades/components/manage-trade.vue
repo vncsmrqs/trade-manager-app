@@ -285,14 +285,14 @@
                     <div v-else>
                       <span class="text-body-1 font-weight-bold">{{ filtro.nome }}</span>
                       <v-radio-group
-                          v-model="form.filtro[campoCustomizavel.id]"
+                          v-model="form.filtro[filtro.id]"
                           column
                       >
                         <v-radio
-                            v-for="valorDisponivel in campoCustomizavel.valores"
-                            :label="valorDisponivel.nome"
-                            :value="valorDisponivel.id"
-                            :key="`${campoCustomizavel.id}-${valorDisponivel.id}`"
+                            v-for="valor in filtro.valores"
+                            :label="valor.nome"
+                            :value="valor.id"
+                            :key="`${filtro.id}-${valor.id}`"
                         ></v-radio>
                       </v-radio-group>
                     </div>

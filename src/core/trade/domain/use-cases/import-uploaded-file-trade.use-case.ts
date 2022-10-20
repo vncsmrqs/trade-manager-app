@@ -9,6 +9,7 @@ export interface ImportUploadedFileTradeUseCaseContract {
 export namespace ImportUploadedFileTradeUseCaseContract {
   export type Params = {
     filePath: string;
+    filename: string;
   };
   export type Response = void
 }

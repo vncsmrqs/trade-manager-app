@@ -15,6 +15,8 @@ export namespace ListTradeRepositoryContract {
     tipoEntradaId?: string[];
     gatilhoId?: string[];
     resultado?: TradeResultadoType[];
+    tipoStopId?: string[];
+    localStopId?: string[];
 
     startDate: string;
     endDate: string;
