@@ -308,9 +308,8 @@
                     <div class="text-caption">{{ trade.gatilhoNome }}</div>
                   </div>
 
-                  <div v-if="header.name === 'tipo-entrada-time-frame'">
+                  <div v-if="header.name === 'tipo-entrada'">
                     <div class="text-body-1">{{ trade.tipoEntradaNome }}</div>
-                    <div class="text-caption">{{ trade.timeFrameNome }}</div>
                   </div>
 
                   <div
@@ -438,8 +437,8 @@ export default class ListTrade extends Vue {
       width: '37%',
     },
     {
-      title: 'Tipo de entrada - Time Frame',
-      name: 'tipo-entrada-time-frame',
+      title: 'Tipo de entrada',
+      name: 'tipo-entrada',
       align: 'left',
       width: '25%',
     },
