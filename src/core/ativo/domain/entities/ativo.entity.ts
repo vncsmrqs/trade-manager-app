@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 export type AtivoEntityProps = {
   id: string;
   nome: string;
@@ -49,5 +51,17 @@ export class AtivoEntity {
 
   get codigo(): string {
     return this.props.codigo;
+  }
+
+  public static createFromRaw(raw: any): AtivoEntity {
+    return new AtivoEntity({
+      id: raw.id,
+      nome: raw.nome,
+      createdAt: raw.created_at,
+      updatedAt: raw.updated_at,
+      ativo: raw.ativo,
+      userId: raw.user_id,
+      codigo: raw.codigo,
+    });
   }
 }

@@ -28,7 +28,6 @@ import { ListAtivoRepositoryContract } from "@/core/ativo/data/contracts/list-at
 import { ListTimeFrameRepositoryContract } from "@/core/time-frame/data/contracts/list-time-frame.repository";
 import { ListCampoCustomizavelRepositoryContract } from "@/core/campo-customizavel/data/contracts/list-campo-customizavel.repository";
 import { ManageCampoCustomizavelInMemoryRepository } from "@/core/campo-customizavel/infra/repositories/manage-campo-customizavel-in-memory.repository";
-import { ManageAtivoInMemoryRepository } from "@/core/ativo/infra/repositories/manage-ativo-in-memory.repository";
 import { ManageTimeFrameInMemoryRepository } from "@/core/time-frame/infra/repositories/manage-time-frame-in-memory.repository";
 import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
 import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
@@ -44,6 +43,7 @@ import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get
 import { ManageSetupApiRepository } from "@/core/setup/infra/repositories/manage-setup-api.repository";
 import { ManageTipoEntradaApiRepository } from "@/core/tipo-entrada/infra/repositories/manage-tipo-entrada-api.repository";
 import { ManageGatilhoApiRepository } from "@/core/gatilho/infra/repositories/manage-gatilho-api.repository";
+import { ManageAtivoApiRepository } from "@/core/ativo/infra/repositories/manage-ativo-api.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -119,7 +119,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
       manageTradeRepository
     );
 
-    const manageAtivoRepository = new ManageAtivoInMemoryRepository();
+    const manageAtivoRepository = new ManageAtivoApiRepository(apiBaseUrl);
     container.instance<ListAtivoRepositoryContract>(TYPES.ListAtivoRepositoryContract, manageAtivoRepository);
 
     const manageTimeFrameRepository = new ManageTimeFrameInMemoryRepository();
