@@ -33,7 +33,7 @@
             outlined
             type="error"
             v-text="error"
-            class="ma-0"
+            class="ma-0 mt-4"
           ></v-alert>
 
         </v-card-text>
@@ -83,7 +83,10 @@ export default class DeleteTrade extends Vue {
 
   async confirmDelete() {
     await this.controller.deleteTrade(this.item.id);
-    this.close();
+    if (!this.hasError) {
+      this.close();
+      this.$emit('deleted');
+    }
   }
 
   get isDeleting(): boolean {
@@ -106,6 +109,7 @@ export default class DeleteTrade extends Vue {
       return;
     }
     this.$emit('close');
+    this.controller.resetState();
   }
 
   changeState(state: DeleteTradeState) {

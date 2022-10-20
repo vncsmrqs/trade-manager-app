@@ -12,6 +12,7 @@
         :item="itemToManage"
         :show="showManageTradeDialog"
         @close="closeManageTradeDialog"
+        @deleted="handleTradeDeleted"
     ></manage-trade>
 
     <import-trade
@@ -212,7 +213,7 @@
               <span class="text-body-2">Gain</span>
             </v-col>
             <v-col class="d-flex align-center justify-end">
-              {{ listTradeState.metadata.gainPercentage }}%
+              {{ listTradeState.metadata.gainPercentage.toFixed(2) }}%
             </v-col>
           </v-row>
         </v-alert>
@@ -231,7 +232,7 @@
               <span class="text-body-2">0x0</span>
             </v-col>
             <v-col class="d-flex align-center justify-end">
-              {{ listTradeState.metadata.drawPercentage }}%
+              {{ listTradeState.metadata.drawPercentage.toFixed(2) }}%
             </v-col>
           </v-row>
         </v-alert>
@@ -250,7 +251,7 @@
               <span class="text-body-2">Loss</span>
             </v-col>
             <v-col class="d-flex align-center justify-end">
-              {{ listTradeState.metadata.lossPercentage }}%
+              {{ listTradeState.metadata.lossPercentage.toFixed(2) }}%
             </v-col>
           </v-row>
         </v-alert>
@@ -522,6 +523,18 @@ export default class ListTrade extends Vue {
   closeManageTradeDialog(): void {
     this.itemToManage = null;
     this.showManageTradeDialog = false;
+  }
+
+  handleTradeDeleted(): void {
+    this.itemToManage = null;
+    this.showManageTradeDialog = false;
+
+    if (this.listTradeState.items.length === 1) {
+      this.search(this.listTradeState.page - 1);
+      return;
+    }
+
+    this.search(this.listTradeState.page);
   }
 
   importTrade(): void {

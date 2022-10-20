@@ -14,6 +14,7 @@
         :item="item"
         :show="showDeleteDialog"
         @close="closeDeleteDialog"
+        @deleted="$emit('deleted')"
       ></delete-trade>
 
       <single-image-viewer
@@ -1033,9 +1034,8 @@ export default class ManageTrade extends Vue {
     }
   }
 
-  closeDeleteDialog(deleted?: boolean) {
+  closeDeleteDialog() {
     this.showDeleteDialog = false;
-    if (deleted) this.close();
   }
 
   deleteTrade() {
