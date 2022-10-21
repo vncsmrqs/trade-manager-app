@@ -28,7 +28,7 @@ export type DefaultTradeEntityProps = {
   segundoAlvo?: boolean;
   imagemPath?: string;
   observacao?: string;
-  filtro: Record<string, string>;
+  filtros: Record<string, string>;
 }
 
 export type TradeEntityProps = DefaultTradeEntityProps & {
@@ -164,8 +164,8 @@ export class TradeEntity extends Entity<TradeEntityProps>{
     return this.props.observacao;
   }
 
-  get filtro(): Record<string, string> {
-    return this.props.filtro;
+  get filtros(): Record<string, string> {
+    return this.props.filtros;
   }
 
   get dataTradeFormatted(): string {
@@ -189,10 +189,10 @@ export class TradeEntity extends Entity<TradeEntityProps>{
       pontuacao: raw.pontuacao,
       resultado: raw.resultado,
       valorResultado: raw.valor_resultado,
-      seguiuPlano: raw.seguiu_plano,
+      seguiuPlano: createBoolean(raw.seguiu_plano),
       sentimento: raw.sentimento,
-      primeiroAlvo: raw.primeiro_alvo,
-      segundoAlvo: raw.segundo_alvo,
+      primeiroAlvo: createBoolean(raw.primeiro_alvo),
+      segundoAlvo: createBoolean(raw.segundo_alvo),
       imagemUrl: raw.imagem_url,
       imagemPath: raw.imagem_path,
       userNome: raw.user_nome,
@@ -204,7 +204,17 @@ export class TradeEntity extends Entity<TradeEntityProps>{
       localStopNome: raw.local_stop_nome,
       ativoCodigo: raw.ativo_codigo,
       observacao: raw.observacao,
-      filtro: raw.filtro,
+      filtros: raw.filtros.reduce((filtros: any, filtro: any) => ({
+        ...filtros,
+        [filtro.campo_customizavel_id]: filtro.id,
+      }), {}),
     });
   }
+}
+
+const createBoolean = (value: any): boolean | undefined => {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+  return !!value;
 }

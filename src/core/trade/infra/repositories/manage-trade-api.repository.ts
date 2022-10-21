@@ -63,7 +63,8 @@ type CreateTradeRequest = {
   segundo_alvo?: boolean,
   sentimento?: TradeSentimentoType,
   imagem_path?: string,
-  filtro?: Record<string, string>,
+  observacao?: string,
+  filtros?: Record<string, string>,
 };
 
 type CreateTradeResponse = {};
@@ -86,7 +87,8 @@ type UpdateTradeRequest = {
   segundo_alvo?: boolean,
   sentimento?: TradeSentimentoType,
   imagem_path?: string,
-  filtro?: Record<string, string>,
+  filtros?: Record<string, string>,
+  observacao?: string,
 };
 
 type UpdateTradeResponse = {};
@@ -160,10 +162,10 @@ export class ManageTradeApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -187,7 +189,8 @@ export class ManageTradeApiRepository extends HttpClient implements
           segundo_alvo: params.segundoAlvo,
           sentimento: params.sentimento,
           imagem_path: params.imagemPath,
-          filtro: params.filtro,
+          observacao: params.observacao,
+          filtros: params.filtros,
       };
 
       await this.client.post<CreateTradeResponse>('/trades', requestBody);
@@ -195,10 +198,13 @@ export class ManageTradeApiRepository extends HttpClient implements
       return ActionResult.success();
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      if (error.status === 422) {
+        return ActionResult.failure('Há algum erro no seu formlário. Confira e tente novamente, por favor.');
+      }
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -222,7 +228,8 @@ export class ManageTradeApiRepository extends HttpClient implements
         segundo_alvo: params.segundoAlvo,
         sentimento: params.sentimento,
         imagem_path: params.imagemPath,
-        filtro: params.filtro,
+        observacao: params.observacao,
+        filtros: params.filtros,
       };
 
       await this.client.put<UpdateTradeResponse>(`/trades/${params.id}`, requestBody);
@@ -230,13 +237,13 @@ export class ManageTradeApiRepository extends HttpClient implements
       return ActionResult.success();
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      if (error.code === 403) {
+      if (error.status === 403) {
         return ActionResult.failure('Você não tem permissão para atualizar este registro');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -246,13 +253,13 @@ export class ManageTradeApiRepository extends HttpClient implements
       return ActionResult.success();
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      if (error.code === 403) {
+      if (error.status === 403) {
         return ActionResult.failure('Você não tem permissão para excluir este registro');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -281,10 +288,10 @@ export class ManageTradeApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -302,10 +309,10 @@ export class ManageTradeApiRepository extends HttpClient implements
       return ActionResult.success();
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -336,10 +343,10 @@ export class ManageTradeApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 }

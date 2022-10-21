@@ -45,7 +45,7 @@ export class AuthController extends Controller<AuthState> {
         kind: "ErrorAuthState",
         user: undefined,
         token: undefined,
-        error: 'Algo inexperado aconteceu durante o loging. Por favor, tente novamente.',
+        error: 'Algo inesperado aconteceu durante o loging. Por favor, tente novamente.',
       });
     }
   }
@@ -88,7 +88,7 @@ export class AuthController extends Controller<AuthState> {
         kind: "ErrorAuthState",
         user: undefined,
         token: undefined,
-        error: 'Algo inexperado aconteceu durante a authenticação.',
+        error: 'Algo inesperado aconteceu durante a authenticação.',
       });
     }
 

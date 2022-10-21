@@ -22,7 +22,6 @@ export class ManageTradeController extends Controller<ManageTradeState> {
     this.changeState({
       kind: "LoadingManageTradeState",
     });
-    console.log({ trade });
     try {
       const result = await this[
         trade.id ? 'updateTradeUseCase' : 'createTradeUseCase'
@@ -47,12 +46,12 @@ export class ManageTradeController extends Controller<ManageTradeState> {
     } catch (error: any) {
       this.changeState({
         kind: "ErrorManageTradeState",
-        error: "Algo inexperado aconteceu ao salvar o registro.",
+        error: "Algo inesperado aconteceu ao salvar o registro.",
       });
     }
   }
 
-  public async uploadImage(image: File): Promise<ActionResult<string, string>> {
+  public async uploadImage(image: File): Promise<ActionResult<UploadTradeImageUseCaseContract.Response, string>> {
     this.changeState({
       isUploadingImage: true,
       uploadImageError: undefined,
@@ -72,7 +71,7 @@ export class ManageTradeController extends Controller<ManageTradeState> {
           uploadImagePercentage: 0,
           uploadImageError: undefined,
         });
-        return ActionResult.success(result.value.filePath);
+        return result;
       }
       this.notificationController.push({
         type: 'error',
@@ -93,7 +92,7 @@ export class ManageTradeController extends Controller<ManageTradeState> {
       });
       this.notificationController.push({
         type: 'error',
-        message: `Erro ao inexperado enviar imagem.`,
+        message: `Erro ao inesperado enviar imagem.`,
         timeout: 5000,
       });
       return ActionResult.failure(error.message);

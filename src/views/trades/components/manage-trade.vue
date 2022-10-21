@@ -99,6 +99,7 @@
                             no-title
                             color="primary"
                             locale="pt-BR"
+                            :max="today"
                             @click:date="$refs.dataTradeDialog.save(form.dataTrade)"
                         ></v-date-picker>
                       </v-menu>
@@ -138,6 +139,8 @@
                         <v-time-picker
                             v-if="showHoraTradePicker"
                             v-model="form.horaTrade"
+                            min="09:00:00"
+                            max="18:00:00"
                             format="24hr"
                             locale="pt-BR"
                             @click:minute="$refs.horaTradeDialog.save(form.horaTrade)"
@@ -489,7 +492,7 @@
                     <v-col v-if="detailMode" cols="4" class="text-body-1">
                       <div class="font-weight-bold mb-2">Resultado em R$</div>
                       <div :class="formatNumberTextColor(form.valorResultado)">
-                        {{ form.valorResultado === undefined ? 'Não definido' : form.valorResultado.toFixed(2) }}
+                        {{ form.valorResultado == undefined ? 'Não definido' : 'R$ ' + form.valorResultado.toFixed(2) }}
                       </div>
                     </v-col>
                     <v-col v-if="!detailMode" cols="12">
@@ -582,7 +585,7 @@
                             cols="6"
                             v-if="detailMode || !manageTradeState.isUploadingImage"
                         >
-                          <v-hover v-if="form.imagemUrl">
+                          <v-hover v-if="form.imagemPath">
                             <template v-slot:default="{ hover }">
                               <div style="position: relative; display: inline-block">
                                 <v-img
@@ -622,7 +625,7 @@
                             @click="selectImagemUrl"
                           >
                             <v-icon left>mdi-image</v-icon>
-                            {{ form.imagemUrl?.length ? 'Atualizar' : 'Enviar' }} imagem
+                            {{ form.imagemPath?.length ? 'Atualizar' : 'Enviar' }} imagem
                           </v-btn>
                           <input
                             ref="uploader"
@@ -787,6 +790,10 @@ export default class ManageTrade extends Vue {
     observacao: [],
   }
 
+  get today() {
+    return moment().format('YYYY-MM-DD');
+  }
+
   getValorFiltro(filtro: CampoCustomizavelEntity): string {
     const valorSelecionadoId = this.form?.filtros?.[filtro.id];
     const valorCampoCustomizavel = filtro.valores?.find((v) => v.id === valorSelecionadoId);
@@ -814,6 +821,7 @@ export default class ManageTrade extends Vue {
       sentimento: undefined,
       primeiroAlvo: undefined,
       segundoAlvo: undefined,
+      imagemPath: undefined,
       imagemUrl: undefined,
       observacao: undefined,
       filtros: {},
@@ -902,7 +910,7 @@ export default class ManageTrade extends Vue {
   }
 
   get hasError(): boolean {
-    return this.manageTradeState.kind === 'ErrorDeleteTradeState';
+    return this.manageTradeState.kind === 'ErrorManageTradeState';
   }
 
   get error(): string | undefined {
@@ -913,21 +921,21 @@ export default class ManageTrade extends Vue {
   }
 
   formatBooleanFieldValue(value?: boolean): string {
-    if (value === undefined) {
+    if (value == undefined) {
       return 'Não definido';
     }
     return value ? 'Sim' : 'Não';
   }
 
   formatDateFieldValue(value?: string, showUndefined = true): string {
-    if (value === undefined) {
+    if (value == undefined) {
       return showUndefined ? 'Não definido' : '';
     }
     return moment(value).format('DD/MM/YYYY');
   }
 
   formatStringFieldValue(value?: string): string {
-    if (value === undefined) {
+    if (value == undefined) {
       return 'Não definido';
     }
     return value;
@@ -976,7 +984,7 @@ export default class ManageTrade extends Vue {
   }
 
   formatNumberTextColor(value?: number): string {
-    if (value === undefined) return '';
+    if (value == undefined) return '';
     if (value > 0) return 'blue--text';
     if (value < 0) return 'red--text';
     return 'yellow--text text--darken-1';
@@ -1029,7 +1037,9 @@ export default class ManageTrade extends Vue {
     const isValid = this.validateForm();
     if (isValid) {
       await this.manageTradeController.createOrUpdateTrade(new TradeEntity(this.form));
-      this.close();
+      if (!this.hasError) {
+        this.$emit('saved');
+      }
     }
   }
 
@@ -1053,8 +1063,10 @@ export default class ManageTrade extends Vue {
     const fileSelected = e.target.files[0] as File;
     const result = await this.manageTradeController.uploadImage(fileSelected);
     if (result.successful) {
-      this.form.imagemUrl = result.value;
+      this.form.imagemPath = result.value.filePath;
+      this.form.imagemUrl = result.value.imageUrl;
     }
+    this.$refs.uploader.value = null;
   }
 
   closeDeleteDialog() {

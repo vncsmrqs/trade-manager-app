@@ -59,7 +59,7 @@ export abstract class HttpClient {
       errorHandlers[error.response.status]();
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error.response);
   }
 
   private handleUnauthorized = ({ response }: AxiosError) => {

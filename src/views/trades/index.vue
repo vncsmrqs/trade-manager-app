@@ -13,6 +13,7 @@
         :show="showManageTradeDialog"
         @close="closeManageTradeDialog"
         @deleted="handleTradeDeleted"
+        @saved="handleTradeSaved"
     ></manage-trade>
 
     <import-trade
@@ -525,14 +526,18 @@ export default class ListTrade extends Vue {
   }
 
   handleTradeDeleted(): void {
-    this.itemToManage = null;
-    this.showManageTradeDialog = false;
+    this.closeManageTradeDialog();
 
     if (this.listTradeState.items.length === 1) {
       this.search(this.listTradeState.page - 1);
       return;
     }
 
+    this.search(this.listTradeState.page);
+  }
+
+  handleTradeSaved(): void {
+    this.closeManageTradeDialog();
     this.search(this.listTradeState.page);
   }
 

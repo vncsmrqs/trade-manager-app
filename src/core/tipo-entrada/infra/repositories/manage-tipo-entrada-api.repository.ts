@@ -69,10 +69,10 @@ export class ManageTipoEntradaApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -88,10 +88,10 @@ export class ManageTipoEntradaApiRepository extends HttpClient implements
       return ActionResult.success();
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -107,13 +107,13 @@ export class ManageTipoEntradaApiRepository extends HttpClient implements
       return ActionResult.success();
     }
     catch (error: any) {
-      if (error.code.toString() === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      if (error.code === 403) {
+      if (error.status === 403) {
         return ActionResult.failure('Você não tem permissão para alterar esse tipo de entrada');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -123,13 +123,13 @@ export class ManageTipoEntradaApiRepository extends HttpClient implements
       return ActionResult.success();
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      if (error.code === 403) {
+      if (error.status === 403) {
         return ActionResult.failure('Você não tem permissão para excluir esse tipo de entrada');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 }

@@ -29,11 +29,11 @@ export class AuthApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if ([400, 401].includes(error.code)) {
+      if ([400, 401].includes(error.status)) {
         return ActionResult.failure('Email ou senha inválidos');
       }
 
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 
@@ -51,10 +51,10 @@ export class AuthApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if (error.code === 401) {
+      if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }
-      return ActionResult.failure('Algo inexperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
 }

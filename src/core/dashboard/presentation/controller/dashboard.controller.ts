@@ -39,7 +39,7 @@ export class DashboardController extends Controller<DashboardState> {
     } catch (error: any) {
       this.changeState({
         kind: "ErrorDashboardState",
-        error: 'Algo inexperado ocorreu ao atualizar o dashboard.',
+        error: 'Algo inesperado ocorreu ao atualizar o dashboard.',
 
       });
     }
@@ -71,7 +71,7 @@ export class DashboardController extends Controller<DashboardState> {
       this.updateRankingOfSetupState({
         loading: false,
         items: [],
-        error: 'Algo inexperado aconteceu ao buscar o ranking de setups.',
+        error: 'Algo inesperado aconteceu ao buscar o ranking de setups.',
       });
     }
   }
@@ -111,7 +111,7 @@ export class DashboardController extends Controller<DashboardState> {
       this.updateTradesByWeekdayState({
         loading: false,
         items: [],
-        error: 'Algo inexperado aconteceu ao buscar os registros pelos dias da semana.',
+        error: 'Algo inesperado aconteceu ao buscar os registros pelos dias da semana.',
       });
     }
   }
@@ -151,7 +151,7 @@ export class DashboardController extends Controller<DashboardState> {
       this.updateTotalTradesState({
         loading: false,
         items: [],
-        error: 'Algo inexperado aconteceu ao buscar a soma dos registros.',
+        error: 'Algo inesperado aconteceu ao buscar a soma dos registros.',
       });
     }
   }
@@ -195,7 +195,7 @@ export class DashboardController extends Controller<DashboardState> {
       this.updateMorningTradesState({
         loading: false,
         items: [],
-        error: 'Algo inexperado aconteceu ao buscar os registros da manhã.',
+        error: 'Algo inesperado aconteceu ao buscar os registros da manhã.',
       });
     }
   }
@@ -239,7 +239,7 @@ export class DashboardController extends Controller<DashboardState> {
       this.updateEveningTradesState({
         loading: false,
         items: [],
-        error: 'Algo inexperado aconteceu ao buscar os registros da tarde.',
+        error: 'Algo inesperado aconteceu ao buscar os registros da tarde.',
       });
     }
   }
@@ -279,7 +279,7 @@ export class DashboardController extends Controller<DashboardState> {
       this.updateTradesByIntervalState({
         loading: false,
         items: [],
-        error: 'Algo inexperado aconteceu ao buscar os registros por intervalo.',
+        error: 'Algo inesperado aconteceu ao buscar os registros por intervalo.',
       });
     }
   }
