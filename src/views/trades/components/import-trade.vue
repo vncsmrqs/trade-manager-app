@@ -140,7 +140,9 @@ export default class ImportTrade extends Vue {
 
   async saveFile() {
     await this.importFileTradeController.saveFile();
-    this.close();
+    if (!this.hasError) {
+      this.close();
+    }
   }
 
   get isInitialState(): boolean {
@@ -228,6 +230,7 @@ export default class ImportTrade extends Vue {
   reset() {
     this.dragover = false;
     this.importFileTradeController.resetState();
+    this.$refs.fileUploader.value = null;
   }
 
   close() {

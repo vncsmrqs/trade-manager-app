@@ -82,7 +82,9 @@ export default class DeleteTipoEntrada extends Vue {
 
   async confirmDelete() {
     await this.controller.deleteTipoEntrada(this.item.id);
-    this.close();
+    if (!this.hasError) {
+      this.close();
+    }
   }
 
   get isDeleting(): boolean {

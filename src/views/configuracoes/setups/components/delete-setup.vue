@@ -82,7 +82,9 @@ export default class DeleteSetup extends Vue {
 
   async confirmDelete() {
     await this.controller.deleteSetup(this.item.id);
-    this.close();
+    if (!this.hasError) {
+      this.close();
+    }
   }
 
   get isDeleting(): boolean {

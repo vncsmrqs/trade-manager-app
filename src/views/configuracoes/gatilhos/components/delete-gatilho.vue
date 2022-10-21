@@ -82,7 +82,9 @@ export default class DeleteGatilho extends Vue {
 
   async confirmDelete() {
     await this.controller.deleteGatilho(this.item.id);
-    this.close();
+    if (!this.hasError) {
+      this.close();
+    }
   }
 
   get isDeleting(): boolean {
