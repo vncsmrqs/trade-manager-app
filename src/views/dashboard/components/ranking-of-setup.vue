@@ -8,7 +8,7 @@
         <template v-slot:default>
           <tbody>
           <tr v-for="(item, i) in items" :key="i">
-            <td class="text-left font-weight-bold">{{ item.position }}</td>
+            <td class="text-left font-weight-bold">{{ item.position }}º</td>
             <td class="text-left">{{ item.setupNome }}</td>
             <td class="text-center blue--text font-weight-bold">{{ item.gainCount }}</td>
             <td class="text-center red--text text--accent-1 font-weight-bold">{{ item.lossCount }}</td>

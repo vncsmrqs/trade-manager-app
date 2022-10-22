@@ -339,11 +339,11 @@
                   <v-row>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
-                        <div class="font-weight-bold mb-2">1 Alvo</div>
+                        <div class="font-weight-bold mb-2">1º Alvo</div>
                         <div>{{ formatBooleanFieldValue(form.primeiroAlvo) }}</div>
                       </div>
                       <div v-else>
-                        <span class="text-body-1 font-weight-bold">1 Alvo</span>
+                        <span class="text-body-1 font-weight-bold">1º Alvo</span>
                         <v-radio-group
                             v-model="form.primeiroAlvo"
                             column
@@ -361,11 +361,11 @@
                     </v-col>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
-                        <div class="font-weight-bold mb-2">2 Alvo</div>
+                        <div class="font-weight-bold mb-2">2º Alvo</div>
                         <div>{{ formatBooleanFieldValue(form.segundoAlvo) }}</div>
                       </div>
                       <div v-else>
-                        <span class="text-body-1 font-weight-bold">2 Alvo</span>
+                        <span class="text-body-1 font-weight-bold">2º Alvo</span>
                         <v-radio-group
                             v-model="form.segundoAlvo"
                             column
