@@ -3,14 +3,24 @@
     <v-card-title class="mb-0 pb-0">
       Registros por intervalo - 30 min
     </v-card-title>
-    <v-card-text class="pa-0 d-flex justify-center">
-      <apex-chart
-          width="1088px"
-          type="bar"
-          height="1000px"
-          :options="options"
-          :series="series"
-      ></apex-chart>
+    <v-card-text class="pa-0 d-flex justify-center" style="min-height: 100px">
+      <v-fade-transition>
+        <v-overlay color="white" absolute v-if="isLoading">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-overlay>
+        <div v-if="!isLoading && !hasError && series.length">
+          <apex-chart
+              width="1088px"
+              type="bar"
+              height="1000px"
+              :options="options"
+              :series="series"
+          ></apex-chart>
+        </div>
+        <div v-if="!isLoading && hasError">
+          <v-alert dense outlined type="error">{{ error }}</v-alert>
+        </div>
+      </v-fade-transition>
     </v-card-text>
   </v-card>
 </template>
@@ -105,6 +115,18 @@ export default class TradesByIntervalChart extends Vue {
             .reduce((total, value) => total + value, 0);
       }),
     }));
+  }
+
+  get isLoading() {
+    return this.dashboardState.tradesByInterval.loading;
+  }
+
+  get hasError() {
+    return !!this.dashboardState.tradesByInterval.error;
+  }
+
+  get error(): string | null {
+    return this.dashboardState.tradesByInterval.error || null;
   }
 
   private updateState(newState: DashboardState) {

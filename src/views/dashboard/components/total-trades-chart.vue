@@ -3,14 +3,24 @@
     <v-card-title class="mb-0 pb-0">
       Gain / Loss / 0x0
     </v-card-title>
-    <v-card-text class="pa-0 d-flex justify-center">
-      <apex-chart
-          width="250"
-          type="pie"
-          height="250px"
-          :options="options"
-          :series="series"
-      ></apex-chart>
+    <v-card-text class="pa-0 d-flex justify-center" style="min-height: 100px">
+      <v-fade-transition>
+        <v-overlay color="white" absolute v-if="isLoading">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-overlay>
+        <div v-if="!isLoading && !hasError && series.length">
+          <apex-chart
+              width="250"
+              type="pie"
+              height="250px"
+              :options="options"
+              :series="series"
+          ></apex-chart>
+        </div>
+        <div v-if="!isLoading && hasError">
+          <v-alert dense outlined type="error">{{ error }}</v-alert>
+        </div>
+      </v-fade-transition>
     </v-card-text>
   </v-card>
 </template>
@@ -91,6 +101,18 @@ export default class TotalTradesChart extends Vue {
           .filter((item) => item.name === label.toLowerCase())
           .reduce((total, item) => total + item.value, 0);
     });
+  }
+
+  get isLoading() {
+    return this.dashboardState.totalTrades.loading;
+  }
+
+  get hasError() {
+    return !!this.dashboardState.totalTrades.error;
+  }
+
+  get error(): string | null {
+    return this.dashboardState.totalTrades.error || null;
   }
 
   private updateState(newState: DashboardState) {

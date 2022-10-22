@@ -1,16 +1,26 @@
 <template>
-  <v-card elevation="2" class="rounded-lg" min-height="100%">
+  <v-card elevation="2" class="rounded-lg" min-height="100%" height="100%">
     <v-card-title class="mb-0 pb-0">
       Dias da semana
     </v-card-title>
-    <v-card-text class="pa-0 d-flex justify-center">
-      <apex-chart
-          width="500"
-          type="bar"
-          height="250px"
-          :options="options"
-          :series="series"
-      ></apex-chart>
+    <v-card-text class="pa-0 d-flex justify-center" style="min-height: 100px">
+      <v-fade-transition>
+        <v-overlay color="white" absolute v-if="isLoading">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-overlay>
+        <div v-if="!isLoading && !hasError && series.length">
+          <apex-chart
+              width="500"
+              type="bar"
+              height="250px"
+              :options="options"
+              :series="series"
+          ></apex-chart>
+        </div>
+        <div v-if="!isLoading && hasError">
+          <v-alert dense outlined type="error">{{ error }}</v-alert>
+        </div>
+      </v-fade-transition>
     </v-card-text>
   </v-card>
 </template>
@@ -111,6 +121,18 @@ export default class TradesByWeekdayChart extends Vue {
         }),
       },
     ];
+  }
+
+  get isLoading() {
+    return this.dashboardState.tradesByWeekday.loading;
+  }
+
+  get hasError() {
+    return !!this.dashboardState.tradesByWeekday.error;
+  }
+
+  get error(): string | null {
+    return this.dashboardState.tradesByWeekday.error || null;
   }
 
   private updateState(newState: DashboardState) {

@@ -3,33 +3,41 @@
     <v-card-title>
       Ranking por setup
     </v-card-title>
-    <v-card-text class="">
-      <v-simple-table dense class="v-sheet--outlined">
-        <template v-slot:default>
-          <tbody>
-          <tr v-for="(item, i) in items" :key="i">
-            <td :style="{ width: '8%' }" class="text-left font-weight-bold">
-              {{ item.position }}º
-            </td>
-            <td :style="{ width: '60%' }" class="text-left">
-              {{ item.setupNome }}
-            </td>
-            <td :style="{ width: '8%' }" class="text-center blue--text font-weight-bold">
-              {{ item.gainCount }}
-            </td>
-            <td :style="{ width: '8%' }" class="text-center yellow--text text--darken-1 font-weight-bold">
-              {{ item.drawCount }}
-            </td>
-            <td :style="{ width: '8%' }" class="text-center red--text text--accent-1 font-weight-bold">
-              {{ item.lossCount }}
-            </td>
-            <td :style="{ width: '8%' }" class="text-right">
-              {{ item.gainPercentage.toFixed(2) }}%
-            </td>
-          </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
+    <v-card-text style="min-height: 100px">
+      <v-fade-transition>
+        <v-overlay color="white" absolute v-if="isLoading">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-overlay>
+        <v-simple-table v-if="!isLoading && !hasError && items.length" dense class="v-sheet--outlined">
+          <template v-slot:default>
+            <tbody>
+            <tr v-for="(item, i) in items" :key="i">
+              <td :style="{ width: '8%' }" class="text-left font-weight-bold">
+                {{ item.position }}º
+              </td>
+              <td :style="{ width: '60%' }" class="text-left">
+                {{ item.setupNome }}
+              </td>
+              <td :style="{ width: '8%' }" class="text-center blue--text font-weight-bold">
+                {{ item.gainCount }}
+              </td>
+              <td :style="{ width: '8%' }" class="text-center yellow--text text--darken-1 font-weight-bold">
+                {{ item.drawCount }}
+              </td>
+              <td :style="{ width: '8%' }" class="text-center red--text text--accent-1 font-weight-bold">
+                {{ item.lossCount }}
+              </td>
+              <td :style="{ width: '8%' }" class="text-right">
+                {{ item.gainPercentage.toFixed(2) }}%
+              </td>
+            </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <div v-if="!isLoading && hasError">
+          <v-alert dense outlined type="error">{{ error }}</v-alert>
+        </div>
+      </v-fade-transition>
     </v-card-text>
   </v-card>
 </template>
@@ -43,6 +51,18 @@ import { DashboardState } from "@/core/dashboard/presentation/state/dashboard.st
 export default class RankingOfSetup extends Vue {
   private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
   private dashboardState = this.dashboardController.state;
+
+  get isLoading() {
+    return this.dashboardState.rankingOfSetups.loading;
+  }
+
+  get hasError() {
+    return !!this.dashboardState.rankingOfSetups.error;
+  }
+
+  get error(): string | null {
+    return this.dashboardState.rankingOfSetups.error || null;
+  }
 
   get items() {
     return this.dashboardState.rankingOfSetups.items.map((setup) => {
