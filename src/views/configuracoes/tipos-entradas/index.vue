@@ -10,6 +10,7 @@
             dense
             label="Busca"
             style="background-color: white"
+            hide-details
           ></v-text-field>
         </v-col>
         <v-col cols="4" sm="2">
