@@ -12,7 +12,10 @@
       <v-col cols="7" style="position: relative">
       </v-col>
       <v-col cols="5" class="fill-height">
-        <v-card class="rounded-l-xl fill-height">
+        <v-card class="rounded-l-xl fill-height overflow-hidden">
+          <v-overlay v-show="isLoading" absolute color="white">
+            <v-progress-circular indeterminate color="primary"></v-progress-circular>
+          </v-overlay>
           <v-card-title>
             <v-img></v-img>
           </v-card-title>
@@ -21,6 +24,7 @@
               @submit.prevent="submit"
               class="mt-16"
               :disabled="isLoading"
+              ref="loginForm"
             >
               <v-row no-gutters justify="center">
                 <v-col cols="12" class="d-flex justify-center mb-16">
@@ -47,7 +51,7 @@
                     required
                     dense
                     :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required, rules.min, rules.emailMatch]"
+                    :rules="[rules.required, rules.min]"
                     :type="showPassword ? 'text' : 'password'"
                     name="input-10-2"
                     v-model="form.password"
@@ -55,6 +59,16 @@
                     :validate-on-blur="true"
                   ></v-text-field>
                 </v-col>
+                <v-fade-transition>
+                  <v-col v-if="hasError" cols="8">
+                    <v-alert
+                        outlined
+                        type="error"
+                        v-text="error"
+                        class="ma-0 mt-1"
+                    ></v-alert>
+                  </v-col>
+                </v-fade-transition>
                 <v-col cols="8" class="mt-16">
                   <v-btn
                     color="blue"
@@ -62,7 +76,6 @@
                     type="submit"
                     class="white--text"
                     :disabled="isLoading"
-                    :loading="isLoading"
                   >Entrar</v-btn>
                 </v-col>
               </v-row>
@@ -99,7 +112,6 @@ export default class Login extends Vue {
     required: (value: string) => !!value || 'Campo obrigatório',
     min: (value: string) => value.length >= 8 || 'Mínimo 8 caracteres',
     validEmail: (value: string) => validateEmail(value) || 'Informe um email válido',
-    emailMatch: () => !this.hasError || this.error,
   };
 
   get isLoading(): boolean {
@@ -115,10 +127,18 @@ export default class Login extends Vue {
   }
 
   async submit() {
+    //@ts-ignore
+    const isValid = this.$refs.loginForm.validate();
+    this.authController.resetState();
+    if (!isValid) {
+      return;
+    }
     await this.authController.login(this.form.email, this.form.password).then(() => {
       if (this.authController.isAuthenticated) {
         this.$router.replace({ name: 'dashboard' });
+        return;
       }
+      this.form.password = '';
     });
   }
 

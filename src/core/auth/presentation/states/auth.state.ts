@@ -36,4 +36,5 @@ export const initialAuthState: AuthState = {
   kind: "InitialAuthState",
   user: undefined,
   token: undefined,
+  error: undefined,
 };

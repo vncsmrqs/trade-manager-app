@@ -99,9 +99,8 @@ const router = new VueRouter({
 
 router.beforeEach(middlewarePipeline);
 
-const systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
-
 router.afterEach((to) => {
+  const systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
   const pageTitle = to.meta?.pageTitle;
   if (pageTitle) {
     systemController.updatePageTitle(pageTitle);

@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import { app, TYPES } from "@/core/common/container";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
+import router from "@/router";
 
 type ErrorHandlers = { [key:number]: () => void; }
 
@@ -83,9 +84,11 @@ export abstract class HttpClient {
 
   private handleUnauthorized = () => {
     this.authController.logout();
-    this.notificationController.push({
-      message: 'Sua sessão expirou. Por favor, faça o login novamente.',
-      type: 'error',
+    router.push({ name: 'login '}).then(() => {
+      this.notificationController.push({
+        message: 'Sua sessão expirou. Por favor, faça o login novamente.',
+        type: 'error',
+      });
     });
   }
 
