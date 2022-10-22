@@ -260,7 +260,7 @@
     </v-row>
 
     <v-col class="mt-8">
-      <v-row class="rounded-lg black overflow-hidden elevation-1">
+      <v-row class="rounded-lg overflow-hidden elevation-1">
         <v-col cols="12" class="pa-0 ">
           <v-simple-table>
             <template v-slot:default>
