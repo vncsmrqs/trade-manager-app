@@ -1,4 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { app, TYPES } from "@/core/common/container";
+import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
+import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 type ErrorHandlers = { [key:number]: () => void; }
 
@@ -16,6 +19,22 @@ declare module 'axios' {
 
 export abstract class HttpClient {
   protected readonly client: AxiosInstance;
+  private _notificationController!: NotificationController;
+  private _authController!: AuthController;
+
+  get notificationController() {
+    if (!this._notificationController) {
+      this._notificationController = app.make<NotificationController>(TYPES.NotificationController);
+    }
+    return this._notificationController;
+  }
+
+  get authController() {
+    if (!this._authController) {
+      this._authController = app.make<AuthController>(TYPES.AuthController);
+    }
+    return this._authController;
+  }
 
   protected constructor(baseURL: string, headers?: Record<string, any>) {
     this.client = axios.create({ baseURL, headers });
@@ -51,7 +70,7 @@ export abstract class HttpClient {
 
   protected handleError = (error: AxiosError) => {
     const errorHandlers: ErrorHandlers = {
-      401: () => this.handleUnauthorized(error),
+      401: this.handleUnauthorized,
       403: this.handleForbidden,
     };
 
@@ -62,11 +81,18 @@ export abstract class HttpClient {
     return Promise.reject(error.response);
   }
 
-  private handleUnauthorized = ({ response }: AxiosError) => {
-    //todo: Logout
+  private handleUnauthorized = () => {
+    this.authController.logout();
+    this.notificationController.push({
+      message: 'Sua sessão expirou. Por favor, faça o login novamente.',
+      type: 'error',
+    });
   }
 
   private handleForbidden = () => {
-    //todo: Show error alert
+    this.notificationController.push({
+      message: 'Você não tem permissão para realizar essa ação ou acessar este recurso.',
+      type: 'warning',
+    });
   }
 }

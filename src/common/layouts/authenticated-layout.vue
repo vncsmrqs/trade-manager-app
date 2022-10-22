@@ -17,7 +17,7 @@
               color="grey"
               size="128"
           >
-            <v-img v-if="authState.user.imagePath" :src="authState.user.imageUrl"></v-img>
+            <v-img v-if="authState?.user?.imagePath" :src="authState.user.imageUrl"></v-img>
             <v-icon v-else x-large color="white">mdi-account</v-icon>
           </v-avatar>
         </v-row>
