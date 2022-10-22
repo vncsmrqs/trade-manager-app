@@ -68,6 +68,14 @@ export class TradeEntity extends Entity<TradeEntityProps>{
     return this.props.tipoEntradaId;
   }
 
+  get tipoStopId(): string | undefined {
+    return this.props.tipoStopId;
+  }
+
+  get localStopId(): string | undefined {
+    return this.props.localStopId;
+  }
+
   get tradeImportacaoId(): string | undefined {
     return this.props.tradeImportacaoId;
   }

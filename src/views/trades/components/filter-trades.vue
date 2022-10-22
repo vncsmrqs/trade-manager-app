@@ -127,6 +127,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
 import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
+import { ListTradeFilterState } from "@/core/trade/presentation/states/list-trade-filter.state";
 
 type FormType = {
   setupId: undefined | string | string[],
@@ -234,9 +235,11 @@ export default class FilterTrades extends Vue {
   @Watch('show')
   changeShow(value: boolean) {
     this.form = this.defaultForm();
-    this.listTradeFilterController.loadFilterList();
-    if (value && this.filterChips.length) {
-      this.fillForm(this.filterChips);
+    if (value) {
+      this.listTradeFilterController.loadFilterList();
+      if (this.filterChips.length) {
+        this.fillForm(this.filterChips);
+      }
     }
   }
 
@@ -249,17 +252,14 @@ export default class FilterTrades extends Vue {
   }
 
   get error(): string | null {
-    if (this.hasError) {
-      return this.listTradeFilterState.error;
-    }
-    return null;
+    return this.listTradeFilterState.error || null;
   }
 
   close() {
     this.$emit('close');
   }
 
-  changeListTradeFilterState(state) {
+  changeListTradeFilterState(state: ListTradeFilterState) {
     this.listTradeFilterState = state;
   }
 

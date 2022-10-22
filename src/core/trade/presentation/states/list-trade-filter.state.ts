@@ -30,6 +30,7 @@ export type LoadedListTradeFilterState = {
 
 export type ErrorListTradeFilterState = {
   kind: "ErrorListTradeFilterState";
+  error: string;
 }
 
 export type ListTradeFilterState = (

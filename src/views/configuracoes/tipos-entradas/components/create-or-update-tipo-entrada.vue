@@ -131,10 +131,7 @@ export default class CreateOrUpdateTipoEntrada extends Vue {
   }
 
   get error(): string | null {
-    if (this.hasError) {
-      return this.localState.error;
-    }
-    return null;
+    return this.localState.error || null;
   }
 
   fillForm(item: TipoEntradaEntity) {

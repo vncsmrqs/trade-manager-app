@@ -316,7 +316,7 @@
                   <div
                       v-if="header.name === 'pontos'"
                       :class="[
-                        pointsTextColor(trade.pontuacao),
+                        pointsTextColor(trade.resultado),
                       ]"
                   >
                     <div class="text-body-1 font-weight-bold">
@@ -390,7 +390,7 @@ import {
   ListTradeController
 } from "@/core/trade/presentation/controllers/list-trade.controller";
 import { ListTradeFilter, ListTradeState } from "@/core/trade/presentation/states/list-trade.state";
-import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
+import { TradeEntity, TradeResultadoType } from "@/core/trade/domain/entities/trade.entity";
 import ManageTrade from "@/views/trades/components/manage-trade.vue";
 import moment from "moment";
 import ImportTrade from "@/views/trades/components/import-trade.vue";
@@ -599,9 +599,9 @@ export default class ListTrade extends Vue {
     this.showFilterDialog = true;
   }
 
-  pointsTextColor(pontos: number): string {
-    if (pontos > 0) return 'blue--text text--accent-1';
-    if (pontos < 0) return 'red--text text--accent-1';
+  pointsTextColor(resultado: TradeResultadoType): string {
+    if (resultado === 'gain') return 'blue--text text--accent-1';
+    if (resultado === 'loss') return 'red--text text--accent-1';
     return 'yellow--text text--darken-1'
   }
 

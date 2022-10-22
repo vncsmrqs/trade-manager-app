@@ -461,6 +461,7 @@
                           type="number"
                           ref="pontuacao"
                           :rules="formRules.pontuacao"
+                          :validate-on-blur="true"
                           required
                       ></v-text-field>
                     </v-col>
@@ -474,6 +475,7 @@
                           type="number"
                           ref="valorResultado"
                           :rules="formRules.valorResultado"
+                          :validate-on-blur="true"
                           required
                       ></v-text-field>
                     </v-col>
@@ -714,7 +716,7 @@ import { app, TYPES } from "@/core/common/container";
 import {
   TradeEntity,
   TradeEntityProps,
-  TradeResultadoType
+  TradeResultadoType, TradeSentimentoType
 } from "@/core/trade/domain/entities/trade.entity";
 import { ManageTradeState } from "@/core/trade/presentation/states/manage-trade.state";
 import { ManageTradeController } from "@/core/trade/presentation/controllers/manage-trade.controller";
@@ -725,10 +727,7 @@ import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entiti
 import moment from "moment";
 import SingleImageViewer from "@/common/components/single-image-viewer.vue";
 
-type FormType = Partial<TradeEntityProps> & {
-  horaTrade?: string;
-  filtro: Record<string, string>;
-};
+type FormType = Partial<TradeEntityProps>;
 
 @Component({
   components: { SingleImageViewer, DeleteTrade }
@@ -760,34 +759,63 @@ export default class ManageTrade extends Vue {
   showHoraTradePicker = false;
   showImageViewerDialog = false;
 
-  imageToViewSrc?: string = null;
+  imageToViewSrc?: string | null = null;
 
   formIsValid = false;
 
   formRules = {
     ativoId: [
-      (ativoId) => !!ativoId || 'Ativo obrigatório',
+      (ativoId: any) => !!ativoId || 'Ativo obrigatório',
     ],
     setupId: [],
     gatilhoId: [],
     tipoEntradaId: [],
     dataTrade: [
-      (dataTrade) => !!dataTrade || 'Data obrigatória',
+      (dataTrade: any) => !!dataTrade || 'Data obrigatória',
     ],
     horaTrade: [
-      (horaTrade) => !!horaTrade || 'Hora obrigatória',
+      (horaTrade: any) => !!horaTrade || 'Hora obrigatória',
     ],
     lote: [
-      (lote) => !!lote || 'Lote obrigatório',
+      (lote: any) => !!lote || 'Lote obrigatório',
     ],
     pontuacao: [
-      (pontuacao) => (pontuacao !== undefined && pontuacao !== null) || 'Pontuação obrigatória',
+      (pontuacao: any) => (pontuacao !== undefined && pontuacao !== null) || 'Pontuação obrigatória',
+      this.validatePontuacao,
     ],
     valorResultado: [
-      (valorResultado) => (valorResultado !== undefined && valorResultado !== null) || 'Resultado em R$ obrigatório',
+      (valorResultado: any) => (valorResultado !== undefined && valorResultado !== null) || 'Resultado em R$ obrigatório',
+      this.validateValorResultado,
     ],
     resultado: [],
     observacao: [],
+  }
+
+  validatePontuacao(pontuacao: any): boolean | string {
+    console.log(this.form);
+    if (this.form.resultado) {
+      if (this.form.resultado === 'gain') {
+        return pontuacao > 0 || 'A pontuação deve ser maior que 0 para resultado GAIN';
+      }
+      if (this.form.resultado === 'loss') {
+        return pontuacao < 0 || 'A pontuação deve ser menor que 0 para resultado LOSS';
+      }
+      return pontuacao === 0 || 'A pontuação deve ser 0 para resultado 0x0';
+    }
+    return true;
+  }
+
+  validateValorResultado(valorResultado: any): boolean | string {
+    if (this.form.resultado) {
+      if (this.form.resultado === 'gain') {
+        return valorResultado > 0 || 'O resultado em R$ deve ser maior que 0 para resultado GAIN';
+      }
+      if (this.form.resultado === 'loss') {
+        return valorResultado < 0 || 'A resultado em R$ deve ser menor que 0 para resultado LOSS';
+      }
+      return valorResultado === 0 || 'A resultado em R$ deve ser 0 para resultado 0x0';
+    }
+    return true;
   }
 
   get today() {
@@ -902,7 +930,7 @@ export default class ManageTrade extends Vue {
   }
 
   get isLoading(): boolean {
-    return this.manageTradeState.kind === 'DeletingTradeState' || this.isLoadingFilters;
+    return this.manageTradeState.kind === 'LoadingManageTradeState' || this.isLoadingFilters;
   }
 
   get isLoadingFilters(): boolean {
@@ -913,11 +941,8 @@ export default class ManageTrade extends Vue {
     return this.manageTradeState.kind === 'ErrorManageTradeState';
   }
 
-  get error(): string | undefined {
-    if (this.hasError) {
-      return this.manageTradeState.error;
-    }
-    return undefined;
+  get error(): string | null {
+    return this.manageTradeState.error || null;
   }
 
   formatBooleanFieldValue(value?: boolean): string {
@@ -1050,7 +1075,7 @@ export default class ManageTrade extends Vue {
     return `grey${text ?  '--text' : ''} lighten-4`;
   }
 
-  changeSentimento(sentimento: string) {
+  changeSentimento(sentimento: TradeSentimentoType) {
     this.form.sentimento = sentimento;
   }
 
@@ -1133,6 +1158,7 @@ export default class ManageTrade extends Vue {
   }
 
   validateForm() {
+    //@ts-ignore
     const isValid = this.$refs.form.validate();
 
     if (isValid) return true;

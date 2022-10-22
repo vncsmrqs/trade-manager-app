@@ -106,8 +106,8 @@ export default class Login extends Vue {
     return this.authState.kind === "LoadingAuthState";
   }
 
-  get error() {
-    return this.authState.error;
+  get error(): string | null {
+    return this.authState.error || null;
   }
 
   get hasError() {

@@ -168,11 +168,8 @@ export default class ImportTrade extends Vue {
     return this.importFileTradeState.kind === 'ErrorImportFileTradeState';
   }
 
-  get error(): string | undefined {
-    if (this.hasError) {
-      return this.importFileTradeState.error;
-    }
-    return undefined;
+  get error(): string | null {
+    return this.importFileTradeState.error || null;
   }
 
   selectFile() {

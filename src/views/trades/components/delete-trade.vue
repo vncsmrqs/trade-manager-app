@@ -97,11 +97,8 @@ export default class DeleteTrade extends Vue {
     return this.localState.kind === 'ErrorDeleteTradeState';
   }
 
-  get error(): string | undefined {
-    if (this.hasError) {
-      return this.localState.error;
-    }
-    return undefined;
+  get error(): string | null {
+    return this.localState.error || null;
   }
 
   close() {
