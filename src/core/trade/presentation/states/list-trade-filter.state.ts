@@ -3,14 +3,16 @@ import { GatilhoEntity } from "@/core/gatilho/domain/entities/gatilho.entity";
 import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
 import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
 import { AtivoEntity } from "@/core/ativo/domain/entities/ativo.entity";
+import { TipoStopEntity } from "@/core/tipo-stop/domain/entities/tipo-stop.entity";
+import { LocalStopEntity } from "@/core/local-stop/domain/entities/local-stop.entity";
 
 export type BaseListTradeFilterState = {
   setupList: SetupEntity[];
   gatilhoList: GatilhoEntity[];
   tipoEntradaList: TipoEntradaEntity[];
   ativoList: AtivoEntity[];
-  tipoStopList: Record<string, any>[],
-  localStopList: Record<string, any>[],
+  tipoStopList: TipoStopEntity[],
+  localStopList: LocalStopEntity[],
   filtroList: CampoCustomizavelEntity[];
   error?: string;
 }

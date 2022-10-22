@@ -42,6 +42,16 @@ import { ManageGatilhoApiRepository } from "@/core/gatilho/infra/repositories/ma
 import { ManageAtivoApiRepository } from "@/core/ativo/infra/repositories/manage-ativo-api.repository";
 import { ManageCampoCustomizavelApiRepository } from "@/core/campo-customizavel/infra/repositories/manage-campo-customizavel-api.repository";
 import { ManageTradeApiRepository } from "@/core/trade/infra/repositories/manage-trade-api.repository";
+import { ManageTipoStopApiRepository } from "@/core/tipo-stop/infra/repositories/manage-tipo-stop-api.repository";
+import { ListTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/list-tipo-stop.repository";
+import { CreateTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/create-tipo-stop.repository";
+import { UpdateTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/update-tipo-stop.repository";
+import { DeleteTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/delete-tipo-stop.repository";
+import { ListLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/list-local-stop.repository";
+import { CreateLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/create-local-stop.repository";
+import { UpdateLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/update-local-stop.repository";
+import { DeleteLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/delete-local-stop.repository";
+import { ManageLocalStopApiRepository } from "@/core/local-stop/infra/repositories/manage-local-stop-api.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -97,6 +107,42 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<DeleteTipoEntradaRepositoryContract>(
       TYPES.DeleteTipoEntradaRepositoryContract,
       manageTipoEntradaRepository
+    );
+
+    const manageTipoStopRepository = new ManageTipoStopApiRepository(apiBaseUrl);
+    container.instance<ListTipoStopRepositoryContract>(
+      TYPES.ListTipoStopRepositoryContract,
+      manageTipoStopRepository
+    );
+    container.instance<CreateTipoStopRepositoryContract>(
+      TYPES.CreateTipoStopRepositoryContract,
+      manageTipoStopRepository
+    );
+    container.instance<UpdateTipoStopRepositoryContract>(
+      TYPES.UpdateTipoStopRepositoryContract,
+      manageTipoStopRepository
+    );
+    container.instance<DeleteTipoStopRepositoryContract>(
+      TYPES.DeleteTipoStopRepositoryContract,
+      manageTipoStopRepository
+    );
+
+    const manageLocalStopRepository = new ManageLocalStopApiRepository(apiBaseUrl);
+    container.instance<ListLocalStopRepositoryContract>(
+      TYPES.ListLocalStopRepositoryContract,
+      manageLocalStopRepository
+    );
+    container.instance<CreateLocalStopRepositoryContract>(
+      TYPES.CreateLocalStopRepositoryContract,
+      manageLocalStopRepository
+    );
+    container.instance<UpdateLocalStopRepositoryContract>(
+      TYPES.UpdateLocalStopRepositoryContract,
+      manageLocalStopRepository
+    );
+    container.instance<DeleteLocalStopRepositoryContract>(
+      TYPES.DeleteLocalStopRepositoryContract,
+      manageLocalStopRepository
     );
 
     const manageTradeRepository = new ManageTradeApiRepository(apiBaseUrl);

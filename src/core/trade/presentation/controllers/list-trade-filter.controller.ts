@@ -9,6 +9,8 @@ import { ListAtivoUseCaseContract } from "@/core/ativo/domain/use-cases/list-ati
 import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
 import { ListGatilhoUseCaseContract } from "@/core/gatilho/domain/use-cases/list-gatilho.use-case";
 import { ActionResult } from "@/core/common/domain/action-result";
+import { ListTipoStopUseCaseContract } from "@/core/tipo-stop/domain/use-cases/list-tipo-stop.use-case";
+import { ListLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/list-local-stop.use-case";
 
 export class ListTradeFilterController extends Controller<ListTradeFilterState> {
   constructor(
@@ -17,6 +19,8 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
     private listTipoEntradaUseCase: ListTipoEntradaUseCaseContract,
     private listAtivoUseCase: ListAtivoUseCaseContract,
     private listFiltroUseCase: ListCampoCustomizavelUseCaseContract,
+    private listTipoStopUseCase: ListTipoStopUseCaseContract,
+    private listLocalStopUseCase: ListLocalStopUseCaseContract,
   ) {
     super(initialListTradeFilterState);
   }
@@ -34,12 +38,16 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
         tipoEntradaResult,
         ativoResult,
         filtroResult,
+        tipoStopResult,
+        localStopResult,
       ] = await Promise.all([
         this.listSetupUseCase.execute({ ativo: true }),
         this.listGatilhoUseCase.execute({ ativo: true }),
         this.listTipoEntradaUseCase.execute({ ativo: true }),
         this.listAtivoUseCase.execute({ ativo: true }),
         this.listFiltroUseCase.execute({ ativo: true, contexto: 'filtro' }),
+        this.listTipoStopUseCase.execute({ ativo: true }),
+        this.listLocalStopUseCase.execute({ ativo: true }),
       ]);
 
       const mainResult = ActionResult.combine([
@@ -48,6 +56,8 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
         tipoEntradaResult,
         ativoResult,
         filtroResult,
+        tipoStopResult,
+        localStopResult,
       ]);
 
       if (mainResult.successful) {
@@ -58,6 +68,8 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
           tipoEntradaList: tipoEntradaResult.value.items,
           ativoList: ativoResult.value.items,
           filtroList: filtroResult.value.items,
+          tipoStopList: tipoStopResult.value.items,
+          localStopList: localStopResult.value.items,
         });
 
         return;

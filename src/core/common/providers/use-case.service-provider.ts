@@ -85,6 +85,30 @@ import { GetTradeSumRepositoryContract } from "@/core/dashboard/data/contracts/g
 import { GetTradeSumByIntervalRepositoryContract } from "@/core/dashboard/data/contracts/get-trade-sum-by-interval.repository";
 import { LoginRepositoryContract } from "@/core/auth/data/contracts/login.repository";
 import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get-current-user.repository";
+import { ListTipoStopUseCaseContract } from "@/core/tipo-stop/domain/use-cases/list-tipo-stop.use-case";
+import { ListTipoStopUseCase } from "@/core/tipo-stop/data/implementations/use-cases/list-tipo-stop.use.case";
+import { ListTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/list-tipo-stop.repository";
+import { CreateTipoStopUseCaseContract } from "@/core/tipo-stop/domain/use-cases/create-tipo-stop.use-case";
+import { CreateTipoStopUseCase } from "@/core/tipo-stop/data/implementations/use-cases/create-tipo-stop.use-case";
+import { CreateTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/create-tipo-stop.repository";
+import { UpdateTipoStopUseCaseContract } from "@/core/tipo-stop/domain/use-cases/update-tipo-stop.use-case";
+import { UpdateTipoStopUseCase } from "@/core/tipo-stop/data/implementations/use-cases/update-tipo-stop.use-case";
+import { UpdateTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/update-tipo-stop.repository";
+import { DeleteTipoStopUseCaseContract } from "@/core/tipo-stop/domain/use-cases/delete-tipo-stop.use-case";
+import { DeleteTipoStopUseCase } from "@/core/tipo-stop/data/implementations/use-cases/delete-tipo-stop.use-case";
+import { DeleteTipoStopRepositoryContract } from "@/core/tipo-stop/data/contracts/delete-tipo-stop.repository";
+import { ListLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/list-local-stop.use-case";
+import { ListLocalStopUseCase } from "@/core/local-stop/data/implementations/use-cases/list-local-stop.use.case";
+import { ListLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/list-local-stop.repository";
+import { CreateLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/create-local-stop.use-case";
+import { CreateLocalStopUseCase } from "@/core/local-stop/data/implementations/use-cases/create-local-stop.use-case";
+import { CreateLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/create-local-stop.repository";
+import { UpdateLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/update-local-stop.use-case";
+import { UpdateLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/update-local-stop.repository";
+import { UpdateLocalStopUseCase } from "@/core/local-stop/data/implementations/use-cases/update-local-stop.use-case";
+import { DeleteLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/delete-local-stop.use-case";
+import { DeleteLocalStopUseCase } from "@/core/local-stop/data/implementations/use-cases/delete-local-stop.use-case";
+import { DeleteLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/delete-local-stop.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -93,6 +117,8 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     this.bootSetupUseCases(container);
     this.bootGatilhoUseCases(container);
     this.bootTipoEntradaUseCases(container);
+    this.bootTipoStopUseCases(container);
+    this.bootLocalStopUseCases(container);
     this.bootTradeUseCases(container);
     this.bootAtivoUseCases(container);
     this.bootCampoCustomizavelUseCases(container);
@@ -187,6 +213,58 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<DeleteTipoEntradaUseCaseContract>(TYPES.DeleteTipoEntradaUseCaseContract, () => {
       return new DeleteTipoEntradaUseCase(
         container.make<DeleteTipoEntradaRepositoryContract>(TYPES.DeleteTipoEntradaRepositoryContract),
+      );
+    });
+  }
+
+  private bootTipoStopUseCases(container: ContainerContract): void {
+    container.bind<ListTipoStopUseCaseContract>(TYPES.ListTipoStopUseCaseContract, () => {
+      return new ListTipoStopUseCase(
+        container.make<ListTipoStopRepositoryContract>(TYPES.ListTipoStopRepositoryContract),
+      );
+    });
+
+    container.bind<CreateTipoStopUseCaseContract>(TYPES.CreateTipoStopUseCaseContract, () => {
+      return new CreateTipoStopUseCase(
+        container.make<CreateTipoStopRepositoryContract>(TYPES.CreateTipoStopRepositoryContract),
+      );
+    });
+
+    container.bind<UpdateTipoStopUseCaseContract>(TYPES.UpdateTipoStopUseCaseContract, () => {
+      return new UpdateTipoStopUseCase(
+        container.make<UpdateTipoStopRepositoryContract>(TYPES.UpdateTipoStopRepositoryContract),
+      );
+    });
+
+    container.bind<DeleteTipoStopUseCaseContract>(TYPES.DeleteTipoStopUseCaseContract, () => {
+      return new DeleteTipoStopUseCase(
+        container.make<DeleteTipoStopRepositoryContract>(TYPES.DeleteTipoStopRepositoryContract),
+      );
+    });
+  }
+
+  private bootLocalStopUseCases(container: ContainerContract): void {
+    container.bind<ListLocalStopUseCaseContract>(TYPES.ListLocalStopUseCaseContract, () => {
+      return new ListLocalStopUseCase(
+        container.make<ListLocalStopRepositoryContract>(TYPES.ListLocalStopRepositoryContract),
+      );
+    });
+
+    container.bind<CreateLocalStopUseCaseContract>(TYPES.CreateLocalStopUseCaseContract, () => {
+      return new CreateLocalStopUseCase(
+        container.make<CreateLocalStopRepositoryContract>(TYPES.CreateLocalStopRepositoryContract),
+      );
+    });
+
+    container.bind<UpdateLocalStopUseCaseContract>(TYPES.UpdateLocalStopUseCaseContract, () => {
+      return new UpdateLocalStopUseCase(
+        container.make<UpdateLocalStopRepositoryContract>(TYPES.UpdateLocalStopRepositoryContract),
+      );
+    });
+
+    container.bind<DeleteLocalStopUseCaseContract>(TYPES.DeleteLocalStopUseCaseContract, () => {
+      return new DeleteLocalStopUseCase(
+        container.make<DeleteLocalStopRepositoryContract>(TYPES.DeleteLocalStopRepositoryContract),
       );
     });
   }

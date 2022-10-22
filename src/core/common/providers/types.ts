@@ -20,6 +20,16 @@ export const TYPES = {
   UpdateTipoEntradaUseCaseContract: Symbol('UpdateTipoEntradaUseCaseContract'),
   DeleteTipoEntradaUseCaseContract: Symbol('DeleteTipoEntradaUseCaseContract'),
 
+  ListTipoStopUseCaseContract: Symbol('ListTipoStopUseCaseContract'),
+  CreateTipoStopUseCaseContract: Symbol('CreateTipoStopUseCaseContract'),
+  UpdateTipoStopUseCaseContract: Symbol('UpdateTipoStopUseCaseContract'),
+  DeleteTipoStopUseCaseContract: Symbol('DeleteTipoStopUseCaseContract'),
+
+  ListLocalStopUseCaseContract: Symbol('ListLocalStopUseCaseContract'),
+  CreateLocalStopUseCaseContract: Symbol('CreateLocalStopUseCaseContract'),
+  UpdateLocalStopUseCaseContract: Symbol('UpdateLocalStopUseCaseContract'),
+  DeleteLocalStopUseCaseContract: Symbol('DeleteLocalStopUseCaseContract'),
+
   ListTradeUseCaseContract: Symbol('ListTradeUseCaseContract'),
   CreateTradeUseCaseContract: Symbol('CreateTradeUseCaseContract'),
   UpdateTradeUseCaseContract: Symbol('UpdateTradeUseCaseContract'),
@@ -55,6 +65,16 @@ export const TYPES = {
   CreateTipoEntradaRepositoryContract: Symbol('CreateTipoEntradaRepositoryContract'),
   UpdateTipoEntradaRepositoryContract: Symbol('UpdateTipoEntradaRepositoryContract'),
   DeleteTipoEntradaRepositoryContract: Symbol('DeleteTipoEntradaRepositoryContract'),
+
+  ListTipoStopRepositoryContract: Symbol('ListTipoStopRepositoryContract'),
+  CreateTipoStopRepositoryContract: Symbol('CreateTipoStopRepositoryContract'),
+  UpdateTipoStopRepositoryContract: Symbol('UpdateTipoStopRepositoryContract'),
+  DeleteTipoStopRepositoryContract: Symbol('DeleteTipoStopRepositoryContract'),
+
+  ListLocalStopRepositoryContract: Symbol('ListLocalStopRepositoryContract'),
+  CreateLocalStopRepositoryContract: Symbol('CreateLocalStopRepositoryContract'),
+  UpdateLocalStopRepositoryContract: Symbol('UpdateLocalStopRepositoryContract'),
+  DeleteLocalStopRepositoryContract: Symbol('DeleteLocalStopRepositoryContract'),
 
   ListTradeRepositoryContract: Symbol('ListTradeRepositoryContract'),
   CreateTradeRepositoryContract: Symbol('CreateTradeRepositoryContract'),

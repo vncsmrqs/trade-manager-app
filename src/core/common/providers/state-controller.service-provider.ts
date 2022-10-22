@@ -47,6 +47,8 @@ import { GetTradeSumUseCaseContract } from "@/core/dashboard/domain/use-cases/ge
 import { GetTradeSumByIntervalUseCaseContract } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
 import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
 import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
+import { ListTipoStopUseCaseContract } from "@/core/tipo-stop/domain/use-cases/list-tipo-stop.use-case";
+import { ListLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/list-local-stop.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -186,6 +188,8 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
         container.make<ListTipoEntradaUseCaseContract>(TYPES.ListTipoEntradaUseCaseContract),
         container.make<ListAtivoUseCaseContract>(TYPES.ListAtivoUseCaseContract),
         container.make<ListCampoCustomizavelUseCaseContract>(TYPES.ListCampoCustomizavelUseCaseContract),
+        container.make<ListTipoStopUseCaseContract>(TYPES.ListTipoStopUseCaseContract),
+        container.make<ListLocalStopUseCaseContract>(TYPES.ListLocalStopUseCaseContract),
       );
     });
 
