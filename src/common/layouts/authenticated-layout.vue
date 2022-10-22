@@ -11,13 +11,14 @@
         app
     >
       <template v-slot:prepend>
-        <v-row justify="center" class="my-4">
+        <v-row justify="center" class="my-8">
           <v-avatar
               class="overflow-hidden"
               color="grey"
-              size="164"
+              size="128"
           >
-            <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+            <v-img v-if="authState.user.imagePath" :src="authState.user.imageUrl"></v-img>
+            <v-icon v-else x-large color="white">mdi-account</v-icon>
           </v-avatar>
         </v-row>
       </template>
@@ -45,7 +46,7 @@
               :prepend-icon="item.icon"
           >
             <template v-slot:activator>
-              <v-list-item-title>Configurações</v-list-item-title>
+              <v-list-item-title>Parâmetros</v-list-item-title>
             </template>
 
             <v-list-item
@@ -103,6 +104,8 @@ import { app, TYPES } from "@/core/common/container";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
 import Logout from "@/common/components/logout.vue";
+import { SystemState } from "@/core/system/presentation/states/system.state";
+import { AuthState } from "@/core/auth/presentation/states/auth.state";
 
 @Component({
   components: { Logout, Notification },
@@ -124,11 +127,11 @@ export default class AuthenticatedLayout extends Vue {
     this.showLogoutDialog = false;
   }
 
-  private updateSystemState(newState) {
+  private updateSystemState(newState: SystemState) {
     this.systemState = newState;
   }
 
-  private updateAuthState(newState) {
+  private updateAuthState(newState: AuthState) {
     this.authState = newState;
   }
 

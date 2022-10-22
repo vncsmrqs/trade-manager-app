@@ -9,6 +9,7 @@ export namespace ListSetupUseCaseContract {
   export type Params = {
     search?: string;
     page?: number;
+    ativo?: boolean;
     itemsPerPage?: number;
   }
 

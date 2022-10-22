@@ -1,5 +1,5 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
+import { ListTipoEntradaUseCaseContract } from "@/core/tipo-entrada/domain/use-cases/list-tipo-entrada.use-case";
 
 export interface ListTipoEntradaRepositoryContract {
   list(
@@ -8,15 +8,6 @@ export interface ListTipoEntradaRepositoryContract {
 }
 
 export namespace ListTipoEntradaRepositoryContract {
-  export type Params = {
-    search?: string;
-    page?: number;
-    itemsPerPage?: number;
-  }
-
-  export type Response = {
-    items: TipoEntradaEntity[];
-    page: number;
-    pageCount: number;
-  }
+  export type Params = ListTipoEntradaUseCaseContract.Params;
+  export type Response = ListTipoEntradaUseCaseContract.Response;
 }

@@ -8,6 +8,7 @@ type ListCampoCustomizavelRequest = {
   page?: number;
   contexto?: string;
   items_per_page?: number;
+  ativo?: boolean;
 };
 
 type ListCampoCustomizavelResponse = {
@@ -38,6 +39,7 @@ export class ManageCampoCustomizavelApiRepository extends HttpClient implements
         page: params.page,
         items_per_page: params.itemsPerPage,
         contexto: params.contexto,
+        ativo: params.ativo,
       };
 
       const { data, meta } = await this.client.get<ListCampoCustomizavelResponse>('/campos-customizaveis', {

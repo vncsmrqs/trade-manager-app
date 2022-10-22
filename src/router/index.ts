@@ -4,7 +4,6 @@ import middlewarePipeline from "@/router/middleware-pipeline";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { app, TYPES } from "@/core/common/container";
 import { isAuthenticated, isGuest } from "@/router/middlewares";
-import { loadSession } from "@/router/middlewares/load-session.middleware";
 
 Vue.use(VueRouter);
 
@@ -86,7 +85,7 @@ const routes: Array<RouteConfig> = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes,
   scrollBehavior(to, from, savedPosition) {

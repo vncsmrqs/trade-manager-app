@@ -15,9 +15,11 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import Notification from "@/common/components/notification.vue";
 import { AuthState } from "@/core/auth/presentation/states/auth.state";
+import { SystemState } from "@/core/system/presentation/states/system.state";
 import { app, TYPES } from "@/core/common/container";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
 import { Watch } from "vue-property-decorator";
+import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 
 @Component({
   components: { Notification },
@@ -25,6 +27,9 @@ import { Watch } from "vue-property-decorator";
 export default class App extends Vue {
   private authController = app.make<AuthController>(TYPES.AuthController);
   private authState = this.authController.state;
+
+  private systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
+  private systemState = this.systemController.state;
 
   showSplash = true;
 
@@ -43,16 +48,28 @@ export default class App extends Vue {
     this.authState = newState;
   }
 
+  private updateSystemState(newState: SystemState) {
+    this.systemState = newState;
+  }
+
+  @Watch('systemState.appTitle')
+  changeAppTitle(title: string) {
+    document.title = title;
+  }
+
   private created() {
+    this.systemController.subscribe(this.updateSystemState);
     this.authController.subscribe(this.updateAuthState);
     if (!this.isLoadingSession) {
       this.authController.loadSession().then(() => {
         this.showSplash = false;
       });
     }
+    this.changeAppTitle(this.systemState.appTitle);
   }
 
   private beforeDestroy() {
+    this.systemController.unsubscribe(this.updateSystemState);
     this.authController.unsubscribe(this.updateAuthState);
   }
 }

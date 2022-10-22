@@ -9,6 +9,7 @@ export namespace ListGatilhoUseCaseContract {
   export type Params = {
     search?: string;
     page?: number;
+    ativo?: boolean;
     itemsPerPage?: number;
   }
 

@@ -35,11 +35,11 @@ export class ListTradeFilterController extends Controller<ListTradeFilterState> 
         ativoResult,
         filtroResult,
       ] = await Promise.all([
-        this.listSetupUseCase.execute({}),
-        this.listGatilhoUseCase.execute({}),
-        this.listTipoEntradaUseCase.execute({}),
-        this.listAtivoUseCase.execute({}),
-        this.listFiltroUseCase.execute({}),
+        this.listSetupUseCase.execute({ ativo: true }),
+        this.listGatilhoUseCase.execute({ ativo: true }),
+        this.listTipoEntradaUseCase.execute({ ativo: true }),
+        this.listAtivoUseCase.execute({ ativo: true }),
+        this.listFiltroUseCase.execute({ ativo: true, contexto: 'filtro' }),
       ]);
 
       const mainResult = ActionResult.combine([

@@ -11,6 +11,7 @@ export class SystemController extends Controller<SystemState> {
       ...this.state,
       kind: "UpdatedSystemState",
       pageTitle,
+      appTitle: `${pageTitle} - Trade Manager`,
     });
   }
 

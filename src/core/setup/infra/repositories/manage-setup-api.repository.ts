@@ -10,6 +10,7 @@ type ListSetupRequest = {
   search?: string;
   page?: number;
   items_per_page?: number;
+  ativo?: boolean;
 };
 
 type ListSetupResponse = {
@@ -56,6 +57,7 @@ export class ManageSetupApiRepository extends HttpClient implements
         search: params.search,
         page: params.page,
         items_per_page: params.itemsPerPage,
+        ativo: params.ativo,
       };
 
       const { data, meta } = await this.client.get<ListSetupResponse>('/setups', {

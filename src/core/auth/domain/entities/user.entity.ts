@@ -5,12 +5,40 @@ export type UserEntityProps = {
   lastname: string;
   email: string;
   imageUrl?: string;
+  imagePath?: string;
 };
 
 export class UserEntity {
   constructor(
     private props: UserEntityProps
-  ) {
+  ) {}
+
+  get id(): string {
+    return this.props.id;
+  }
+
+  get name(): string {
+    return this.props.name;
+  }
+
+  get initials(): string {
+    return this.props.initials;
+  }
+
+  get lastname(): string {
+    return this.props.lastname;
+  }
+
+  get email(): string {
+    return this.props.email;
+  }
+
+  get imageUrl(): string | undefined {
+    return this.props.imageUrl;
+  }
+
+  get imagePath():  string | undefined {
+    return this.props.imagePath;
   }
 
   public static createFromRaw(raw: any): UserEntity {
@@ -21,6 +49,7 @@ export class UserEntity {
       lastname: raw.lastname,
       email: raw.email,
       imageUrl: raw.imageUrl,
+      imagePath: raw.imagePath,
     });
   }
 }

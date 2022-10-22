@@ -1,5 +1,5 @@
 import { ActionResult } from "@/core/common/domain/action-result";
-import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
+import { ListSetupUseCaseContract } from "@/core/setup/domain/use-cases/list-setup.use-case";
 
 export interface ListSetupRepositoryContract {
   list(
@@ -8,15 +8,6 @@ export interface ListSetupRepositoryContract {
 }
 
 export namespace ListSetupRepositoryContract {
-  export type Params = {
-    search?: string;
-    page?: number;
-    itemsPerPage?: number;
-  }
-
-  export type Response = {
-    items: SetupEntity[];
-    page: number;
-    pageCount: number;
-  }
+  export type Params = ListSetupUseCaseContract.Params;
+  export type Response = ListSetupUseCaseContract.Response;
 }
