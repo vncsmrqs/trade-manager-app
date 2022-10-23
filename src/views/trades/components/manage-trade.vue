@@ -484,19 +484,19 @@
                     <v-col v-if="detailMode" cols="4" class="text-body-1">
                       <div class="font-weight-bold mb-2">Resultado</div>
                       <div :class="formatResultadoTextColor(form.resultado)">
-                        {{ form.resultado ? form.resultado.toUpperCase() : 'Não definido' }}
+                        {{ form.resultado ? form.resultado.toUpperCase() : '-' }}
                       </div>
                     </v-col>
                     <v-col v-if="detailMode" cols="4" class="text-body-1">
                       <div class="font-weight-bold mb-2">Pontos</div>
                       <div :class="formatNumberTextColor(form.pontuacao)">
-                        {{ form.pontuacao === undefined ? 'Não definido' : form.pontuacao.toFixed(2) }}
+                        {{ form.pontuacao === undefined ? '-' : form.pontuacao.toFixed(2) }}
                       </div>
                     </v-col>
                     <v-col v-if="detailMode" cols="4" class="text-body-1">
                       <div class="font-weight-bold mb-2">Resultado em R$</div>
                       <div :class="formatNumberTextColor(form.valorResultado)">
-                        {{ form.valorResultado == undefined ? 'Não definido' : 'R$ ' + form.valorResultado.toFixed(2) }}
+                        {{ form.valorResultado == undefined ? '-' : 'R$ ' + form.valorResultado.toFixed(2) }}
                       </div>
                     </v-col>
                     <v-col v-if="!detailMode" cols="12">
@@ -565,7 +565,7 @@
                           <v-icon v-if="form.sentimento" :class="formatSentimentoTextColor(form.sentimento)">
                             {{ formatSentimentoFieldIcon(form.sentimento) }}
                           </v-icon>
-                          <span v-else>Não definido</span>
+                          <span v-else>-</span>
                         </div>
                       </div>
                     </v-col>
@@ -827,7 +827,7 @@ export default class ManageTrade extends Vue {
   getValorFiltro(filtro: CampoCustomizavelEntity): string {
     const valorSelecionadoId = this.form?.filtros?.[filtro.id];
     const valorCampoCustomizavel = filtro.valores?.find((v) => v.id === valorSelecionadoId);
-    return valorCampoCustomizavel ? valorCampoCustomizavel.nome : 'Não definido';
+    return valorCampoCustomizavel ? valorCampoCustomizavel.nome : '-';
   }
 
   defaultForm(): FormType {
@@ -949,28 +949,28 @@ export default class ManageTrade extends Vue {
 
   formatBooleanFieldValue(value?: boolean): string {
     if (value == undefined) {
-      return 'Não definido';
+      return '-';
     }
     return value ? 'Sim' : 'Não';
   }
 
   formatDateFieldValue(value?: string, showUndefined = true): string {
     if (value == undefined) {
-      return showUndefined ? 'Não definido' : '';
+      return showUndefined ? '-' : '';
     }
     return moment(value).format('DD/MM/YYYY');
   }
 
   formatStringFieldValue(value?: any): string {
     if (value == undefined) {
-      return 'Não definido';
+      return '-';
     }
     return value;
   }
 
   formatSentimentoFieldIcon(value?: string): string {
     if (value === undefined) {
-      return 'Não definido';
+      return '-';
     }
 
     const mappedValues: Record<string, string> = {

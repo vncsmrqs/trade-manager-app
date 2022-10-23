@@ -24,7 +24,7 @@ export class ImportFileTradeController extends Controller<ImportFileTradeState> 
     if (!this.validateFile(file)) {
       this.notificationController.push({
         type: 'error',
-        message: 'Arquivo inválido! Selecione uma planilha excel.',
+        message: 'Selecione uma planilha válida.',
         timeout: 3000,
       });
       return;

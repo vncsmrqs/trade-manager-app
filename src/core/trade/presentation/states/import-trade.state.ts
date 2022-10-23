@@ -59,5 +59,6 @@ export const initialImportFileTradeState: ImportFileTradeState = {
   filesTypesAcceptable: [
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/vnd.ms-excel",
+    "text/csv",
   ],
 };
