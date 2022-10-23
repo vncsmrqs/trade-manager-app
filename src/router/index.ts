@@ -1,9 +1,10 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import Vue, { CreateElement } from 'vue';
+import VueRouter, { RouteConfig, RouterView } from 'vue-router';
 import middlewarePipeline from "@/router/middleware-pipeline";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { app, TYPES } from "@/core/common/container";
 import { isAuthenticated, isGuest } from "@/router/middlewares";
+import { isAuthorized } from "@/router/middlewares/is-authorized.middleware";
 
 Vue.use(VueRouter);
 
@@ -75,6 +76,29 @@ const routes: Array<RouteConfig> = [
           pageTitle: 'Tipos de entradas',
         },
         component: () => import(/* webpackChunkName: "configuracoes.tipos-entradas" */ '../views/configuracoes/tipos-entradas/index.vue'),
+      },
+      {
+        path: '/admin',
+        meta: {
+          middlewares: [isAuthorized],
+          abilities: ['admin'],
+        },
+        component: { render: (c: CreateElement) => c('router-view') },
+        children: [
+          {
+            path: '/',
+            name: 'admin',
+            redirect: { name: 'admin.users' },
+          },
+          {
+            path: 'usuarios',
+            name: 'admin.users',
+            meta: {
+              pageTitle: 'Gestão de usuários',
+            },
+            component: () => import(/* webpackChunkName: "admin.users" */ '../views/admin/users/index.vue'),
+          }
+        ],
       },
     ],
   },

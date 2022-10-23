@@ -114,6 +114,12 @@ export class AuthController extends Controller<AuthState> {
     localStorage.removeItem('token');
   }
 
+  public userCan(abilities: string[]): boolean {
+    if (!abilities || !abilities.length) return true;
+    if (!this.isAuthenticated) return false;
+    return !!this.state?.user?.roles.includes('admin');
+  }
+
   public logout() {
     this.resetState();
     AuthController.removeSession();

@@ -5,6 +5,11 @@ export const TYPES = {
   LoginUseCaseContract: Symbol('LoginUseCaseContract'),
   GetCurrentUserUseCaseContract: Symbol('GetCurrentUserUseCaseContract'),
 
+  ListUserUseCaseContract: Symbol('ListUserUseCaseContract'),
+  CreateUserUseCaseContract: Symbol('CreateUserUseCaseContract'),
+  UpdateUserUseCaseContract: Symbol('UpdateUserUseCaseContract'),
+  DeleteUserUseCaseContract: Symbol('DeleteUserUseCaseContract'),
+
   ListSetupUseCaseContract: Symbol('ListSetupUseCaseContract'),
   CreateSetupUseCaseContract: Symbol('CreateSetupUseCaseContract'),
   UpdateSetupUseCaseContract: Symbol('UpdateSetupUseCaseContract'),
@@ -50,6 +55,11 @@ export const TYPES = {
   /* Repositories */
   LoginRepositoryContract: Symbol('LoginRepositoryContract'),
   GetCurrentUserRepositoryContract: Symbol('GetCurrentUserRepositoryContract'),
+
+  ListUserRepositoryContract: Symbol('ListUserRepositoryContract'),
+  CreateUserRepositoryContract: Symbol('CreateUserRepositoryContract'),
+  UpdateUserRepositoryContract: Symbol('UpdateUserRepositoryContract'),
+  DeleteUserRepositoryContract: Symbol('DeleteUserRepositoryContract'),
 
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
@@ -97,6 +107,10 @@ export const TYPES = {
   NotificationController: Symbol('NotificationController'),
   SystemController: Symbol('SystemController'),
   AuthController: Symbol('AuthController'),
+
+  ListUserController: Symbol('ListUserController'),
+  CreateOrUpdateUserController: Symbol('CreateOrUpdateUserController'),
+  DeleteUserController: Symbol('DeleteUserController'),
 
   ListSetupController: Symbol('ListSetupController'),
   CreateOrUpdateSetupController: Symbol('CreateOrUpdateSetupController'),

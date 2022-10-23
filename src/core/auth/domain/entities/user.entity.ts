@@ -6,6 +6,7 @@ export type UserEntityProps = {
   email: string;
   imageUrl?: string;
   imagePath?: string;
+  roles: string[];
 };
 
 export class UserEntity {
@@ -33,6 +34,10 @@ export class UserEntity {
     return this.props.email;
   }
 
+  get roles(): string[] {
+    return this.props.roles;
+  }
+
   get imageUrl(): string | undefined {
     return this.props.imageUrl;
   }
@@ -48,8 +53,9 @@ export class UserEntity {
       initials: raw.initials,
       lastname: raw.lastname,
       email: raw.email,
-      imageUrl: raw.imageUrl,
-      imagePath: raw.imagePath,
+      imageUrl: raw.image_url,
+      imagePath: raw.image_path,
+      roles: raw.user_roles,
     });
   }
 }

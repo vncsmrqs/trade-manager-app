@@ -158,6 +158,8 @@
                           label="Lote"
                           outlined
                           dense
+                          type="number"
+                          :min="1"
                           clearable
                           ref="lote"
                           :rules="formRules.lote"
@@ -959,7 +961,7 @@ export default class ManageTrade extends Vue {
     return moment(value).format('DD/MM/YYYY');
   }
 
-  formatStringFieldValue(value?: string): string {
+  formatStringFieldValue(value?: any): string {
     if (value == undefined) {
       return 'Não definido';
     }

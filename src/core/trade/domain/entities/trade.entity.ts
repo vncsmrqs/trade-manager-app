@@ -18,7 +18,7 @@ export type DefaultTradeEntityProps = {
   updatedAt: string;
   dataTrade: string;
   horaTrade: string;
-  lote: string;
+  lote: number;
   pontuacao: number;
   valorResultado: number;
   resultado: TradeResultadoType;
@@ -96,7 +96,7 @@ export class TradeEntity extends Entity<TradeEntityProps>{
     return this.props.horaTrade;
   }
 
-  get lote(): string {
+  get lote(): number {
     return this.props.lote;
   }
 

@@ -50,10 +50,10 @@ export class TipoEntradaEntity {
     return new TipoEntradaEntity({
       id: raw.id,
       nome: raw.nome,
-      createdAt: raw.createdAt,
-      updatedAt: raw.updatedAt,
+      createdAt: raw.created_at,
+      updatedAt: raw.updated_at,
       ativo: raw.ativo,
-      userId: raw.userId,
+      userId: raw.user_id,
     });
   }
 }

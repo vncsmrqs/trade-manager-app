@@ -1,7 +1,8 @@
 export type MenuItem = {
-  title: string,
-  routeName: string,
-  icon: string,
+  title: string;
+  routeName: string;
+  icon: string;
+  abilities?: string[];
   group?: MenuItem[];
 };
 
@@ -39,7 +40,7 @@ export const initialSystemState: SystemState = {
       icon: 'mdi-note-outline',
     },
     {
-      title: 'Configurações',
+      title: 'Parâmetros',
       routeName: 'configuracoes',
       icon: 'mdi-cog',
       group: [
@@ -56,6 +57,19 @@ export const initialSystemState: SystemState = {
         {
           title: 'Tipo de entrada',
           routeName: 'configuracoes.tipos-entradas',
+          icon: 'mdi-view-dashboard',
+        },
+      ],
+    },
+    {
+      title: 'Administração',
+      routeName: 'admin',
+      icon: 'mdi-account-cog',
+      abilities: ['admin'],
+      group: [
+        {
+          title: 'Usuários',
+          routeName: 'admin.users',
           icon: 'mdi-view-dashboard',
         },
       ],

@@ -50,8 +50,8 @@ export class LocalStopEntity {
     return new LocalStopEntity({
       id: raw.id,
       nome: raw.nome,
-      createdAt: raw.createdAt,
-      updatedAt: raw.updatedAt,
+      createdAt: raw.created_at,
+      updatedAt: raw.updated_at,
       ativo: raw.ativo,
       userId: raw.userId,
     });

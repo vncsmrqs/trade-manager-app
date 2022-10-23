@@ -84,7 +84,7 @@ export abstract class HttpClient {
 
   private handleUnauthorized = () => {
     this.authController.logout();
-    router.push({ name: 'login '}).then(() => {
+    router.replace('/').then(() => {
       this.notificationController.push({
         message: 'Sua sessão expirou. Por favor, faça o login novamente.',
         type: 'error',

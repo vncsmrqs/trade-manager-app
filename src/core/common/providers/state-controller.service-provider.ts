@@ -49,6 +49,13 @@ import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-cas
 import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
 import { ListTipoStopUseCaseContract } from "@/core/tipo-stop/domain/use-cases/list-tipo-stop.use-case";
 import { ListLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/list-local-stop.use-case";
+import { ListUserController } from "@/core/user/presentation/controllers/list-user.controller";
+import { ListUserUseCaseContract } from "@/core/user/domain/use-cases/list-user.use-case";
+import { UpdateUserUseCaseContract } from "@/core/user/domain/use-cases/update-user.use-case";
+import { CreateUserUseCaseContract } from "@/core/user/domain/use-cases/create-user.use-case";
+import { CreateOrUpdateUserController } from "@/core/user/presentation/controllers/create-or-update-user.controller";
+import { DeleteUserController } from "@/core/user/presentation/controllers/delete-user.controller";
+import { DeleteUserUseCaseContract } from "@/core/user/domain/use-cases/delete-user.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -64,6 +71,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     ));
 
     this.bootSetupControllers(container);
+    this.bootUserControllers(container);
     this.bootGatilhoControllers(container);
     this.bootTipoEntradaControllers(container);
     this.bootTradeControllers(container);
@@ -100,6 +108,33 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new DeleteSetupController(
         container.make<DeleteSetupUseCaseContract>(TYPES.DeleteSetupUseCaseContract),
         container.make<ListSetupController>(TYPES.ListSetupController),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    });
+  }
+
+  private bootUserControllers(container: ContainerContract): void {
+    container.singleton(TYPES.ListUserController, () => {
+      return new ListUserController(
+        container.make<ListUserUseCaseContract>(TYPES.ListUserUseCaseContract),
+        container.make<UpdateUserUseCaseContract>(TYPES.UpdateUserUseCaseContract),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    });
+
+    container.singleton(TYPES.CreateOrUpdateUserController, () => {
+      return new CreateOrUpdateUserController(
+        container.make<CreateUserUseCaseContract>(TYPES.CreateUserUseCaseContract),
+        container.make<UpdateUserUseCaseContract>(TYPES.UpdateUserUseCaseContract),
+        container.make<ListUserController>(TYPES.ListUserController),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    });
+
+    container.singleton(TYPES.DeleteUserController, () => {
+      return new DeleteUserController(
+        container.make<DeleteUserUseCaseContract>(TYPES.DeleteUserUseCaseContract),
+        container.make<ListUserController>(TYPES.ListUserController),
         container.make<NotificationController>(TYPES.NotificationController),
       );
     });

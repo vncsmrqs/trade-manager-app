@@ -300,8 +300,8 @@
                   </div>
 
                   <div v-if="header.name === 'data-horario'">
-                    <div class="text-body-1">{{ trade.dataAberturaFormatted }}</div>
-                    <div class="text-caption">{{ trade.horaAbertura }}</div>
+                    <div class="text-body-1">{{ trade.dataTradeFormatted }}</div>
+                    <div class="text-caption">{{ trade.horaTrade }}</div>
                   </div>
 
                   <div v-if="header.name === 'setup-gatilho'">

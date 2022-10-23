@@ -109,12 +109,25 @@ import { UpdateLocalStopUseCase } from "@/core/local-stop/data/implementations/u
 import { DeleteLocalStopUseCaseContract } from "@/core/local-stop/domain/use-cases/delete-local-stop.use-case";
 import { DeleteLocalStopUseCase } from "@/core/local-stop/data/implementations/use-cases/delete-local-stop.use-case";
 import { DeleteLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/delete-local-stop.repository";
+import { ListUserUseCaseContract } from "@/core/user/domain/use-cases/list-user.use-case";
+import { ListUserUseCase } from "@/core/user/data/implementations/use-cases/list-user.use.case";
+import { ListUserRepositoryContract } from "@/core/user/data/contracts/list-user.repository";
+import { CreateUserUseCaseContract } from "@/core/user/domain/use-cases/create-user.use-case";
+import { CreateUserUseCase } from "@/core/user/data/implementations/use-cases/create-user.use-case";
+import { CreateUserRepositoryContract } from "@/core/user/data/contracts/create-user.repository";
+import { UpdateUserUseCaseContract } from "@/core/user/domain/use-cases/update-user.use-case";
+import { UpdateUserUseCase } from "@/core/user/data/implementations/use-cases/update-user.use-case";
+import { UpdateUserRepositoryContract } from "@/core/user/data/contracts/update-user.repository";
+import { DeleteUserUseCaseContract } from "@/core/user/domain/use-cases/delete-user.use-case";
+import { DeleteUserUseCase } from "@/core/user/data/implementations/use-cases/delete-user.use-case";
+import { DeleteUserRepositoryContract } from "@/core/user/data/contracts/delete-user.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
   boot(container: ContainerContract): void {
     this.bootAuthUseCases(container);
     this.bootSetupUseCases(container);
+    this.bootUserUseCases(container);
     this.bootGatilhoUseCases(container);
     this.bootTipoEntradaUseCases(container);
     this.bootTipoStopUseCases(container);
@@ -161,6 +174,32 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<DeleteSetupUseCaseContract>(TYPES.DeleteSetupUseCaseContract, () => {
       return new DeleteSetupUseCase(
         container.make<DeleteSetupRepositoryContract>(TYPES.DeleteSetupRepositoryContract),
+      );
+    });
+  }
+
+  private bootUserUseCases(container: ContainerContract): void {
+    container.bind<ListUserUseCaseContract>(TYPES.ListUserUseCaseContract, () => {
+      return new ListUserUseCase(
+        container.make<ListUserRepositoryContract>(TYPES.ListUserRepositoryContract),
+      );
+    });
+
+    container.bind<CreateUserUseCaseContract>(TYPES.CreateUserUseCaseContract, () => {
+      return new CreateUserUseCase(
+        container.make<CreateUserRepositoryContract>(TYPES.CreateUserRepositoryContract),
+      );
+    });
+
+    container.bind<UpdateUserUseCaseContract>(TYPES.UpdateUserUseCaseContract, () => {
+      return new UpdateUserUseCase(
+        container.make<UpdateUserRepositoryContract>(TYPES.UpdateUserRepositoryContract),
+      );
+    });
+
+    container.bind<DeleteUserUseCaseContract>(TYPES.DeleteUserUseCaseContract, () => {
+      return new DeleteUserUseCase(
+        container.make<DeleteUserRepositoryContract>(TYPES.DeleteUserRepositoryContract),
       );
     });
   }

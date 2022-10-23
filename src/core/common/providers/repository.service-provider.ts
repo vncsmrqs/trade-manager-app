@@ -52,6 +52,11 @@ import { CreateLocalStopRepositoryContract } from "@/core/local-stop/data/contra
 import { UpdateLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/update-local-stop.repository";
 import { DeleteLocalStopRepositoryContract } from "@/core/local-stop/data/contracts/delete-local-stop.repository";
 import { ManageLocalStopApiRepository } from "@/core/local-stop/infra/repositories/manage-local-stop-api.repository";
+import { ManageUserApiRepository } from "@/core/user/infra/repositories/manage-user-api.repository";
+import { ListUserRepositoryContract } from "@/core/user/data/contracts/list-user.repository";
+import { CreateUserRepositoryContract } from "@/core/user/data/contracts/create-user.repository";
+import { UpdateUserRepositoryContract } from "@/core/user/data/contracts/update-user.repository";
+import { DeleteUserRepositoryContract } from "@/core/user/data/contracts/delete-user.repository";
 
 const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
 
@@ -66,6 +71,12 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<CreateSetupRepositoryContract>(TYPES.CreateSetupRepositoryContract, manageSetupRepository);
     container.instance<UpdateSetupRepositoryContract>(TYPES.UpdateSetupRepositoryContract, manageSetupRepository);
     container.instance<DeleteSetupRepositoryContract>(TYPES.DeleteSetupRepositoryContract, manageSetupRepository);
+
+    const manageUserRepository = new ManageUserApiRepository(apiBaseUrl);
+    container.instance<ListUserRepositoryContract>(TYPES.ListUserRepositoryContract, manageUserRepository);
+    container.instance<CreateUserRepositoryContract>(TYPES.CreateUserRepositoryContract, manageUserRepository);
+    container.instance<UpdateUserRepositoryContract>(TYPES.UpdateUserRepositoryContract, manageUserRepository);
+    container.instance<DeleteUserRepositoryContract>(TYPES.DeleteUserRepositoryContract, manageUserRepository);
 
     const manageGatilhoRepository = new ManageGatilhoApiRepository(apiBaseUrl);
     container.instance<ListGatilhoRepositoryContract>(TYPES.ListGatilhoRepositoryContract, manageGatilhoRepository);

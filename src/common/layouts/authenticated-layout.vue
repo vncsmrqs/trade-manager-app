@@ -25,40 +25,43 @@
 
       <v-list dense nav>
         <div v-for="(item, i) in systemState.menuItems" :key="i">
-          <v-list-item
-              v-if="!item.group"
-              :to="{ name: item.routeName }"
-              link
-              color="primary"
-          >
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-title>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-group
-              v-else
-              :value="false"
-              :prepend-icon="item.icon"
-          >
-            <template v-slot:activator>
-              <v-list-item-title>Parâmetros</v-list-item-title>
-            </template>
-
+          <template v-if="authController.userCan(item.abilities)">
             <v-list-item
-                v-for="({ title, routeName }, i) in item.group"
-                :key="i"
+                v-if="!item.group"
+                :to="{ name: item.routeName }"
                 link
-                :to="{ name: routeName }"
+                color="primary"
             >
-              <v-list-item-icon></v-list-item-icon>
-              <v-list-item-title v-text="title"></v-list-item-title>
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-title>
             </v-list-item>
-          </v-list-group>
+
+            <v-list-group
+                v-else
+                :value="false"
+                :prepend-icon="item.icon"
+            >
+              <template v-slot:activator>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </template>
+
+              <v-list-item
+                  v-for="({ title, routeName }, i) in item.group"
+                  :key="i"
+                  link
+                  :disabled="!authController.userCan(item.abilities)"
+                  :to="{ name: routeName }"
+              >
+                <v-list-item-icon></v-list-item-icon>
+                <v-list-item-title v-text="title"></v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+          </template>
         </div>
       </v-list>
 
