@@ -199,26 +199,6 @@ export default class ImportTrade extends Vue {
     this.importFileTradeController.uploadFile(files[0]);
   }
 
-  async submitFile(): Promise<void> {
-    // let formData = new FormData();
-    // formData.append('file', this.file);
-    //
-    // try {
-    //   const requestConfig = {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     },
-    //     onUploadProgress: function (progressEvent) {
-    //       this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
-    //     }.bind(this),
-    //   };
-    //   const uploadResult = axios.post('/file-progress', formData, requestConfig);
-    //   console.log({ uploadResult });
-    // } catch (error: any) {
-    //   console.log({ error });
-    // }
-  }
-
   @Watch('show')
   changeShow() {
     this.reset();
@@ -227,7 +207,9 @@ export default class ImportTrade extends Vue {
   reset() {
     this.dragover = false;
     this.importFileTradeController.resetState();
-    this.$refs.fileUploader.value = null;
+    if (this.$refs.fileUploader) {
+      this.$refs.fileUploader.value = null;
+    }
   }
 
   close() {
