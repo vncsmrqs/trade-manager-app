@@ -58,7 +58,7 @@ import { CreateUserRepositoryContract } from "@/core/user/data/contracts/create-
 import { UpdateUserRepositoryContract } from "@/core/user/data/contracts/update-user.repository";
 import { DeleteUserRepositoryContract } from "@/core/user/data/contracts/delete-user.repository";
 
-const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:8000/api';
+const apiBaseUrl = process.env.VUE_APP_API_BASE_URL;
 
 export class RepositoryServiceProvider implements ServiceProviderContract {
   register(container: ContainerContract): void {
