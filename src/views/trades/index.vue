@@ -403,13 +403,19 @@ export default class ListTrade extends Vue {
   private listTradeController = app.make<ListTradeController>(TYPES.ListTradeController);
   private listTradeState = this.listTradeController.state;
 
-  filter: ListTradeFilter = this.generateForm();
+  filter: ListTradeFilter = Object.assign({}, this.listTradeState.filter);
   showStartDatePicker = false;
   showEndDatePicker = false;
   showFilterDialog = false;
   showImageViewerDialog = false;
 
-  filterFormAsList: FilterFormComplete[] = [];
+  get filterFormAsList(): FilterFormComplete[] {
+    return this.listTradeState.filterAsList;
+  }
+
+  set filterFormAsList(filterAsList: FilterFormComplete[]): void {
+    this.listTradeController.setFilterFormAsList(filterAsList);
+  }
 
   today = moment().format('YYYY-MM-DD');
 
@@ -615,7 +621,6 @@ export default class ListTrade extends Vue {
 
   private created() {
     this.listTradeController.subscribe(this.updateState);
-    this.listTradeController.resetState();
   }
 
   private beforeDestroy() {

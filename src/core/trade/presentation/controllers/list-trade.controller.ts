@@ -21,6 +21,10 @@ export class ListTradeController extends Controller<ListTradeState> {
     this.changeState(initialListTradeState);
   }
 
+  public setFilterFormAsList(filterAsList: FilterFormComplete[]): void {
+    this.changeState({ filterAsList });
+  }
+
   public loadTradeList(filter: ListTradeFilter, page?: number) {
     this.changeState({ kind: "LoadingListTradeState", filter });
     this.listTradeUseCase

@@ -1,6 +1,7 @@
 import { TradeEntity, TradeResultadoType } from "@/core/trade/domain/entities/trade.entity";
 import { ListTradeUseCaseContract } from "@/core/trade/domain/use-cases/list-trade.use-case";
 import moment from "moment";
+import { FilterFormComplete } from "@/core/trade/presentation/controllers/list-trade.controller";
 
 export type ListTradeFilter<T = any> = Record<string, T> & {
   setupId?: string[];
@@ -18,6 +19,7 @@ export type BaseTradeListState = {
   pageCount: number;
   error?: string;
   filter: ListTradeFilter;
+  filterAsList: FilterFormComplete[];
 } & ListTradeUseCaseContract.Response;
 
 export type InitialListTradeState = {
@@ -64,5 +66,11 @@ export const initialListTradeState : ListTradeState = {
   filter: {
     startDate: moment().subtract(1, "month").format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
+    setupId: [],
+    gatilhoId: [],
+    tipoEntradaId: [],
+    ativoId: [],
+    resultado: [],
   },
+  filterAsList: [],
 };
