@@ -29,10 +29,12 @@ export class AuthApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
-      if ([400, 401].includes(error.status)) {
-        return ActionResult.failure('Email ou senha inválidos');
+      if (!error) {
+        return ActionResult.failure('Problema na conexão com o servidor. Por favor, tente mais tarde.');
       }
-
+      if ([400, 401].includes(error.status)) {
+        return ActionResult.failure('Crendenciais inválidas');
+      }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
@@ -51,6 +53,9 @@ export class AuthApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
+      if (!error) {
+        return ActionResult.failure('Problema na conexão com o servidor. Por favor, tente mais tarde.');
+      }
       if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
       }

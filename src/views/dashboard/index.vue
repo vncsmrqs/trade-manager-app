@@ -137,10 +137,7 @@ export default class DashboardView extends Vue {
   private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
   private dashboardState = this.dashboardController.state;
 
-  filter = {
-    startDate: moment().subtract(1, 'month').format('YYYY-MM-DD'),
-    endDate: moment().format('YYYY-MM-DD'),
-  }
+  filter = Object.assign({}, this.dashboardState.searchParams);
 
   showStartDatePicker = false;
   showEndDatePicker = false;
@@ -154,7 +151,7 @@ export default class DashboardView extends Vue {
   }
 
   get isLoading(): boolean {
-    return false;
+    return this.dashboardState.kind === 'LoadingDashboardState';
   }
 
   search(): void {
@@ -171,7 +168,6 @@ export default class DashboardView extends Vue {
 
   private created() {
     this.dashboardController.subscribe(this.updateState);
-    this.dashboardController.resetState();
   }
 
   private beforeDestroy() {

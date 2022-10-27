@@ -51,19 +51,25 @@ export class AuthController extends Controller<AuthState> {
   }
 
   public async getCurrentUser(token?: string): Promise<void> {
-    const currentToken = token || this.state.token;
-
-    if (!currentToken || !currentToken.length){
-      throw new Error('Você não está authenticado');
-    }
-
-    this.changeState({
-      kind: "LoadingAuthState",
-      user: undefined,
-      error: undefined,
-    });
-
     try {
+      const currentToken = token || this.state.token;
+
+      if (!currentToken || !currentToken.length) {
+        this.changeState({
+          kind: "ErrorAuthState",
+          user: undefined,
+          token: undefined,
+          error: "Você não está autenticado.",
+        });
+        return;
+      }
+
+      this.changeState({
+        kind: "LoadingAuthState",
+        user: undefined,
+        error: undefined,
+      });
+
       const getCurrentUserResult = await this.getCurrentUserUseCase.execute({
         token: currentToken,
       });

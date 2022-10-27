@@ -141,7 +141,6 @@ export default class TradesByWeekdayChart extends Vue {
 
   private created() {
     this.dashboardController.subscribe(this.updateState);
-    this.dashboardController.resetState();
   }
 
   private beforeDestroy() {

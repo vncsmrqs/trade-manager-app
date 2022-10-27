@@ -84,12 +84,14 @@ export abstract class HttpClient {
 
   private handleUnauthorized = () => {
     this.authController.logout();
-    router.replace('/').then(() => {
-      this.notificationController.push({
-        message: 'Sua sessão expirou. Por favor, faça o login novamente.',
-        type: 'error',
+    if (router.currentRoute.name && router.currentRoute.name !== 'login') {
+      router.replace({ name: 'login' }).then(() => {
+        this.notificationController.push({
+          message: 'Sua sessão expirou. Por favor, faça o login novamente.',
+          type: 'error',
+        });
       });
-    });
+    }
   }
 
   private handleForbidden = () => {

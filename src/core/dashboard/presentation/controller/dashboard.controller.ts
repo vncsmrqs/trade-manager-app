@@ -22,6 +22,7 @@ export class DashboardController extends Controller<DashboardState> {
   public async search(params: DashboardSearchParams) {
     this.changeState({
       kind: "LoadingDashboardState",
+      searchParams: params,
     });
     try {
       await Promise.all([

@@ -3,6 +3,7 @@ import { ResultadoTradeValue } from "@/core/dashboard/domain/use-cases/get-trade
 import { TradesByWeekdayItemType } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-weekday.use-case";
 import { TradeSumBySetupItem } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-setup.use-case";
 import { IntervalTradesItemType } from "@/core/dashboard/domain/use-cases/get-trade-sum-by-interval.use-case";
+import moment from "moment";
 
 export enum WeekdayEnum {
   SEG = 'SEG',
@@ -20,6 +21,7 @@ export type DashboardSearchParams = {
 }
 
 export type BaseDashboardState = {
+  searchParams: DashboardSearchParams,
   rankingOfSetups: {
     loading: boolean,
     items: TradeSumBySetupItem[],
@@ -78,6 +80,10 @@ export type DashboardState = (
 
 export const initialDashboardState: DashboardState = {
   kind: "InitialDashboardState",
+  searchParams: {
+    startDate: moment().subtract(1, 'month').format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
+  },
   rankingOfSetups: {
     loading: false,
     items: [],
