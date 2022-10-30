@@ -8,18 +8,29 @@
         <v-overlay color="white" absolute v-if="isLoading">
           <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </v-overlay>
-        <div v-if="!isLoading && !hasError && series.length">
-          <apex-chart
-              width="1088px"
-              type="bar"
-              height="1000px"
-              :options="options"
-              :series="series"
-          ></apex-chart>
-        </div>
-        <div v-if="!isLoading && hasError">
-          <v-alert dense outlined type="error">{{ error }}</v-alert>
-        </div>
+        <template v-else>
+          <template v-if="!hasError">
+            <template v-if="hasData">
+              <apex-chart
+                  width="1088px"
+                  type="bar"
+                  height="1000px"
+                  :options="options"
+                  :series="series"
+              ></apex-chart>
+            </template>
+            <template v-else>
+              <div class="d-flex justify-center">
+                <div class="mt-8">Nenhum dado foi encontrado</div>
+              </div>
+            </template>
+          </template>
+          <template v-else>
+            <div>
+              <v-alert dense outlined type="error">{{ error }}</v-alert>
+            </div>
+          </template>
+        </template>
       </v-fade-transition>
     </v-card-text>
   </v-card>
@@ -115,6 +126,10 @@ export default class TradesByIntervalChart extends Vue {
             .reduce((total, value) => total + value, 0);
       }),
     }));
+  }
+
+  get hasData(): boolean {
+    return this.series.some((seriesItem) => seriesItem.data.some((value) => !!value));
   }
 
   get isLoading() {

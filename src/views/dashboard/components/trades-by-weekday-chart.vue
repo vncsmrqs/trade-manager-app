@@ -1,25 +1,36 @@
 <template>
   <v-card elevation="2" class="rounded-lg" min-height="100%" height="100%">
-    <v-card-title class="mb-0 pb-0">
+    <v-card-title>
       Dias da semana
     </v-card-title>
-    <v-card-text class="pa-0 d-flex justify-center" style="min-height: 100px">
+    <v-card-text style="min-height: 100px">
       <v-fade-transition>
         <v-overlay color="white" absolute v-if="isLoading">
           <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </v-overlay>
-        <div v-if="!isLoading && !hasError && series.length">
-          <apex-chart
-              width="500"
-              type="bar"
-              height="250px"
-              :options="options"
-              :series="series"
-          ></apex-chart>
-        </div>
-        <div v-if="!isLoading && hasError">
-          <v-alert dense outlined type="error">{{ error }}</v-alert>
-        </div>
+        <template v-else>
+          <template v-if="!hasError">
+            <template v-if="hasData">
+              <apex-chart
+                  width="500"
+                  type="bar"
+                  height="250px"
+                  :options="options"
+                  :series="series"
+              ></apex-chart>
+            </template>
+            <template v-else>
+              <div class="d-flex justify-center">
+                <div class="mt-8">Nenhum dado foi encontrado</div>
+              </div>
+            </template>
+          </template>
+          <template v-else>
+            <div>
+              <v-alert dense outlined type="error">{{ error }}</v-alert>
+            </div>
+          </template>
+        </template>
       </v-fade-transition>
     </v-card-text>
   </v-card>
@@ -121,6 +132,10 @@ export default class TradesByWeekdayChart extends Vue {
         }),
       },
     ];
+  }
+
+  get hasData(): boolean {
+    return this.series.some((seriesItem) => seriesItem.data.some((value) => !!value));
   }
 
   get isLoading() {
