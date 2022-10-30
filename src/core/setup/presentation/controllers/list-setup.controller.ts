@@ -76,15 +76,7 @@ export class ListSetupController extends Controller<ListSetupState> {
     });
     try {
       const result = await this.updateSetup.execute({ id, ativo: value });
-      if (result.successful) {
-        this.notificationController.push({
-          type: 'success',
-          message: 'Status atualizado com sucesso!',
-          timeout: 10000,
-
-        });
-        return;
-      }
+      if (result.successful) return;
       this.notificationController.push({
         type: 'error',
         message: result.error,
