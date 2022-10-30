@@ -1,7 +1,8 @@
 <template>
   <v-app id="inspire">
     <v-overlay v-show="showSplash" color="white">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <v-img width="100px" :src="iconSrc" class="mb-8"></v-img>
+      <v-progress-linear indeterminate color="primary"></v-progress-linear>
     </v-overlay>
     <template v-if="!showSplash">
       <router-view></router-view>
@@ -52,6 +53,10 @@ export default class App extends Vue {
     this.systemState = newState;
   }
 
+  get iconSrc(): string {
+    return `${process.env.BASE_URL}apple-icon-180x180.png`;
+  }
+
   @Watch('systemState.appTitle')
   changeAppTitle(title: string) {
     document.title = title;
@@ -60,11 +65,9 @@ export default class App extends Vue {
   private created() {
     this.systemController.subscribe(this.updateSystemState);
     this.authController.subscribe(this.updateAuthState);
-    if (!this.isLoadingSession) {
-      this.authController.loadSession().then(() => {
-        this.showSplash = false;
-      });
-    }
+    this.authController.loadSession().finally(() => {
+      this.showSplash = false;
+    });
     this.changeAppTitle(this.systemState.appTitle);
   }
 

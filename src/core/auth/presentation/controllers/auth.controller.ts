@@ -102,14 +102,37 @@ export class AuthController extends Controller<AuthState> {
   }
 
   public async loadSession(): Promise<void> {
-    if (this.isAuthenticated || this.isLoadingSession) {
-      return;
+    if (this.state.getCurrentUserLoader) {
+      return this.state.getCurrentUserLoader;
     }
-    const token = localStorage.getItem('token');
-    if (token) {
-      await this.getCurrentUser(token);
-      return;
-    }
+
+    const promise = new Promise<void>((resolve) => {
+      if (this.isAuthenticated) {
+        resolve();
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        this.getCurrentUser(token).finally(() => resolve());
+        return;
+      }
+
+      resolve();
+    });
+
+    this.changeState({
+      getCurrentUserLoader: promise,
+    });
+
+    promise.then(() => {
+      this.changeState({
+        getCurrentUserLoader: undefined,
+      });
+    });
+
+    return promise;
   }
 
   private static saveSession(token: string): void{

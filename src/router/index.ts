@@ -3,108 +3,118 @@ import VueRouter, { RouteConfig, RouterView } from 'vue-router';
 import middlewarePipeline from "@/router/middleware-pipeline";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { app, TYPES } from "@/core/common/container";
-import { isAuthenticated, isGuest } from "@/router/middlewares";
+import { isAuthenticatedMiddleware, isGuestMiddleware } from "@/router/middlewares";
 import { isAuthorized } from "@/router/middlewares/is-authorized.middleware";
+import { loadSessionMiddleware } from "@/router/middlewares/load-session.middleware";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    redirect: { name: 'dashboard' },
-  },
-  {
-    path: '/',
-    component: () => import('../common/layouts/guest-layout.vue'),
     meta: {
-      middlewares: [isGuest],
+      middlewares: [loadSessionMiddleware],
     },
+    component: { render: (c: CreateElement) => c('router-view') },
     children: [
       {
-        path: '/login',
-        name: 'login',
-        component: () => import(/* webpackChunkName: "login" */ '../views/login/index.vue'),
-        meta: {
-          pageTitle: 'Login',
-        },
-      },
-    ],
-  },
-  {
-    path: '/',
-    component: () => import('../common/layouts/authenticated-layout.vue'),
-    meta: {
-      middlewares: [isAuthenticated],
-    },
-    children: [
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/index.vue'),
-        meta: {
-          pageTitle: 'Dashboard',
-        }
+        path: '',
+        redirect: { name: 'dashboard' },
       },
       {
-        path: '/trades',
-        name: 'trades',
+        path: '',
+        component: () => import('../common/layouts/guest-layout.vue'),
         meta: {
-          pageTitle: 'Meu diário',
+          middlewares: [isGuestMiddleware],
         },
-        component: () => import(/* webpackChunkName: "trades" */ '@/views/trades/index.vue')
-      },
-      {
-        path: '/configuracoes/setups',
-        name: 'configuracoes.setups',
-        meta: {
-          pageTitle: 'Setup',
-        },
-        component: () => import(/* webpackChunkName: "configuracoes.setups" */ '../views/configuracoes/setups/index.vue'),
-      },
-      {
-        path: '/configuracoes/gatilhos',
-        name: 'configuracoes.gatilhos',
-        meta: {
-          pageTitle: 'Gatilhos',
-        },
-        component: () => import(/* webpackChunkName: "configuracoes.gatilhos" */ '../views/configuracoes/gatilhos/index.vue'),
-      },
-      {
-        path: '/configuracoes/tipos-entradas',
-        name: 'configuracoes.tipos-entradas',
-        meta: {
-          pageTitle: 'Tipos de entradas',
-        },
-        component: () => import(/* webpackChunkName: "configuracoes.tipos-entradas" */ '../views/configuracoes/tipos-entradas/index.vue'),
-      },
-      {
-        path: '/admin',
-        meta: {
-          middlewares: [isAuthorized],
-          abilities: ['admin'],
-        },
-        component: { render: (c: CreateElement) => c('router-view') },
         children: [
           {
-            path: '/',
-            name: 'admin',
-            redirect: { name: 'admin.users' },
-          },
-          {
-            path: 'usuarios',
-            name: 'admin.users',
+            path: 'login',
+            name: 'login',
+            component: () => import(/* webpackChunkName: "login" */ '../views/login/index.vue'),
             meta: {
-              pageTitle: 'Gestão de usuários',
+              pageTitle: 'Login',
             },
-            component: () => import(/* webpackChunkName: "admin.users" */ '../views/admin/users/index.vue'),
-          }
+          },
         ],
       },
+      {
+        path: '',
+        component: () => import('../common/layouts/authenticated-layout.vue'),
+        meta: {
+          middlewares: [isAuthenticatedMiddleware],
+        },
+        children: [
+          {
+            path: 'dashboard',
+            name: 'dashboard',
+            component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/index.vue'),
+            meta: {
+              pageTitle: 'Dashboard',
+            }
+          },
+          {
+            path: 'trades',
+            name: 'trades',
+            meta: {
+              pageTitle: 'Meu diário',
+            },
+            component: () => import(/* webpackChunkName: "trades" */ '@/views/trades/index.vue')
+          },
+          {
+            path: 'configuracoes/setups',
+            name: 'configuracoes.setups',
+            meta: {
+              pageTitle: 'Setup',
+            },
+            component: () => import(/* webpackChunkName: "configuracoes.setups" */ '../views/configuracoes/setups/index.vue'),
+          },
+          {
+            path: 'configuracoes/gatilhos',
+            name: 'configuracoes.gatilhos',
+            meta: {
+              pageTitle: 'Gatilhos',
+            },
+            component: () => import(/* webpackChunkName: "configuracoes.gatilhos" */ '../views/configuracoes/gatilhos/index.vue'),
+          },
+          {
+            path: 'configuracoes/tipos-entradas',
+            name: 'configuracoes.tipos-entradas',
+            meta: {
+              pageTitle: 'Tipos de entradas',
+            },
+            component: () => import(/* webpackChunkName: "configuracoes.tipos-entradas" */ '../views/configuracoes/tipos-entradas/index.vue'),
+          },
+          {
+            path: 'admin',
+            meta: {
+              middlewares: [isAuthorized],
+              abilities: ['admin'],
+            },
+            component: { render: (c: CreateElement) => c('router-view') },
+            children: [
+              {
+                path: '',
+                name: 'admin',
+                redirect: { name: 'admin.users' },
+              },
+              {
+                path: 'usuarios',
+                name: 'admin.users',
+                meta: {
+                  pageTitle: 'Gestão de usuários',
+                },
+                component: () => import(/* webpackChunkName: "admin.users" */ '../views/admin/users/index.vue'),
+              }
+            ],
+          },
+        ],
+      },
+      {
+        path: '*',
+        redirect: { name: 'dashboard' },
+      },
     ],
-  },
-  {
-    path: '*',
-    redirect: { name: 'dashboard' },
   },
 ];
 

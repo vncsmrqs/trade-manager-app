@@ -4,6 +4,7 @@ export type BaseAuthState = {
   token?: string;
   user?: UserEntity;
   error?: string;
+  getCurrentUserLoader?: Promise<void>;
 }
 
 export type InitialAuthState = {
