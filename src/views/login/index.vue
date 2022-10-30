@@ -135,6 +135,13 @@ export default class Login extends Vue {
     }
     await this.authController.login(this.form.email, this.form.password).then(() => {
       if (this.authController.isAuthenticated) {
+        const redirectTo = this.$route.query.redirectTo;
+        if (redirectTo) {
+          this.$router.replace(redirectTo).catch(() => {
+            this.$router.replace({ name: 'dashboard' });
+          });
+          return;
+        }
         this.$router.replace({ name: 'dashboard' });
         return;
       }

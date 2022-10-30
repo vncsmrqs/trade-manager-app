@@ -5,7 +5,13 @@ import { app, TYPES } from "@/core/common/container";
 export const isAuthenticatedMiddleware: NavigationGuard = async (to, from, next) => {
   const authController = app.make<AuthController>(TYPES.AuthController);
   if (!authController.isAuthenticated) {
-    next({ name: 'login' });
+
+    next({
+      name: 'login',
+      query: {
+        redirectTo: to.fullPath,
+      },
+    });
   } else {
     next();
   }
