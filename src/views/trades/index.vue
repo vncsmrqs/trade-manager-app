@@ -381,7 +381,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import FilterTrades from "@/views/trades/components/filter-trades.vue";
 import { app, TYPES } from "@/core/common/container";
 import {
@@ -468,6 +468,13 @@ export default class ListTrade extends Vue {
       width: '5%',
     },
   ];
+
+  @Watch('filter.startDate')
+  changeStarDate(startDate: string) {
+    if (startDate > this.filter.endDate) {
+      this.filter.endDate = startDate;
+    }
+  }
 
   formatDateFieldValue(value?: string): string {
     if (value === undefined) {

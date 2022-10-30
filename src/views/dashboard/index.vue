@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import moment from "moment";
 import RankingOfSetup from "@/views/dashboard/components/ranking-of-setup.vue";
 import TradesByWeekdayChart from "@/views/dashboard/components/trades-by-weekday-chart.vue";
@@ -152,6 +152,13 @@ export default class DashboardView extends Vue {
 
   get isLoading(): boolean {
     return this.dashboardState.kind === 'LoadingDashboardState';
+  }
+
+  @Watch('filter.startDate')
+  changeStarDate(startDate: string) {
+    if (startDate > this.filter.endDate) {
+      this.filter.endDate = startDate;
+    }
   }
 
   search(): void {
