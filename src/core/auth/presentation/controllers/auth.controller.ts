@@ -2,11 +2,13 @@ import { Controller } from "@/core/common/domain/controller";
 import { AuthState, initialAuthState } from "@/core/auth/presentation/states/auth.state";
 import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
 import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
+import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 
 export class AuthController extends Controller<AuthState> {
   constructor(
     private loginUseCase: LoginUseCaseContract,
-    private getCurrentUserUseCase: GetCurrentUserUseCaseContract
+    private getCurrentUserUseCase: GetCurrentUserUseCaseContract,
+    private notificationController: NotificationController
   ) {
     super(initialAuthState);
   }
@@ -33,6 +35,7 @@ export class AuthController extends Controller<AuthState> {
       if (loginResult.successful) {
         await this.getCurrentUser(loginResult.value.token);
         AuthController.saveSession(loginResult.value.token);
+        this.notificationController.resetState();
         return;
       }
 

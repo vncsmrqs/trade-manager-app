@@ -82,11 +82,12 @@ export class ListLocalStopController extends Controller<ListLocalStopState> {
       this.notificationController.push({
         type: 'error',
         message: result.error,
+        timeout: 1000,
       });
     } catch (error) {
       this.notificationController.push({
         type: 'error',
-        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do local do stop`,
+        message: `Algo inesperado ocorreu ao ${ value ? 'ativar' : 'desativar' } local do stop`,
       });
     }
     this.changeState({

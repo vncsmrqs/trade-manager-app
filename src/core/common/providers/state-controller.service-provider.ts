@@ -68,6 +68,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     container.singleton(TYPES.AuthController, () => new AuthController(
       container.make<LoginUseCaseContract>(TYPES.LoginUseCaseContract),
       container.make<GetCurrentUserUseCaseContract>(TYPES.GetCurrentUserUseCaseContract),
+      container.make<NotificationController>(TYPES.NotificationController),
     ));
 
     this.bootSetupControllers(container);

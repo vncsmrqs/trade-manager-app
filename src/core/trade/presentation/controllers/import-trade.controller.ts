@@ -109,7 +109,7 @@ export class ImportFileTradeController extends Controller<ImportFileTradeState> 
         });
         this.notificationController.push({
           type: 'success',
-          message: `${this.state.totalItems} registro(s) importado(s) com sucesso!`,
+          message: `${this.state.totalItems} registros importados com sucesso!`,
           timeout: 5000,
         });
         return;

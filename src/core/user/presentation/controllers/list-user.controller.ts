@@ -79,11 +79,13 @@ export class ListUserController extends Controller<ListUserState> {
       this.notificationController.push({
         type: 'error',
         message: result.error,
+        timeout: 10000,
       });
     } catch (error) {
       this.notificationController.push({
         type: 'error',
-        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do usuário`,
+        message: `Algo inesperado ocorreu ao ${ value ? 'ativar' : 'desativar' } usuário`,
+        timeout: 10000,
       });
     }
     this.changeState({

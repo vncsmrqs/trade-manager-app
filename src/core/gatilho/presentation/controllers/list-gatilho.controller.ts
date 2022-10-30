@@ -79,11 +79,13 @@ export class ListGatilhoController extends Controller<ListGatilhoState> {
       this.notificationController.push({
         type: 'error',
         message: result.error,
+        timeout: 10000,
       });
     } catch (error) {
       this.notificationController.push({
         type: 'error',
-        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do gatilho`,
+        message: `Algo inesperado ocorreu ao ${ value ? 'ativar' : 'desativar' } gatilho`,
+        timeout: 10000,
       });
     }
     this.changeState({

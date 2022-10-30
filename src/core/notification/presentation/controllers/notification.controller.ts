@@ -23,6 +23,12 @@ export class NotificationController extends Controller<NotificationState> {
       type: notification.type ? notification.type : 'info',
       message: notification.message ? notification.message : '',
       timeout: notification.timeout,
+      closeButtonText: notification.closeButtonText || 'FECHAR',
+      confirmButtonText: notification.confirmButtonText || 'OK',
+      showCloseButton: notification.showCloseButton || true,
+      showConfirmButton: notification.showConfirmButton || false,
+      onClose: notification.onClose,
+      onConfirm: notification.onConfirm,
     };
   }
 
@@ -33,5 +39,9 @@ export class NotificationController extends Controller<NotificationState> {
         notifications: this.state.notifications.filter(({ id }) => id !== notificationId),
       });
     }
+  }
+
+  public resetState(): void {
+    this.changeState(initialNotificationState);
   }
 }

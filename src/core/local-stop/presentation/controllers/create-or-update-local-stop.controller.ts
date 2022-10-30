@@ -35,7 +35,7 @@ export class CreateOrUpdateLocalStopController extends Controller<CreateOrUpdate
         });
         this.notificationController.push({
           type: 'success',
-          message: 'LocalStop salvo com sucesso!',
+          message: 'Local do stop salvo com sucesso!',
           timeout: 3000,
         });
         this.listLocalStopController.loadLocalStopList();

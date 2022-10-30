@@ -102,7 +102,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import Notification from "@/common/components/notification.vue";
 import { app, TYPES } from "@/core/common/container";
 import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
@@ -111,7 +110,7 @@ import { SystemState } from "@/core/system/presentation/states/system.state";
 import { AuthState } from "@/core/auth/presentation/states/auth.state";
 
 @Component({
-  components: { Logout, Notification },
+  components: { Logout },
 })
 export default class AuthenticatedLayout extends Vue {
   private systemController: SystemController = app.make<SystemController>(TYPES.SystemController);

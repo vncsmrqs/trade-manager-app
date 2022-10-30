@@ -35,7 +35,7 @@ export class CreateOrUpdateTipoStopController extends Controller<CreateOrUpdateT
         });
         this.notificationController.push({
           type: 'success',
-          message: 'TipoStop salvo com sucesso!',
+          message: 'Tipo de stop salvo com sucesso!',
           timeout: 3000,
         });
         this.listTipoStopController.loadTipoStopList();

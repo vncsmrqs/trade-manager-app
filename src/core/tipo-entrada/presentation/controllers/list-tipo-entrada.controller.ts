@@ -81,11 +81,12 @@ export class ListTipoEntradaController extends Controller<ListTipoEntradaState> 
       this.notificationController.push({
         type: 'error',
         message: result.error,
+        timeout: 1000,
       });
     } catch (error) {
       this.notificationController.push({
         type: 'error',
-        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do tipo de entrada`,
+        message: `Algo inesperado ocorreu ao ${ value ? 'ativar' : 'desativar' } tipo de entrada`,
       });
     }
     this.changeState({

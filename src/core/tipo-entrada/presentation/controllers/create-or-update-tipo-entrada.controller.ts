@@ -35,7 +35,7 @@ export class CreateOrUpdateTipoEntradaController extends Controller<CreateOrUpda
         });
         this.notificationController.push({
           type: 'success',
-          message: 'TipoEntrada salvo com sucesso!',
+          message: 'Tipo de entrada salvo com sucesso!',
           timeout: 3000,
         });
         this.listTipoEntradaController.loadTipoEntradaList();

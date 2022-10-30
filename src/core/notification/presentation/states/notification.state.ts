@@ -13,6 +13,12 @@ export type NotificationProps = {
   message: string;
   type: 'success' | 'warning' | 'info' | 'error';
   timeout?: number;
+  closeButtonText: string;
+  confirmButtonText: string;
+  showCloseButton: boolean;
+  showConfirmButton: boolean;
+  onClose?: () => void,
+  onConfirm?: () => void,
 }
 
 export type UpdatedNotificationState = {

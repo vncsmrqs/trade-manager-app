@@ -1,26 +1,40 @@
 <template>
   <div>
-    <v-snackbar
-        v-for="(notification, i) in localState.notifications"
-        :color="notification.type"
-        :key="notification.id"
-        value="true"
-        @input="() => closeNotification(notification)"
-        :timeout="notification.timeout || null"
-        :style="{ 'margin-bottom': calcMargin(i) }"
-    >
-      <template v-slot:action="{ attrs }">
-        <v-btn
-            color="white"
-            text
-            v-bind="attrs"
-            @click="() => closeNotification(notification)"
-        >
-          Close
-        </v-btn>
-      </template>
-      {{ notification.message }}
-    </v-snackbar>
+    <v-fade-transition group>
+      <v-snackbar
+          v-for="(notification, i) in localState.notifications"
+          :color="notification.type"
+          :key="notification.id"
+          value="true"
+          @input="() => closeNotification(notification)"
+          :timeout="notification.timeout || null"
+          :style="{ 'margin-top': calcMargin(i) }"
+          right
+          top
+      >
+        <template v-slot:action="{ attrs }">
+          <v-btn
+              v-if="notification.showConfirmButton"
+              color="white"
+              text
+              v-bind="attrs"
+              @click="() => confirmNotification(notification)"
+          >
+            {{ notification.confirmButtonText }}
+          </v-btn>
+          <v-btn
+              v-if="notification.showCloseButton"
+              color="white"
+              text
+              v-bind="attrs"
+              @click="() => closeNotification(notification, true)"
+          >
+            {{ notification.closeButtonText }}
+          </v-btn>
+        </template>
+        {{ notification.message }}
+      </v-snackbar>
+    </v-fade-transition>
   </div>
 </template>
 
@@ -35,8 +49,18 @@ export default class Notification extends Vue {
   private controller = app.make<NotificationController>(TYPES.NotificationController);
   private localState: NotificationState = this.controller.state;
 
-  closeNotification(notification: NotificationProps) {
-    this.controller.remove(notification.id)
+  closeNotification(notification: NotificationProps, clicked?: boolean) {
+    this.controller.remove(notification.id);
+    if (clicked && notification.onClose) {
+      notification.onClose();
+    }
+  }
+
+  confirmNotification(notification: NotificationProps) {
+    this.closeNotification(notification);
+    if (notification.onConfirm) {
+      notification.onConfirm();
+    }
   }
 
   changeState(state) {

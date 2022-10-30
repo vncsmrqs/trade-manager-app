@@ -57,9 +57,9 @@ export class AuthApiRepository extends HttpClient implements
         return ActionResult.failure('Problema na conexão com o servidor. Por favor, tente mais tarde.');
       }
       if (error.status === 401) {
-        return ActionResult.failure('Você não está autenticado');
+        return ActionResult.failure('Sua sessão expirou. Por favor, faça o login novamente.');
       }
-      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente em alguns instantes.');
     }
   }
 }

@@ -76,15 +76,25 @@ export class ListSetupController extends Controller<ListSetupState> {
     });
     try {
       const result = await this.updateSetup.execute({ id, ativo: value });
-      if (result.successful) return;
+      if (result.successful) {
+        this.notificationController.push({
+          type: 'success',
+          message: 'Status atualizado com sucesso!',
+          timeout: 10000,
+
+        });
+        return;
+      }
       this.notificationController.push({
         type: 'error',
         message: result.error,
+        timeout: 10000,
       });
     } catch (error) {
       this.notificationController.push({
         type: 'error',
-        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do setup`,
+        message: `Algo inesperado ocorreu ao ${ value ? 'ativar' : 'desativar' } setup`,
+        timeout: 10000,
       });
     }
     this.changeState({

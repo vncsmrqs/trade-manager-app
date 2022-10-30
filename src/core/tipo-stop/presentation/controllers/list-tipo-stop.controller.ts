@@ -82,11 +82,13 @@ export class ListTipoStopController extends Controller<ListTipoStopState> {
       this.notificationController.push({
         type: 'error',
         message: result.error,
+        timeout: 10000,
       });
     } catch (error) {
       this.notificationController.push({
         type: 'error',
-        message: `Um erro inesperado ao ${ value ? 'ativar' : 'desativar' } do tipo de stop`,
+        message: `Algo inesperado ocorreu ao ${ value ? 'ativar' : 'desativar' } tipo de stop`,
+        timeout: 10000,
       });
     }
     this.changeState({

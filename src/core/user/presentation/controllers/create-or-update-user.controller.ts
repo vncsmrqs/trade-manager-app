@@ -35,7 +35,7 @@ export class CreateOrUpdateUserController extends Controller<CreateOrUpdateUserS
         });
         this.notificationController.push({
           type: 'success',
-          message: 'User salvo com sucesso!',
+          message: 'Usuário salvo com sucesso!',
           timeout: 3000,
         });
         this.listUserController.loadUserList();

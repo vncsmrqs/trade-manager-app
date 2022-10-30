@@ -11,7 +11,7 @@ import { GetTradeSumByIntervalUseCaseContract } from "@/core/dashboard/domain/us
 
 export class DashboardController extends Controller<DashboardState> {
   constructor(
-    private geTradeSumBySetupUseCase: GetTradeSumBySetupUseCaseContract,
+    private getTradeSumBySetupUseCase: GetTradeSumBySetupUseCaseContract,
     private getTradeSumByWeekdayUseCase: GetTradeSumByWeekdayUseCaseContract,
     private getTradeSumUseCase: GetTradeSumUseCaseContract,
     private getTradeSumByIntervalUseCase: GetTradeSumByIntervalUseCaseContract,
@@ -53,7 +53,7 @@ export class DashboardController extends Controller<DashboardState> {
         error: undefined,
       });
 
-      const result = await this.geTradeSumBySetupUseCase.execute(params);
+      const result = await this.getTradeSumBySetupUseCase.execute(params);
 
       if (result.successful) {
         this.updateRankingOfSetupState({
