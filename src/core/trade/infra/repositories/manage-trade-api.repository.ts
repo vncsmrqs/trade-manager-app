@@ -288,8 +288,20 @@ export class ManageTradeApiRepository extends HttpClient implements
       });
     }
     catch (error: any) {
+      const valueOrDefault = <T = any>(value: T, defaultValue: T) => {
+        return value != undefined ? value : defaultValue;
+      };
       if (error.status === 401) {
         return ActionResult.failure('Você não está autenticado');
+      }
+      if (error.status === 400) {
+        return ActionResult.failure(
+          `${
+            valueOrDefault(error.data.message,'Algo inesperado aconteceu durante o upload do arquivo.')
+          } ${
+            valueOrDefault(error.data.error,'Provalmente é algum problema com sua planilha. Por favor, confira e tente novamente.')
+          }`
+        );
       }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
