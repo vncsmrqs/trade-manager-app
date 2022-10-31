@@ -92,7 +92,6 @@ export class Application implements ContainerContract {
           && !!register?.tags?.includes(tag)
           && !!register.instance
         ) {
-          console.log(register.instance.constructor.name);
           singletons.push(register.instance);
         }
         return singletons;
