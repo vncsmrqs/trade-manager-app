@@ -33,6 +33,8 @@ export abstract class Controller<S> {
       this.listeners.splice(index, 1);
     }
   }
+
+  public resetState(): void {}
 }
 
 type Subscription<S> = (state: S) => void;

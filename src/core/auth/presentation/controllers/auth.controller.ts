@@ -3,6 +3,7 @@ import { AuthState, initialAuthState } from "@/core/auth/presentation/states/aut
 import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-case";
 import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
+import { app } from "@/core/common/container";
 
 export class AuthController extends Controller<AuthState> {
   constructor(
@@ -154,6 +155,8 @@ export class AuthController extends Controller<AuthState> {
 
   public logout() {
     this.resetState();
+    const controllerList = app.makeSingletonsByTag<Controller<any>>('must-reset-state');
+    controllerList.forEach((controller) => controller.resetState());
     AuthController.removeSession();
   }
 

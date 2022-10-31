@@ -1,48 +1,63 @@
 import { ContainerContract } from "./contracts";
 import * as appConfig from "./config";
 
-const SINGLETON_TYPE = 'singleton';
-const BIND_TYPE = 'bind';
-type ServiceTypes = 'singleton' | 'bind';
+const enum RegisterType {
+  SINGLETON = 'singleton',
+  BIND = 'bind',
+}
+type RegisterBase = {
+  tags?: string[],
+  make: () => any;
+};
+
+type BindRegister = RegisterBase & {
+  type: RegisterType.BIND;
+}
+
+type SingletonRegister = RegisterBase & {
+  type: RegisterType.SINGLETON,
+  instance?: any,
+}
+
+type Register = (BindRegister | SingletonRegister);
 
 export class Application implements ContainerContract {
-  private singletons: Record<symbol, any> = {};
-  private container: Record<symbol, {
-    type: ServiceTypes;
-    make: () => any;
-  }> = {};
+  private container: Record<symbol, Register> = {};
 
   constructor() {
     appConfig.providers.map((provider) => provider.register(this));
     appConfig.providers.map((provider) => provider.boot ? provider.boot(this) : null);
   }
 
-  public singleton<T>(interfaceSymbol: symbol, makeFunction: (container: ContainerContract) => T): void {
+  public singleton<T>(interfaceSymbol: symbol, makeFunction: (container: ContainerContract) => T, tags?: string[]): void {
     if (this.container[interfaceSymbol]) {
       throw Error(`Interface [${interfaceSymbol.toString()}] already registered in container`);
     }
     this.container[interfaceSymbol] = {
-      type: SINGLETON_TYPE,
+      type: RegisterType.SINGLETON,
+      tags,
       make: (): T => { return makeFunction(this) },
     };
   }
 
-  public instance<T>(interfaceSymbol: symbol, instance: T): void {
+  public instance<T>(interfaceSymbol: symbol, instance: T, tags?: string[]): void {
     if (this.container[interfaceSymbol]) {
       throw Error(`Interface [${interfaceSymbol.toString()}] already registered in container`);
     }
     this.container[interfaceSymbol] = {
-      type: SINGLETON_TYPE,
+      type: RegisterType.SINGLETON,
+      tags,
       make(): T { return instance },
     };
   }
 
-  public bind<T>(interfaceSymbol: symbol, makeFunction: (container: ContainerContract) => T): void {
+  public bind<T>(interfaceSymbol: symbol, makeFunction: (container: ContainerContract) => T, tags?: string[]): void {
     if (this.container[interfaceSymbol]) {
       throw Error(`Interface [${interfaceSymbol.toString()}] already registered in container`);
     }
     this.container[interfaceSymbol] = {
-      type: BIND_TYPE,
+      type: RegisterType.BIND,
+      tags,
       make: (): T => { return makeFunction(this) },
     };
   }
@@ -54,17 +69,33 @@ export class Application implements ContainerContract {
       throw Error(`Interface [${interfaceSymbol.toString()}] has not been registered in container`);
     }
 
-    if (service.type === SINGLETON_TYPE) {
-      if (!this.singletons[interfaceSymbol]) {
-        this.singletons[interfaceSymbol] = service.make();
+    if (service.type === RegisterType.SINGLETON) {
+      if (!service.instance) {
+        service.instance = service.make();
       }
-      return this.singletons[interfaceSymbol];
+      return service.instance;
     }
 
-    if (service.type === BIND_TYPE) {
+    if (service.type === RegisterType.BIND) {
       return service.make();
     }
 
-    throw Error(`Type [${service.type}] has not been implemented yet`);
+    throw Error(`Register type has not been implemented yet`);
+  }
+
+  public makeSingletonsByTag<T>(tag: string): T[] {
+    return Reflect.ownKeys(this.container)
+      .map((interfaceSymbol) => this.container[interfaceSymbol as symbol])
+      .reduce<T[]>((singletons, register) => {
+        if (
+          register.type === RegisterType.SINGLETON
+          && !!register?.tags?.includes(tag)
+          && !!register.instance
+        ) {
+          console.log(register.instance.constructor.name);
+          singletons.push(register.instance);
+        }
+        return singletons;
+      }, []);
   }
 }
