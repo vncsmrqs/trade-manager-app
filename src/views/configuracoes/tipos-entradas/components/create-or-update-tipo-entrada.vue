@@ -29,7 +29,8 @@
                 dense
                 label="Nome"
                 v-model="form.nome"
-                ref="name"
+                ref="nome"
+                autofocus
                 :rules="[() => !!form.nome || 'O nome é obrigatório']"
                 required
             ></v-text-field>
@@ -144,12 +145,19 @@ export default class CreateOrUpdateTipoEntrada extends Vue {
   }
 
   @Watch('show')
-  changeShow(value: boolean) {
+  changeShow(show: boolean) {
     this.$refs.form?.resetValidation();
     this.controller.resetState();
     this.form = this.defaultForm();
-    if (value && this.isUpdateForm) {
-      this.fillForm(this.item);
+    if (show) {
+      if (this.isUpdateForm) {
+        this.fillForm(this.item);
+      }
+      setTimeout(() => {
+        const end = this.form.nome.length;
+        this.$refs.nome.$el.querySelector('input').setSelectionRange(end, end);
+        this.$refs.nome.focus();
+      });
     }
   }
 
