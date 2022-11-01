@@ -109,43 +109,20 @@
                         <div class="font-weight-bold mb-2">Hora</div>
                         <div>{{ formatStringFieldValue(form.horaTrade) }}</div>
                       </div>
-                      <v-menu
-                          v-else
-                          ref="horaTradeDialog"
-                          v-model="showHoraTradePicker"
-                          :close-on-content-click="false"
-                          :return-value.sync="form.horaTrade"
-                          transition="fade"
-                          offset-y
-                          max-width="276px"
-                          min-width="290px"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                              prepend-inner-icon="mdi-clock-time-four-outline"
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                              v-model="form.horaTrade"
-                              label="Hora"
-                              outlined
-                              dense
-                              clearable
-                              ref="horaTrade"
-                              :rules="formRules.horaTrade"
-                              required
-                          ></v-text-field>
-                        </template>
-                        <v-time-picker
-                            v-if="showHoraTradePicker"
+                      <div v-else>
+                        <v-text-field
+                            prepend-inner-icon="mdi-clock-time-four-outline"
                             v-model="form.horaTrade"
-                            min="09:00:00"
-                            max="18:00:00"
-                            format="24hr"
-                            locale="pt-BR"
-                            @click:minute="$refs.horaTradeDialog.save(form.horaTrade)"
-                        ></v-time-picker>
-                      </v-menu>
+                            label="Hora"
+                            outlined
+                            dense
+                            type="time"
+                            clearable
+                            ref="horaTrade"
+                            :rules="formRules.horaTrade"
+                            required
+                        ></v-text-field>
+                      </div>
                     </v-col>
                     <v-col cols="6" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
@@ -758,7 +735,6 @@ export default class ManageTrade extends Vue {
 
   showDeleteDialog = false;
   showDataTradePicker = false;
-  showHoraTradePicker = false;
   showImageViewerDialog = false;
 
   imageToViewSrc?: string | null = null;
@@ -1243,6 +1219,10 @@ export default class ManageTrade extends Vue {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+input[type="time"] {
+  &::-webkit-calendar-picker-indicator {
+    background: none;
+  }
+}
 </style>

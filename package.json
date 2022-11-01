@@ -23,12 +23,14 @@
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.1",
+    "vue-the-mask": "^0.11.1",
     "vuetify": "^2.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@types/uuid": "^8.3.4",
+    "@types/vue-the-mask": "^0.11.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
