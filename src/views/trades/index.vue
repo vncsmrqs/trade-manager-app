@@ -309,8 +309,13 @@
                     <div class="text-caption">{{ trade.gatilhoNome }}</div>
                   </div>
 
-                  <div v-if="header.name === 'tipo-entrada'">
+                  <div v-if="header.name === 'entrada-stop'">
                     <div class="text-body-1">{{ trade.tipoEntradaNome }}</div>
+                    <div class="text-caption">
+                      <span v-if="trade.tipoStopNome">{{ trade.tipoStopNome }}</span>
+                      <span v-if="trade.tipoStopNome && trade.localStopNome"> | </span>
+                      <span v-if="trade.localStopNome">{{ trade.localStopNome }}</span>
+                    </div>
                   </div>
 
                   <div
@@ -438,14 +443,14 @@ export default class ListTrade extends Vue {
       width: '15%',
     },
     {
-      title: 'Setup - Complemento',
+      title: 'Setup - Gatilho',
       name: 'setup-gatilho',
       align: 'left',
       width: '37%',
     },
     {
-      title: 'Tipo de entrada',
-      name: 'tipo-entrada',
+      title: 'Entrada - Stop',
+      name: 'entrada-stop',
       align: 'left',
       width: '25%',
     },
