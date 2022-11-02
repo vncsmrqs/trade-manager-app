@@ -318,44 +318,40 @@
                   <v-row>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
-                        <div class="font-weight-bold mb-2">1º Alvo</div>
-                        <div>{{ formatBooleanFieldValue(form.primeiroAlvo) }}</div>
+                        <div class="font-weight-bold mb-2">Saída Parcial</div>
+                        <div>{{ formatSaidaFieldValue(form.saidaParcial) }}</div>
                       </div>
                       <div v-else>
-                        <span class="text-body-1 font-weight-bold">1º Alvo</span>
+                        <span class="text-body-1 font-weight-bold">Saída Parcial</span>
                         <v-radio-group
-                            v-model="form.primeiroAlvo"
+                            v-model="form.saidaParcial"
                             column
                         >
                           <v-radio
-                              label="Sim"
-                              :value="true"
-                          ></v-radio>
-                          <v-radio
-                              label="Não"
-                              :value="false"
+                              v-for="option in tradeSaidaOptionList"
+                              :key="option.value"
+                              :label="option.label"
+                              :value="option.value"
                           ></v-radio>
                         </v-radio-group>
                       </div>
                     </v-col>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
-                        <div class="font-weight-bold mb-2">2º Alvo</div>
-                        <div>{{ formatBooleanFieldValue(form.segundoAlvo) }}</div>
+                        <div class="font-weight-bold mb-2">Saída Final</div>
+                        <div>{{ formatSaidaFieldValue(form.saidaFinal) }}</div>
                       </div>
                       <div v-else>
-                        <span class="text-body-1 font-weight-bold">2º Alvo</span>
+                        <span class="text-body-1 font-weight-bold">Saída Final</span>
                         <v-radio-group
-                            v-model="form.segundoAlvo"
+                            v-model="form.saidaFinal"
                             column
                         >
                           <v-radio
-                              label="Sim"
-                              :value="true"
-                          ></v-radio>
-                          <v-radio
-                              label="Não"
-                              :value="false"
+                              v-for="option in tradeSaidaOptionList"
+                              :key="option.value"
+                              :label="option.label"
+                              :value="option.value"
                           ></v-radio>
                         </v-radio-group>
                       </div>
@@ -691,7 +687,7 @@ import { app, TYPES } from "@/core/common/container";
 import {
   TradeEntity,
   TradeEntityProps,
-  TradeResultadoType, TradeSentimentoType
+  TradeResultadoType, TradeSaidaEnum, tradeSaidaLabelList, TradeSentimentoType
 } from "@/core/trade/domain/entities/trade.entity";
 import { ManageTradeState } from "@/core/trade/presentation/states/manage-trade.state";
 import { ManageTradeController } from "@/core/trade/presentation/controllers/manage-trade.controller";
@@ -702,6 +698,7 @@ import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entiti
 import moment from "moment";
 import SingleImageViewer from "@/common/components/single-image-viewer.vue";
 import VMoneyField from "@/common/components/v-money-field.vue";
+import { getEnumKeyByValue } from "@/common/utils";
 
 type FormType = Partial<TradeEntityProps>;
 
@@ -821,13 +818,20 @@ export default class ManageTrade extends Vue {
       resultado: undefined,
       seguiuPlano: undefined,
       sentimento: undefined,
-      primeiroAlvo: undefined,
-      segundoAlvo: undefined,
+      saidaParcial: undefined,
+      saidaFinal: undefined,
       imagemPath: undefined,
       imagemUrl: undefined,
       observacao: undefined,
       filtros: {},
     };
+  }
+
+  get tradeSaidaOptionList() {
+    return Object.keys(tradeSaidaLabelList).map((name) => ({
+      value: TradeSaidaEnum[name],
+      label: tradeSaidaLabelList[name],
+    }));
   }
 
   get primaryButtonText(): string {
@@ -938,6 +942,13 @@ export default class ManageTrade extends Vue {
       return '-';
     }
     return value;
+  }
+
+  formatSaidaFieldValue(value?: TradeSaidaEnum) {
+    if (value == undefined) {
+      return '-';
+    }
+    return tradeSaidaLabelList[getEnumKeyByValue<TradeSaidaEnum>(TradeSaidaEnum, value)];
   }
 
   formatSentimentoFieldIcon(value?: string): string {
@@ -1114,8 +1125,8 @@ export default class ManageTrade extends Vue {
       resultado: item.resultado,
       seguiuPlano: item.seguiuPlano,
       sentimento: item.sentimento,
-      primeiroAlvo: item.primeiroAlvo,
-      segundoAlvo: item.segundoAlvo,
+      saidaParcial: item.saidaParcial,
+      saidaFinal: item.saidaFinal,
       imagemPath: item.imagemPath,
       imagemUrl: item.imagemUrl,
       observacao: item.observacao,

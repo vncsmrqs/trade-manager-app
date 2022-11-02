@@ -4,6 +4,20 @@ import { Entity } from "@/core/common/domain/entity";
 export type TradeResultadoType = 'gain' | 'loss' | '0x0';
 export type TradeSentimentoType = 'bem' | 'neutro' | 'mal';
 
+export enum TradeSaidaEnum {
+  NA = 'na',
+  PRIMEIRO_ALVO = 'primeiro_alvo',
+  SEGUNDO_ALVO = 'segundo_alvo',
+  TERCEIRO_ALVO = 'terceiro_alvo',
+}
+
+export const tradeSaidaLabelList = {
+  PRIMEIRO_ALVO: '1º Alvo',
+  SEGUNDO_ALVO: '2º Alvo',
+  TERCEIRO_ALVO: '3º Alvo',
+  NA: 'N/A',
+}
+
 export type DefaultTradeEntityProps = {
   id: string;
   userId: string;
@@ -24,8 +38,8 @@ export type DefaultTradeEntityProps = {
   resultado: TradeResultadoType;
   seguiuPlano?: boolean;
   sentimento?: TradeSentimentoType;
-  primeiroAlvo?: boolean;
-  segundoAlvo?: boolean;
+  saidaParcial?: TradeSaidaEnum;
+  saidaFinal?: TradeSaidaEnum;
   imagemPath?: string;
   observacao?: string;
   filtros: Record<string, string>;
@@ -120,12 +134,12 @@ export class TradeEntity extends Entity<TradeEntityProps>{
     return this.props.sentimento;
   }
 
-  get primeiroAlvo(): boolean | undefined {
-    return this.props.primeiroAlvo;
+  get saidaParcial(): TradeSaidaEnum | undefined {
+    return this.props.saidaParcial;
   }
 
-  get segundoAlvo(): boolean | undefined {
-    return this.props.segundoAlvo;
+  get saidaFinal(): TradeSaidaEnum | undefined {
+    return this.props.saidaFinal;
   }
 
   get imagemUrl(): string | undefined {
@@ -199,8 +213,8 @@ export class TradeEntity extends Entity<TradeEntityProps>{
       valorResultado: raw.valor_resultado,
       seguiuPlano: createBoolean(raw.seguiu_plano),
       sentimento: raw.sentimento,
-      primeiroAlvo: createBoolean(raw.primeiro_alvo),
-      segundoAlvo: createBoolean(raw.segundo_alvo),
+      saidaParcial: raw.saida_parcial,
+      saidaFinal: raw.saida_final,
       imagemUrl: raw.imagem_url,
       imagemPath: raw.imagem_path,
       userNome: raw.user_nome,

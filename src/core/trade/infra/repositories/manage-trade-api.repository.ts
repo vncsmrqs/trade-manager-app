@@ -1,5 +1,10 @@
 import { ListTradeRepositoryContract } from "@/core/trade/data/contracts/list-trade.repository";
-import { TradeEntity, TradeResultadoType, TradeSentimentoType } from "@/core/trade/domain/entities/trade.entity";
+import {
+  TradeEntity,
+  TradeResultadoType,
+  TradeSaidaEnum,
+  TradeSentimentoType
+} from "@/core/trade/domain/entities/trade.entity";
 import { ActionResult } from "@/core/common/domain/action-result";
 import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/create-trade.repository";
 import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
@@ -59,8 +64,8 @@ type CreateTradeRequest = {
   data_trade: string,
   hora_trade: string,
   seguiu_plano?: boolean,
-  primeiro_alvo?: boolean,
-  segundo_alvo?: boolean,
+  saida_parcial?: TradeSaidaEnum,
+  saida_final?: TradeSaidaEnum,
   sentimento?: TradeSentimentoType,
   imagem_path?: string,
   observacao?: string,
@@ -83,8 +88,8 @@ type UpdateTradeRequest = {
   data_trade?: string,
   hora_trade?: string,
   seguiu_plano?: boolean,
-  primeiro_alvo?: boolean,
-  segundo_alvo?: boolean,
+  saida_parcial?: TradeSaidaEnum,
+  saida_final?: TradeSaidaEnum,
   sentimento?: TradeSentimentoType,
   imagem_path?: string,
   filtros?: Record<string, string>,
@@ -185,8 +190,8 @@ export class ManageTradeApiRepository extends HttpClient implements
           data_trade: params.dataTrade,
           hora_trade: params.horaTrade,
           seguiu_plano: params.seguiuPlano,
-          primeiro_alvo: params.primeiroAlvo,
-          segundo_alvo: params.segundoAlvo,
+          saida_parcial: params.saidaParcial,
+          saida_final: params.saidaFinal,
           sentimento: params.sentimento,
           imagem_path: params.imagemPath,
           observacao: params.observacao,
@@ -224,8 +229,8 @@ export class ManageTradeApiRepository extends HttpClient implements
         data_trade: params.dataTrade,
         hora_trade: params.horaTrade,
         seguiu_plano: params.seguiuPlano,
-        primeiro_alvo: params.primeiroAlvo,
-        segundo_alvo: params.segundoAlvo,
+        saida_parcial: params.saidaParcial,
+        saida_final: params.saidaFinal,
         sentimento: params.sentimento,
         imagem_path: params.imagemPath,
         observacao: params.observacao,
