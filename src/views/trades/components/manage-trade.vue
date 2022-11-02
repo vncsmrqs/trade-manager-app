@@ -314,7 +314,7 @@
             </v-tab-item>
 
             <v-tab-item :value="availableTabs.ENCERRAMENTO">
-                <v-card-text>
+                <v-card-text v-if="show">
                   <v-row>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
@@ -431,32 +431,28 @@
                       </v-row>
                     </v-col>
                     <v-col v-if="!detailMode" cols="6" class="py-0">
-                      <v-text-field
-                          :value="form.pontuacao"
-                          @input="(v) => form.pontuacao = Number(v)"
+                      <v-money-field
                           label="Pontos"
+                          v-model="form.pontuacao"
                           outlined
                           dense
-                          type="number"
                           ref="pontuacao"
                           :rules="formRules.pontuacao"
                           :validate-on-blur="true"
                           required
-                      ></v-text-field>
+                      ></v-money-field>
                     </v-col>
                     <v-col v-if="!detailMode" cols="6" class="py-0">
-                      <v-text-field
-                          :value="form.valorResultado"
-                          @input="(v) => form.valorResultado = Number(v)"
+                      <v-money-field
+                          v-model="form.valorResultado"
                           label="Resultado em R$"
                           outlined
                           dense
-                          type="number"
                           ref="valorResultado"
                           :rules="formRules.valorResultado"
                           :validate-on-blur="true"
                           required
-                      ></v-text-field>
+                      ></v-money-field>
                     </v-col>
                     <v-col v-if="detailMode" cols="4" class="text-body-1">
                       <div class="font-weight-bold mb-2">Resultado</div>
@@ -705,11 +701,12 @@ import { ListTradeFilterState } from "@/core/trade/presentation/states/list-trad
 import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
 import moment from "moment";
 import SingleImageViewer from "@/common/components/single-image-viewer.vue";
+import VMoneyField from "@/common/components/v-money-field.vue";
 
 type FormType = Partial<TradeEntityProps>;
 
 @Component({
-  components: { SingleImageViewer, DeleteTrade }
+  components: { SingleImageViewer, DeleteTrade, VMoneyField }
 })
 export default class ManageTrade extends Vue {
   private manageTradeController = app.make<ManageTradeController>(TYPES.ManageTradeController);
@@ -770,7 +767,6 @@ export default class ManageTrade extends Vue {
   }
 
   validatePontuacao(pontuacao: any): boolean | string {
-    console.log(this.form);
     if (this.form.resultado) {
       if (this.form.resultado === 'gain') {
         return pontuacao > 0 || 'A pontuação deve ser maior que 0 para resultado GAIN';
@@ -1224,5 +1220,17 @@ input[type="time"] {
   &::-webkit-calendar-picker-indicator {
     background: none;
   }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>
