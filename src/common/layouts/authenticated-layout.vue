@@ -12,13 +12,12 @@
     >
       <template v-slot:prepend>
         <v-row justify="center" class="my-8">
-          <v-avatar
-              class="overflow-hidden"
-              color="grey"
-              size="128"
-          >
-            <v-img v-if="authState?.user?.imagePath" :src="authState.user.imageUrl"></v-img>
-            <v-icon v-else x-large color="white">mdi-account</v-icon>
+          <v-avatar size="128">
+            <v-img
+              v-if="authController.userHasImage"
+              :src="authState.user.imageUrl"
+            ></v-img>
+            <v-img v-else :src="systemController.iconSrc"></v-img>
           </v-avatar>
         </v-row>
       </template>

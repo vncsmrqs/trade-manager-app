@@ -6,6 +6,10 @@ export class SystemController extends Controller<SystemState> {
     super(initialSystemState);
   }
 
+  get iconSrc(): string {
+    return `${process.env.BASE_URL}logo.png`;
+  }
+
   public updatePageTitle(pageTitle: string) {
     this.changeState({
       ...this.state,

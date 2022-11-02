@@ -14,6 +14,12 @@ export class AuthController extends Controller<AuthState> {
     super(initialAuthState);
   }
 
+  public get userHasImage(): boolean {
+    if (this.isAuthenticated) {
+      return !!this.state?.user?.imagePath;
+    }
+    return false;
+  }
   public get isAuthenticated(): boolean {
     return !!this.state.token;
   }

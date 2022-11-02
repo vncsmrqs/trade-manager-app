@@ -28,9 +28,7 @@
             >
               <v-row no-gutters justify="center">
                 <v-col cols="12" class="d-flex justify-center mb-16">
-                  <v-avatar color="blue" size="120" class="font-weight-bold white--text text-h3">
-                    TM
-                  </v-avatar>
+                  <v-img max-width="148px" :src="systemController.iconSrc"></v-img>
                 </v-col>
                 <v-col cols="8">
                   <v-text-field
@@ -93,12 +91,14 @@ import { app, TYPES } from "@/core/common/container";
 import { AuthController } from "@/core/auth/presentation/controllers/auth.controller";
 import { validateEmail } from "@/common/utils";
 import { AuthState } from "@/core/auth/presentation/states/auth.state";
+import { SystemController } from "@/core/system/presentation/controllers/system.controller";
 
 @Component({
 })
 export default class Login extends Vue {
   private authController = app.make<AuthController>(TYPES.AuthController);
   private authState = this.authController.state;
+  private systemController = app.make<SystemController>(TYPES.SystemController);
 
   backgroundSrc = "https://investorplace.com/wp-content/uploads/2019/07/TopTrades1600-768x432.jpg";
   showPassword = false;

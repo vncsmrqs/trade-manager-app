@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-overlay v-show="showSplash" color="white">
-      <v-img width="100px" :src="iconSrc" class="mb-8"></v-img>
+      <v-img width="100px" :src="systemController.iconSrc" class="mb-8"></v-img>
       <v-progress-linear indeterminate color="primary"></v-progress-linear>
     </v-overlay>
     <template v-if="!showSplash">
@@ -51,10 +51,6 @@ export default class App extends Vue {
 
   private updateSystemState(newState: SystemState) {
     this.systemState = newState;
-  }
-
-  get iconSrc(): string {
-    return `${process.env.BASE_URL}apple-icon-180x180.png`;
   }
 
   @Watch('systemState.appTitle')
