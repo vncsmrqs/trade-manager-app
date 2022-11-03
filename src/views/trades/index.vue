@@ -621,6 +621,8 @@ export default class ListTrade extends Vue {
     if (field) {
       this.filter[item.field] = field.filter((f: string) => f !== item.value);
     }
+
+    this.search();
   }
 
   openFilterDialog() {
