@@ -113,6 +113,10 @@ export default class TradesByIntervalChart extends Vue {
     xaxis: {
       categories: this.availableTimeIntervals,
     },
+    yaxis: {
+      show: true,
+      max: (max: number) => max * 1.1,
+    },
   };
 
   get series() {

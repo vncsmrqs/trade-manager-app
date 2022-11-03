@@ -74,7 +74,11 @@ export default class TradesByWeekdayChart extends Vue {
     },
     colors: ['#FBC02D', '#FF8A80', '#448AFF'],
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      style: {
+        fontSize: '10px',
+      },
+      offsetY: 2,
     },
     tooltip: {
       custom: function({series, seriesIndex, dataPointIndex, w}) {
@@ -89,6 +93,9 @@ export default class TradesByWeekdayChart extends Vue {
     plotOptions: {
       bar: {
         columnWidth: '40%',
+        dataLabels: {
+          hideOverflowingLabels: true,
+        },
       },
     },
   };

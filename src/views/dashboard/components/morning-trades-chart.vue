@@ -69,6 +69,10 @@ export default class MorningTradesChart extends Vue {
     colors: ['#FBC02D', '#FF8A80', '#448AFF'],
     plotOptions: {
       pie: {
+        dataLabels: {
+          offset: 0,
+          minAngleToShowLabel: 3.6 * 5,
+        },
         donut: {
           labels: {
             show: true,
@@ -76,18 +80,28 @@ export default class MorningTradesChart extends Vue {
               show: false,
             },
             value: {
-              formatter(value, context) {
-                const total = context.globals.series.reduce((total, v) => total + v, 0);
+              formatter(value: number, context: any) {
+                const total = context.globals.series.reduce((total: number, v: number) => total + v, 0);
                 return `${(value / total * 100).toFixed(0)}%`;
               },
               fontSize: '28px',
-            }
+            } as any,
           },
         },
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      style: {
+        fontSize: '16px',
+        colors: ['#fff'],
+      },
+      formatter(value: string) {
+        return `${parseInt(value).toFixed(0)}%`;
+      },
+      dropShadow: {
+        enabled: false,
+      },
     },
     tooltip: {
       custom: function({series, seriesIndex, w}) {
