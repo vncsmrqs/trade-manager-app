@@ -81,7 +81,7 @@ export type DashboardState = (
 export const initialDashboardState: DashboardState = {
   kind: "InitialDashboardState",
   searchParams: {
-    startDate: moment().subtract(1, 'month').format('YYYY-MM-DD'),
+    startDate: moment().startOf('month').format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
   },
   rankingOfSetups: {

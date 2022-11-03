@@ -64,7 +64,7 @@ export const initialListTradeState : ListTradeState = {
     drawPercentage: 0,
   },
   filter: {
-    startDate: moment().subtract(1, "month").format('YYYY-MM-DD'),
+    startDate: moment().startOf('month').format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
     setupId: [],
     gatilhoId: [],
