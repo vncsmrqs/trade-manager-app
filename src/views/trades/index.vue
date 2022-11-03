@@ -318,6 +318,10 @@
                     </div>
                   </div>
 
+                  <div v-if="header.name === 'origem'">
+                    <div class="text-body-1">{{ trade.tipoImportacaoLabel }}</div>
+                  </div>
+
                   <div
                       v-if="header.name === 'pontos'"
                       :class="[
@@ -446,19 +450,25 @@ export default class ListTrade extends Vue {
       title: 'Setup - Gatilho',
       name: 'setup-gatilho',
       align: 'left',
-      width: '37%',
+      width: '32%',
     },
     {
       title: 'Entrada - Stop',
       name: 'entrada-stop',
       align: 'left',
-      width: '25%',
+      width: '23%',
+    },
+    {
+      title: 'Origem',
+      name: 'origem',
+      align: 'center',
+      width: '10%',
     },
     {
       title: 'Pontos',
       name: 'pontos',
       align: 'left',
-      width: '8%',
+      width: '5%',
     },
     {
       title: '',

@@ -194,6 +194,10 @@ export class TradeEntity extends Entity<TradeEntityProps>{
     return moment(this.props.dataTrade).format('DD/MM/YYYY');
   }
 
+  get tipoImportacaoLabel(): string {
+    return this.props.tradeImportacaoId ? 'Arquivo' :  'Manual';
+  }
+
   public static createFromRaw(raw: any): TradeEntity {
     return new TradeEntity({
       id: raw.id,
