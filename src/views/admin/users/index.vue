@@ -65,15 +65,17 @@
       </template>
 
       <template v-slot:[`item.active`]="{ item }">
-        <v-switch
-            small
-            class="mr-2"
-            :input-value="item.active"
-            dense
-            @change="() => toggleActive(item, !item.active)"
-        >
-          mdi-pencil
-        </v-switch>
+        <div class="d-flex justify-center">
+          <v-switch
+              :input-value="item.active"
+              dense
+              class="ma-0 ml-2"
+              hide-details
+              @change="() => toggleActive(item, !item.active)"
+          >
+            mdi-pencil
+          </v-switch>
+        </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon
@@ -182,13 +184,13 @@ export default class ListUser extends Vue {
         align: 'start',
         sortable: false,
         value: 'name',
-        width: '16%',
+        width: '15%',
       },
       {
         text: 'SOBRENOME',
         align: 'start',
         sortable: false,
-        value: 'lastnome',
+        value: 'lastname',
         width: '20%',
       },
       {
@@ -196,12 +198,34 @@ export default class ListUser extends Vue {
         align: 'start',
         sortable: false,
         value: 'email',
-        width: '40%',
+        width: '25%',
+      },
+      {
+        text: 'OPERAÇÕES',
+        align: 'center',
+        sortable: false,
+        value: 'tradeCount',
+        width: '5%',
+      },
+      {
+        text: 'ÚLTIMO ACESSO',
+        align: 'center',
+        sortable: false,
+        value: 'lastAccessFormatted',
+        width: '10%',
       },
       {
         text: 'ATIVO',
         value: 'active',
+        align: 'center',
         sortable: false,
+        width: '5%',
+      },
+      {
+        text: 'DATA BLOQUEIO',
+        align: 'center',
+        sortable: false,
+        value: 'accessDeadlineFormatted',
         width: '10%',
       },
       {
@@ -209,7 +233,7 @@ export default class ListUser extends Vue {
         value: 'actions',
         sortable: false,
         align: 'right',
-        width: '14%',
+        width: '10%',
       },
     ];
   }

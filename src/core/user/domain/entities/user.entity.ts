@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export type UserEntityProps = {
   id: string;
   name: string;
@@ -5,6 +7,9 @@ export type UserEntityProps = {
   email: string;
   createdAt: string;
   updatedAt: string;
+  lastAccess?: string;
+  tradeCount: number;
+  accessDeadline?: string;
   active: boolean;
 }
 
@@ -51,6 +56,22 @@ export class UserEntity {
     return this.props.updatedAt;
   }
 
+  get lastAccessFormatted(): string {
+    return this.props.lastAccess
+      ? moment(this.props.lastAccess).format('DD/MM/YYYY HH:mm:ss')
+      : '-';
+  }
+
+  get accessDeadlineFormatted(): string {
+    return this.props.accessDeadline
+      ? moment(this.props.accessDeadline).format('DD/MM/YYYY HH:mm:ss')
+      : '-';
+  }
+
+  get tradeCount(): number {
+    return this.props.tradeCount;
+  }
+
   public static createFromRaw(raw: any): UserEntity {
     return new UserEntity({
       id: raw.id,
@@ -60,6 +81,9 @@ export class UserEntity {
       createdAt: raw.created_at,
       updatedAt: raw.updated_at,
       active: raw.active,
+      lastAccess: raw.last_access,
+      tradeCount: raw.trade_count,
+      accessDeadline: raw.access_deadline,
     });
   }
 }
