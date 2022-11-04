@@ -147,7 +147,7 @@
                         <div class="font-weight-bold mb-2">Ativo</div>
                         <div>{{ formatStringFieldValue(form.ativoCodigo) }}</div>
                       </div>
-                      <v-combobox
+                      <v-select
                           v-else
                           :value="form.ativoId"
                           @change="(obj) => selectItem('ativo', obj, 'Codigo')"
@@ -160,9 +160,7 @@
                           :rules="formRules.ativoId"
                           required
                           :loading="isLoadingFilters"
-                      >
-                        <template v-slot:selection>{{ form.ativoCodigo }}</template>
-                      </v-combobox>
+                      ></v-select>
                     </v-col>
                     <v-col cols="12" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
@@ -322,18 +320,16 @@
                         <div>{{ formatSaidaFieldValue(form.saidaParcial) }}</div>
                       </div>
                       <div v-else>
-                        <span class="text-body-1 font-weight-bold">Saída Parcial</span>
-                        <v-radio-group
+                        <v-select
+                            :items="tradeSaidaOptionList"
+                            item-text="label"
+                            item-value="value"
+                            label="Saída Parcial"
                             v-model="form.saidaParcial"
-                            column
-                        >
-                          <v-radio
-                              v-for="option in tradeSaidaOptionList"
-                              :key="option.value"
-                              :label="option.label"
-                              :value="option.value"
-                          ></v-radio>
-                        </v-radio-group>
+                            clearable
+                            dense
+                            outlined
+                        ></v-select>
                       </div>
                     </v-col>
                     <v-col cols="4" :class="{'py-0': !detailMode}">
@@ -342,40 +338,34 @@
                         <div>{{ formatSaidaFieldValue(form.saidaFinal) }}</div>
                       </div>
                       <div v-else>
-                        <span class="text-body-1 font-weight-bold">Saída Final</span>
-                        <v-radio-group
+                        <v-select
+                            :items="tradeSaidaOptionList"
+                            item-text="label"
+                            item-value="value"
+                            label="Saída Final"
                             v-model="form.saidaFinal"
-                            column
-                        >
-                          <v-radio
-                              v-for="option in tradeSaidaOptionList"
-                              :key="option.value"
-                              :label="option.label"
-                              :value="option.value"
-                          ></v-radio>
-                        </v-radio-group>
+                            dense
+                            clearable
+                            outlined
+                        ></v-select>
                       </div>
                     </v-col>
-                    <v-col cols="4" :class="{'py-0': !detailMode, 'mb-4': true}">
+                    <v-col cols="4" :class="{'py-0': !detailMode}">
                       <div v-if="detailMode" class="text-body-1">
                         <div class="font-weight-bold mb-2">Seguiu o plano?</div>
                         <div>{{ formatBooleanFieldValue(form.seguiuPlano) }}</div>
                       </div>
                       <div v-else>
-                        <span class="text-body-1 font-weight-bold">Seguiu o plano?</span>
-                        <v-radio-group
+                        <v-select
+                            :items="[{ label: 'Sim', value: true }, { label: 'Não', value: false }]"
+                            item-text="label"
+                            item-value="value"
+                            label="Seguiu o plano?"
                             v-model="form.seguiuPlano"
-                            column
-                        >
-                          <v-radio
-                              label="Sim"
-                              :value="true"
-                          ></v-radio>
-                          <v-radio
-                              label="Não"
-                              :value="false"
-                          ></v-radio>
-                        </v-radio-group>
+                            dense
+                            clearable
+                            outlined
+                        ></v-select>
                       </div>
                     </v-col>
                     <v-col v-if="!detailMode" cols="12" class="py-0">
