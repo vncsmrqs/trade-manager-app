@@ -1,4 +1,4 @@
-import moment from "moment";
+import DateUtils from "@/common/date.utils";
 
 export type UserEntityProps = {
   id: string;
@@ -58,7 +58,7 @@ export class UserEntity {
 
   get lastAccessFormatted(): string {
     return this.props.lastAccess
-      ? moment(this.props.lastAccess).format('DD/MM/YYYY HH:mm:ss')
+      ? DateUtils.formatDatetimeFieldValue(this.props.lastAccess)
       : '-';
   }
 
@@ -68,7 +68,7 @@ export class UserEntity {
 
   get accessDeadlineFormatted(): string {
     return this.props.accessDeadline
-      ? moment(this.props.accessDeadline).format('DD/MM/YYYY HH:mm:ss')
+      ? DateUtils.formatDateFieldValue(this.props.accessDeadline)
       : '-';
   }
 

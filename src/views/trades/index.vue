@@ -404,6 +404,7 @@ import ManageTrade from "@/views/trades/components/manage-trade.vue";
 import moment from "moment";
 import ImportTrade from "@/views/trades/components/import-trade.vue";
 import SingleImageViewer from "@/common/components/single-image-viewer.vue";
+import DateUtils from "@/common/date.utils";
 
 @Component({
   components: { SingleImageViewer, ImportTrade, ManageTrade, FilterTrades }
@@ -426,7 +427,9 @@ export default class ListTrade extends Vue {
     this.listTradeController.setFilterFormAsList(filterAsList);
   }
 
-  today = moment().format('YYYY-MM-DD');
+  get today(): string {
+    return DateUtils.formatDateFieldValue(new Date());
+  }
 
   imageToViewSrc?: string = null;
   itemToManage?: TradeEntity = null;
@@ -492,10 +495,7 @@ export default class ListTrade extends Vue {
   }
 
   formatDateFieldValue(value?: string): string {
-    if (value === undefined) {
-      return '';
-    }
-    return moment(value).format('DD/MM/YYYY');
+    return DateUtils.formatDateFieldValue(value);
   }
 
   get isLoading(): boolean {

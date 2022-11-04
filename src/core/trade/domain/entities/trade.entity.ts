@@ -1,5 +1,6 @@
 import moment from "moment";
 import { Entity } from "@/core/common/domain/entity";
+import DateUtils from "@/common/date.utils";
 
 export type TradeResultadoType = 'gain' | 'loss' | '0x0';
 export type TradeSentimentoType = 'bem' | 'neutro' | 'mal';
@@ -191,7 +192,7 @@ export class TradeEntity extends Entity<TradeEntityProps>{
   }
 
   get dataTradeFormatted(): string {
-    return moment(this.props.dataTrade).format('DD/MM/YYYY');
+    return DateUtils.formatDateFieldValue(this.props.dataTrade);
   }
 
   get tipoImportacaoLabel(): string {

@@ -33,10 +33,10 @@ export class AuthApiRepository extends HttpClient implements
         return ActionResult.failure('Problema na conexão com o servidor. Por favor, tente mais tarde.');
       }
       if ([400, 401].includes(error.status)) {
-        return ActionResult.failure('Crendenciais inválidas');
+        return ActionResult.failure(error?.data?.message || 'Credenciais inválidas');
       }
       if (error.status === 403) {
-        return ActionResult.failure(error.data.message);
+        return ActionResult.failure(error?.data?.message || 'Usuário bloqueado ou data limite de acesso excedida!');
       }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
@@ -63,7 +63,7 @@ export class AuthApiRepository extends HttpClient implements
         return ActionResult.failure('Sua sessão expirou. Por favor, faça o login novamente.');
       }
       if (error.status === 403) {
-        return ActionResult.failure(error.data.message);
+        return ActionResult.failure(error?.data?.message || 'Usuário bloqueado ou data limite de acesso excedida!');
       }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente em alguns instantes.');
     }

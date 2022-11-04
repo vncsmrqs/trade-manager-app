@@ -685,10 +685,10 @@ import DeleteTrade from "@/views/trades/components/delete-trade.vue";
 import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
 import { ListTradeFilterState } from "@/core/trade/presentation/states/list-trade-filter.state";
 import { CampoCustomizavelEntity } from "@/core/campo-customizavel/domain/entities/campo-customizavel.entity";
-import moment from "moment";
 import SingleImageViewer from "@/common/components/single-image-viewer.vue";
 import VMoneyField from "@/common/components/v-money-field.vue";
 import { getEnumKeyByValue } from "@/common/utils";
+import DateUtils from "@/common/date.utils";
 
 type FormType = Partial<TradeEntityProps>;
 
@@ -780,7 +780,7 @@ export default class ManageTrade extends Vue {
   }
 
   get today() {
-    return moment().format('YYYY-MM-DD');
+    return DateUtils.formatDateFieldValue(new Date());
   }
 
   getValorFiltro(filtro: CampoCustomizavelEntity): string {
@@ -921,10 +921,7 @@ export default class ManageTrade extends Vue {
   }
 
   formatDateFieldValue(value?: string, showUndefined = true): string {
-    if (value == undefined) {
-      return showUndefined ? '-' : '';
-    }
-    return moment(value).format('DD/MM/YYYY');
+    return DateUtils.formatDateFieldValue(value, showUndefined);
   }
 
   formatStringFieldValue(value?: any): string {

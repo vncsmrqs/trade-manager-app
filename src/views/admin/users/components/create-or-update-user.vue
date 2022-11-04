@@ -69,7 +69,6 @@
                     :close-on-content-click="false"
                     :return-value.sync="form.accessDeadline"
                     transition="fade"
-                    offset-y="-20px"
                     min-width="auto"
                 >
                   <template v-slot:activator="{ on, attrs }">
@@ -89,7 +88,8 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                      v-model="form.accessDeadline"
+                      :value="formatDateToISODateString(form.accessDeadline)"
+                      @input="(v) => form.accessDeadline = formatDateToISODatetimeString(v)"
                       no-title
                       color="primary"
                       locale="pt-BR"
@@ -152,7 +152,7 @@ import { app, TYPES } from "@/core/common/container";
 import { CreateOrUpdateUserController } from "@/core/user/presentation/controllers/create-or-update-user.controller";
 import { CreateOrUpdateUserState } from "@/core/user/presentation/states/create-or-update-user.state";
 import { UserEntity } from "@/core/user/domain/entities/user.entity";
-import moment from "moment";
+import DateUtils from "@/common/date.utils";
 
 type FormType = {
   id?: string,
@@ -181,6 +181,14 @@ export default class CreateOrUpdateUser extends Vue {
     return !!this.item;
   }
 
+  formatDateToISODatetimeString(date: string) {
+    return DateUtils.parseDateToISODatetimeString(date);
+  }
+
+  formatDateToISODateString(date: string) {
+    return DateUtils.formatToISODateString(date);
+  }
+
   showAccessDeadlinePicker = false;
 
   defaultForm(): FormType {
@@ -194,10 +202,7 @@ export default class CreateOrUpdateUser extends Vue {
   }
 
   formatDateFieldValue(value?: string, showUndefined = true): string {
-    if (value == undefined) {
-      return showUndefined ? '-' : '';
-    }
-    return moment(value).format('DD/MM/YYYY');
+    return DateUtils.formatDateFieldValue(value, showUndefined);
   }
 
   async submit() {

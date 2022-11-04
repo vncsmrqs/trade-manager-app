@@ -112,7 +112,6 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import moment from "moment";
 import RankingOfSetup from "@/views/dashboard/components/ranking-of-setup.vue";
 import TradesByWeekdayChart from "@/views/dashboard/components/trades-by-weekday-chart.vue";
 import TotalTradesChart from "@/views/dashboard/components/total-trades-chart.vue";
@@ -122,6 +121,7 @@ import TradesByIntervalChart from "@/views/dashboard/components/trades-by-interv
 import { DashboardController } from "@/core/dashboard/presentation/controller/dashboard.controller";
 import { app, TYPES } from "@/core/common/container";
 import { DashboardState } from "@/core/dashboard/presentation/state/dashboard.state";
+import DateUtils from "@/common/date.utils";
 
 @Component({
   components: {
@@ -142,12 +142,12 @@ export default class DashboardView extends Vue {
   showStartDatePicker = false;
   showEndDatePicker = false;
 
-  formatDateFieldValue(date: string): string {
-    return moment(date).format('DD/MM/YYYY');
+  formatDateFieldValue(value?: string, showUndefined = true): string {
+    return DateUtils.formatDateFieldValue(value, showUndefined);
   }
 
   get today(): string {
-    return moment().format('YYYY-MM-DD');
+    return DateUtils.formatDateFieldValue(new Date());
   }
 
   get isLoading(): boolean {
