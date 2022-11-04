@@ -9,8 +9,6 @@ import { ActionResult } from "@/core/common/domain/action-result";
 import { CreateTradeRepositoryContract } from "@/core/trade/data/contracts/create-trade.repository";
 import { UpdateTradeRepositoryContract } from "@/core/trade/data/contracts/update-trade.repository";
 import { DeleteTradeRepositoryContract } from "@/core/trade/data/contracts/delete-trade.repository";
-import { UploadFileToImportTradeRepositoryContract } from "@/core/trade/data/contracts/upload-file-to-import-trade.repository";
-import { ImportUploadedFileTradeRepositoryContract } from "@/core/trade/data/contracts/import-uploaded-file-trade.repository";
 import { UploadTradeImageRepositoryContract } from "@/core/trade/data/contracts/upload-image-trade.repository";
 import { HttpClient } from "@/core/common/domain/http-client";
 import { AxiosProgressEvent, AxiosRequestConfig } from "axios";
@@ -98,23 +96,9 @@ type UpdateTradeRequest = {
 
 type UpdateTradeResponse = {};
 
-type UploadFileResponse = {
-  path: string;
-  total_items: number;
-};
-
 type UploadImageResponse = {
   path: string;
   url: string;
-}
-
-type ImportFileRequest = {
-  file_path: string;
-  filename: string;
-};
-
-type ImportFileResponse = {
-  total_items: number;
 }
 
 export class ManageTradeApiRepository extends HttpClient implements
@@ -122,8 +106,6 @@ export class ManageTradeApiRepository extends HttpClient implements
   CreateTradeRepositoryContract,
   UpdateTradeRepositoryContract,
   DeleteTradeRepositoryContract,
-  UploadFileToImportTradeRepositoryContract,
-  ImportUploadedFileTradeRepositoryContract,
   UploadTradeImageRepositoryContract
 {
   constructor(baseURL: string) {
@@ -263,71 +245,6 @@ export class ManageTradeApiRepository extends HttpClient implements
       }
       if (error.status === 403) {
         return ActionResult.failure('Você não tem permissão para excluir este registro');
-      }
-      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
-    }
-  }
-
-  async uploadFile(
-    params: UploadFileToImportTradeRepositoryContract.Params
-  ): Promise<ActionResult<UploadFileToImportTradeRepositoryContract.Response, string>> {
-    try {
-      const formData = new FormData();
-      formData.append('file', params.file);
-
-      const requestConfig: AxiosRequestConfig = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onUploadProgress: function ({ loaded }: AxiosProgressEvent) {
-          params.uploadProgressCallback(params.fileSize, loaded);
-        },
-      };
-
-      const { total_items, path } = await this.client
-        .post<UploadFileResponse>('/trades/upload-file', formData, requestConfig);
-
-      return ActionResult.success({
-        totalItems: total_items,
-        filePath: path,
-      });
-    }
-    catch (error: any) {
-      const valueOrDefault = <T = any>(value: T, defaultValue: T) => {
-        return value != undefined ? value : defaultValue;
-      };
-      if (error.status === 401) {
-        return ActionResult.failure('Você não está autenticado');
-      }
-      if (error.status === 400) {
-        return ActionResult.failure(
-          `${
-            valueOrDefault(error.data.message,'Algo inesperado aconteceu durante o upload do arquivo.')
-          } ${
-            valueOrDefault(error.data.error,'Provalmente é algum problema com sua planilha. Por favor, confira e tente novamente.')
-          }`
-        );
-      }
-      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
-    }
-  }
-
-  async importFile(
-    params: ImportUploadedFileTradeRepositoryContract.Params
-  ): Promise<ActionResult<ImportUploadedFileTradeRepositoryContract.Response, string>> {
-    try {
-      const requestBody: ImportFileRequest = {
-        file_path: params.filePath,
-        filename: params.filename,
-      };
-
-      await this.client.post<ImportFileResponse>('/trades/import-file', requestBody);
-
-      return ActionResult.success();
-    }
-    catch (error: any) {
-      if (error.status === 401) {
-        return ActionResult.failure('Você não está autenticado');
       }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }

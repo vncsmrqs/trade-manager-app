@@ -96,6 +96,14 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
       TYPES.DeleteImportacaoRepositoryContract,
       manageImportacaoRepository
     );
+    container.instance<UploadFileToImportTradeRepositoryContract>(
+      TYPES.UploadFileToImportTradeRepositoryContract,
+      manageImportacaoRepository
+    );
+    container.instance<ImportUploadedFileTradeRepositoryContract>(
+      TYPES.ImportUploadedFileTradeRepositoryContract,
+      manageImportacaoRepository
+    );
 
     const dashboardRepository = new DashboardApiRepository(apiBaseUrl);
     container.instance<GetTradeSumBySetupRepositoryContract>(
@@ -174,14 +182,6 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<CreateTradeRepositoryContract>(TYPES.CreateTradeRepositoryContract, manageTradeRepository);
     container.instance<UpdateTradeRepositoryContract>(TYPES.UpdateTradeRepositoryContract, manageTradeRepository);
     container.instance<DeleteTradeRepositoryContract>(TYPES.DeleteTradeRepositoryContract, manageTradeRepository);
-    container.instance<UploadFileToImportTradeRepositoryContract>(
-      TYPES.UploadFileToImportTradeRepositoryContract,
-      manageTradeRepository
-    );
-    container.instance<ImportUploadedFileTradeRepositoryContract>(
-      TYPES.ImportUploadedFileTradeRepositoryContract,
-      manageTradeRepository
-    );
     container.instance<UploadTradeImageRepositoryContract>(
       TYPES.UploadTradeImageRepositoryContract,
       manageTradeRepository

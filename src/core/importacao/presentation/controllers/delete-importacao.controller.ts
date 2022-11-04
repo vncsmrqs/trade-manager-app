@@ -26,7 +26,7 @@ export class DeleteImportacaoController extends Controller<DeleteImportacaoState
         });
         this.notificationController.push({
           type: 'success',
-          message: 'Importacao excluido com sucesso!',
+          message: 'Importação excluida com sucesso!',
           timeout: 3000,
         });
         this.listImportacaoController.loadImportacaoList();

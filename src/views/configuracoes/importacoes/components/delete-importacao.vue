@@ -5,7 +5,7 @@
         max-width="600px"
         persistent
     >
-      <v-card>
+      <v-card v-if="show">
         <v-card-title>
           <span class="text-h5">Excluir importação?</span>
           <v-spacer></v-spacer>
@@ -26,7 +26,7 @@
 
           <div>
             Tem certeza que deseja excluir esta importação?
-            Todos os {{ item.tradeCount }} items serão removidos permanentemente.
+            Todas as {{ item.tradeCount }} operações cadastradas pelo arquivo serão removidas permanentemente.
           </div>
 
           <v-alert

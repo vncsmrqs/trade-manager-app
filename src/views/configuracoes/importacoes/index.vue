@@ -118,8 +118,8 @@ export default class ListImportacao extends Vue {
   }
 
   closeDeleteDialog() {
-    this.itemToDelete = undefined;
     this.showDeleteDialog = false;
+    this.itemToDelete = null;
   }
 
   deleteItem(item: ImportacaoEntity) {

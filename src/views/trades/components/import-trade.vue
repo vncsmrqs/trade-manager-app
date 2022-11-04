@@ -201,7 +201,9 @@ export default class ImportTrade extends Vue {
 
   @Watch('show')
   changeShow() {
-    this.reset();
+    setTimeout(() => {
+      this.reset();
+    }, 500);
   }
 
   reset() {
