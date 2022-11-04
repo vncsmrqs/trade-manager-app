@@ -62,28 +62,42 @@ const routes: Array<RouteConfig> = [
             component: () => import(/* webpackChunkName: "trades" */ '@/views/trades/index.vue')
           },
           {
-            path: 'configuracoes/setups',
-            name: 'configuracoes.setups',
-            meta: {
-              pageTitle: 'Setup',
-            },
-            component: () => import(/* webpackChunkName: "configuracoes.setups" */ '../views/configuracoes/setups/index.vue'),
-          },
-          {
-            path: 'configuracoes/gatilhos',
-            name: 'configuracoes.gatilhos',
-            meta: {
-              pageTitle: 'Gatilhos',
-            },
-            component: () => import(/* webpackChunkName: "configuracoes.gatilhos" */ '../views/configuracoes/gatilhos/index.vue'),
-          },
-          {
-            path: 'configuracoes/tipos-entradas',
-            name: 'configuracoes.tipos-entradas',
-            meta: {
-              pageTitle: 'Tipos de entradas',
-            },
-            component: () => import(/* webpackChunkName: "configuracoes.tipos-entradas" */ '../views/configuracoes/tipos-entradas/index.vue'),
+            path: 'configuracoes',
+            component: { render: (c: CreateElement) => c('router-view') },
+            children: [
+              {
+                path: 'setups',
+                name: 'configuracoes.setups',
+                meta: {
+                  pageTitle: 'Setup',
+                },
+                component: () => import(/* webpackChunkName: "configuracoes.setups" */ '../views/configuracoes/setups/index.vue'),
+              },
+              {
+                path: 'gatilhos',
+                name: 'configuracoes.gatilhos',
+                meta: {
+                  pageTitle: 'Gatilhos',
+                },
+                component: () => import(/* webpackChunkName: "configuracoes.gatilhos" */ '../views/configuracoes/gatilhos/index.vue'),
+              },
+              {
+                path: 'tipos-entradas',
+                name: 'configuracoes.tipos-entradas',
+                meta: {
+                  pageTitle: 'Tipos de entradas',
+                },
+                component: () => import(/* webpackChunkName: "configuracoes.tipos-entradas" */ '../views/configuracoes/tipos-entradas/index.vue'),
+              },
+              {
+                path: 'importacoes',
+                name: 'configuracoes.importacoes',
+                meta: {
+                  pageTitle: 'Importações',
+                },
+                component: () => import(/* webpackChunkName: "configuracoes.importacoes" */ '../views/configuracoes/importacoes/index.vue'),
+              },
+            ],
           },
           {
             path: 'admin',

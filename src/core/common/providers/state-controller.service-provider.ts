@@ -56,6 +56,10 @@ import { CreateUserUseCaseContract } from "@/core/user/domain/use-cases/create-u
 import { CreateOrUpdateUserController } from "@/core/user/presentation/controllers/create-or-update-user.controller";
 import { DeleteUserController } from "@/core/user/presentation/controllers/delete-user.controller";
 import { DeleteUserUseCaseContract } from "@/core/user/domain/use-cases/delete-user.use-case";
+import { ListImportacaoUseCaseContract } from "@/core/importacao/domain/use-cases/list-importacao.use-case";
+import { ListImportacaoController } from "@/core/importacao/presentation/controllers/list-importacao.controller";
+import { DeleteImportacaoController } from "@/core/importacao/presentation/controllers/delete-importacao.controller";
+import { DeleteImportacaoUseCaseContract } from "@/core/importacao/domain/use-cases/delete-importacao.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -74,6 +78,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
     this.bootSetupControllers(container);
     this.bootUserControllers(container);
     this.bootGatilhoControllers(container);
+    this.bootImportacaoControllers(container);
     this.bootTipoEntradaControllers(container);
     this.bootTradeControllers(container);
 
@@ -163,6 +168,22 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new DeleteGatilhoController(
         container.make<DeleteGatilhoUseCaseContract>(TYPES.DeleteGatilhoUseCaseContract),
         container.make<ListGatilhoController>(TYPES.ListGatilhoController),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    }, ['must-reset-state']);
+  }
+
+  private bootImportacaoControllers(container: ContainerContract): void {
+    container.singleton(TYPES.ListImportacaoController, () => {
+      return new ListImportacaoController(
+        container.make<ListImportacaoUseCaseContract>(TYPES.ListImportacaoUseCaseContract),
+      );
+    }, ['must-reset-state']);
+
+    container.singleton(TYPES.DeleteImportacaoController, () => {
+      return new DeleteImportacaoController(
+        container.make<DeleteImportacaoUseCaseContract>(TYPES.DeleteImportacaoUseCaseContract),
+        container.make<ListImportacaoController>(TYPES.ListImportacaoController),
         container.make<NotificationController>(TYPES.NotificationController),
       );
     }, ['must-reset-state']);

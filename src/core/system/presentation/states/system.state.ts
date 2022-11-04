@@ -59,6 +59,11 @@ export const initialSystemState: SystemState = {
           routeName: 'configuracoes.tipos-entradas',
           icon: 'mdi-view-dashboard',
         },
+        {
+          title: 'Importações',
+          routeName: 'configuracoes.importacoes',
+          icon: 'mdi-upload-file',
+        },
       ],
     },
     {

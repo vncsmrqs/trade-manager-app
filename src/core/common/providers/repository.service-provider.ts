@@ -57,6 +57,9 @@ import { ListUserRepositoryContract } from "@/core/user/data/contracts/list-user
 import { CreateUserRepositoryContract } from "@/core/user/data/contracts/create-user.repository";
 import { UpdateUserRepositoryContract } from "@/core/user/data/contracts/update-user.repository";
 import { DeleteUserRepositoryContract } from "@/core/user/data/contracts/delete-user.repository";
+import { ListImportacaoRepositoryContract } from "@/core/importacao/data/contracts/list-importacao.repository";
+import { DeleteImportacaoRepositoryContract } from "@/core/importacao/data/contracts/delete-importacao.repository";
+import { ManageImportacaoApiRepository } from "@/core/importacao/infra/repositories/manage-importacao-api.repository";
 
 const apiBaseUrl = process.env.VUE_APP_API_BASE_URL;
 
@@ -83,6 +86,16 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<CreateGatilhoRepositoryContract>(TYPES.CreateGatilhoRepositoryContract, manageGatilhoRepository);
     container.instance<UpdateGatilhoRepositoryContract>(TYPES.UpdateGatilhoRepositoryContract, manageGatilhoRepository);
     container.instance<DeleteGatilhoRepositoryContract>(TYPES.DeleteGatilhoRepositoryContract, manageGatilhoRepository);
+
+    const manageImportacaoRepository = new ManageImportacaoApiRepository(apiBaseUrl);
+    container.instance<ListImportacaoRepositoryContract>(
+      TYPES.ListImportacaoRepositoryContract,
+      manageImportacaoRepository
+    );
+    container.instance<DeleteImportacaoRepositoryContract>(
+      TYPES.DeleteImportacaoRepositoryContract,
+      manageImportacaoRepository
+    );
 
     const dashboardRepository = new DashboardApiRepository(apiBaseUrl);
     container.instance<GetTradeSumBySetupRepositoryContract>(

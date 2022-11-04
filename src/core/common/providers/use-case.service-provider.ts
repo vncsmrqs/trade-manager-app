@@ -121,6 +121,12 @@ import { UpdateUserRepositoryContract } from "@/core/user/data/contracts/update-
 import { DeleteUserUseCaseContract } from "@/core/user/domain/use-cases/delete-user.use-case";
 import { DeleteUserUseCase } from "@/core/user/data/implementations/use-cases/delete-user.use-case";
 import { DeleteUserRepositoryContract } from "@/core/user/data/contracts/delete-user.repository";
+import { ListImportacaoUseCaseContract } from "@/core/importacao/domain/use-cases/list-importacao.use-case";
+import { ListImportacaoUseCase } from "@/core/importacao/data/implementations/use-cases/list-importacao.use.case";
+import { ListImportacaoRepositoryContract } from "@/core/importacao/data/contracts/list-importacao.repository";
+import { DeleteImportacaoUseCaseContract } from "@/core/importacao/domain/use-cases/delete-importacao.use-case";
+import { DeleteImportacaoUseCase } from "@/core/importacao/data/implementations/use-cases/delete-importacao.use-case";
+import { DeleteImportacaoRepositoryContract } from "@/core/importacao/data/contracts/delete-importacao.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -129,6 +135,7 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     this.bootSetupUseCases(container);
     this.bootUserUseCases(container);
     this.bootGatilhoUseCases(container);
+    this.bootImportacaoUseCases(container);
     this.bootTipoEntradaUseCases(container);
     this.bootTipoStopUseCases(container);
     this.bootLocalStopUseCases(container);
@@ -226,6 +233,20 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<DeleteGatilhoUseCaseContract>(TYPES.DeleteGatilhoUseCaseContract, () => {
       return new DeleteGatilhoUseCase(
         container.make<DeleteGatilhoRepositoryContract>(TYPES.DeleteGatilhoRepositoryContract),
+      );
+    });
+  }
+
+  private bootImportacaoUseCases(container: ContainerContract): void {
+    container.bind<ListImportacaoUseCaseContract>(TYPES.ListImportacaoUseCaseContract, () => {
+      return new ListImportacaoUseCase(
+        container.make<ListImportacaoRepositoryContract>(TYPES.ListImportacaoRepositoryContract),
+      );
+    });
+
+    container.bind<DeleteImportacaoUseCaseContract>(TYPES.DeleteImportacaoUseCaseContract, () => {
+      return new DeleteImportacaoUseCase(
+        container.make<DeleteImportacaoRepositoryContract>(TYPES.DeleteImportacaoRepositoryContract),
       );
     });
   }

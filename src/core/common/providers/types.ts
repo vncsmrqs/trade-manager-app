@@ -20,6 +20,9 @@ export const TYPES = {
   UpdateGatilhoUseCaseContract: Symbol('UpdateGatilhoUseCaseContract'),
   DeleteGatilhoUseCaseContract: Symbol('DeleteGatilhoUseCaseContract'),
 
+  ListImportacaoUseCaseContract: Symbol('ListImportacaoUseCaseContract'),
+  DeleteImportacaoUseCaseContract: Symbol('DeleteImportacaoUseCaseContract'),
+
   ListTipoEntradaUseCaseContract: Symbol('ListTipoEntradaUseCaseContract'),
   CreateTipoEntradaUseCaseContract: Symbol('CreateTipoEntradaUseCaseContract'),
   UpdateTipoEntradaUseCaseContract: Symbol('UpdateTipoEntradaUseCaseContract'),
@@ -71,6 +74,9 @@ export const TYPES = {
   UpdateGatilhoRepositoryContract: Symbol('UpdateGatilhoRepositoryContract'),
   DeleteGatilhoRepositoryContract: Symbol('DeleteGatilhoRepositoryContract'),
 
+  ListImportacaoRepositoryContract: Symbol('ListImportacaoRepositoryContract'),
+  DeleteImportacaoRepositoryContract: Symbol('DeleteImportacaoRepositoryContract'),
+
   ListTipoEntradaRepositoryContract: Symbol('ListTipoEntradaRepositoryContract'),
   CreateTipoEntradaRepositoryContract: Symbol('CreateTipoEntradaRepositoryContract'),
   UpdateTipoEntradaRepositoryContract: Symbol('UpdateTipoEntradaRepositoryContract'),
@@ -119,6 +125,9 @@ export const TYPES = {
   ListGatilhoController: Symbol('ListGatilhoController'),
   CreateOrUpdateGatilhoController: Symbol('CreateOrUpdateGatilhoController'),
   DeleteGatilhoController: Symbol('DeleteGatilhoController'),
+
+  ListImportacaoController: Symbol('ListImportacaoController'),
+  DeleteImportacaoController: Symbol('DeleteImportacaoController'),
 
   ListTipoEntradaController: Symbol('ListTipoEntradaController'),
   CreateOrUpdateTipoEntradaController: Symbol('CreateOrUpdateTipoEntradaController'),
