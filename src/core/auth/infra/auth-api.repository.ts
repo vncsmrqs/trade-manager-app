@@ -35,6 +35,9 @@ export class AuthApiRepository extends HttpClient implements
       if ([400, 401].includes(error.status)) {
         return ActionResult.failure('Crendenciais inválidas');
       }
+      if (error.status === 403) {
+        return ActionResult.failure(error.data.message);
+      }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }
   }
@@ -58,6 +61,9 @@ export class AuthApiRepository extends HttpClient implements
       }
       if (error.status === 401) {
         return ActionResult.failure('Sua sessão expirou. Por favor, faça o login novamente.');
+      }
+      if (error.status === 403) {
+        return ActionResult.failure(error.data.message);
       }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente em alguns instantes.');
     }

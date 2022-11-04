@@ -62,6 +62,10 @@ export class UserEntity {
       : '-';
   }
 
+  get accessDeadline(): string | undefined {
+    return this.props.accessDeadline;
+  }
+
   get accessDeadlineFormatted(): string {
     return this.props.accessDeadline
       ? moment(this.props.accessDeadline).format('DD/MM/YYYY HH:mm:ss')

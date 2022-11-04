@@ -31,6 +31,7 @@ type CreateUserRequest = {
   lastname: string;
   email: string;
   image_path?: string;
+  access_deadline?: string;
   active: boolean;
 };
 
@@ -42,6 +43,7 @@ type UpdateUserRequest = {
   name?: string;
   lastname?: string;
   image_path?: string;
+  access_deadline?: string;
   active?: boolean;
 };
 
@@ -89,6 +91,7 @@ export class ManageUserApiRepository extends HttpClient implements
         name: params.name,
         lastname: params.lastname,
         email: params.email,
+        access_deadline: params.accessDeadline,
         image_path: params.imagePath,
         active: params.active,
       };
@@ -111,6 +114,7 @@ export class ManageUserApiRepository extends HttpClient implements
         name: params.name,
         lastname: params.lastname,
         image_path: params.imagePath,
+        access_deadline: params.accessDeadline,
         active: params.active,
       };
 

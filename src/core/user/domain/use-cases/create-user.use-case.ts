@@ -10,6 +10,7 @@ export namespace CreateUserUseCaseContract {
     lastname: string;
     email: string;
     imagePath?: string;
+    accessDeadline?: string;
     active: boolean;
   };
   export type Response = void;

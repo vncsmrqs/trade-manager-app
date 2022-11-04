@@ -61,15 +61,51 @@
                     :disabled="isEditing"
                 ></v-text-field>
               </v-col>
+
+              <v-col cols="6">
+                <v-menu
+                    ref="accessDeadlineDialog"
+                    v-model="showAccessDeadlinePicker"
+                    :close-on-content-click="false"
+                    :return-value.sync="form.accessDeadline"
+                    transition="fade"
+                    offset-y="-20px"
+                    min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        :value="formatDateFieldValue(form.accessDeadline, false)"
+                        label="Data Limite de Acesso"
+                        outlined
+                        dense
+                        clearable
+                        ref="accessDeadline"
+                        required
+                        prepend-inner-icon="mdi-calendar"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click:clear="() => form.accessDeadline = null"
+                        readonly
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                      v-model="form.accessDeadline"
+                      no-title
+                      color="primary"
+                      locale="pt-BR"
+                      @click:date="$refs.accessDeadlineDialog.save(form.accessDeadline)"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+
+              <v-col cols="6">
+                <div class="d-flex justify-end align-center py-2">
+                  <span class="mr-2 text-body-1">Ativo</span>
+                  <v-switch v-model="form.active" hide-details class="ma-0" />
+                </div>
+              </v-col>
             </v-row>
 
-            <v-row no-gutters>
-              <v-spacer></v-spacer>
-              <div class="d-flex align-center mr-1">
-                <span class="mr-2 text-body-1">Ativo</span>
-                <v-switch v-model="form.active" />
-              </div>
-            </v-row>
           </v-form>
 
           <v-alert
@@ -116,11 +152,13 @@ import { app, TYPES } from "@/core/common/container";
 import { CreateOrUpdateUserController } from "@/core/user/presentation/controllers/create-or-update-user.controller";
 import { CreateOrUpdateUserState } from "@/core/user/presentation/states/create-or-update-user.state";
 import { UserEntity } from "@/core/user/domain/entities/user.entity";
+import moment from "moment";
 
 type FormType = {
   id?: string,
   name: string;
   lastname: string;
+  accessDeadline?: string;
   email: string;
   active: boolean;
 };
@@ -143,13 +181,23 @@ export default class CreateOrUpdateUser extends Vue {
     return !!this.item;
   }
 
+  showAccessDeadlinePicker = false;
+
   defaultForm(): FormType {
     return {
       name: '',
       lastname: '',
       email: '',
+      accessDeadline: undefined,
       active: true,
     };
+  }
+
+  formatDateFieldValue(value?: string, showUndefined = true): string {
+    if (value == undefined) {
+      return showUndefined ? '-' : '';
+    }
+    return moment(value).format('DD/MM/YYYY');
   }
 
   async submit() {
@@ -178,6 +226,7 @@ export default class CreateOrUpdateUser extends Vue {
       name: item.name,
       lastname: item.lastname,
       email: item.email,
+      accessDeadline: item.accessDeadline,
       active: item.active,
     };
   }
@@ -187,7 +236,7 @@ export default class CreateOrUpdateUser extends Vue {
     this.$refs.form?.resetValidation();
     this.controller.resetState();
     this.form = this.defaultForm();
-    if (value && this.isUpdateForm) {
+    if (value && this.item) {
       this.fillForm(this.item);
     }
   }
@@ -199,7 +248,7 @@ export default class CreateOrUpdateUser extends Vue {
     this.$emit('close');
   }
 
-  changeState(state) {
+  changeState(state: CreateOrUpdateUserState) {
     this.localState = state;
   }
 
