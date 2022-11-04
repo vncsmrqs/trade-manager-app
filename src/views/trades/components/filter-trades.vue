@@ -180,31 +180,19 @@ export default class FilterTrades extends Vue {
   }
 
   get setupList() {
-    return this.listTradeFilterState.setupList.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.setupList;
   }
 
   get gatilhoList() {
-    return this.listTradeFilterState.gatilhoList.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.gatilhoList;
   }
 
   get tipoEntradaList() {
-    return this.listTradeFilterState.tipoEntradaList.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.tipoEntradaList;
   }
 
   get ativoList() {
-    return this.listTradeFilterState.ativoList.map((item) => ({
-      text: item.codigo,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.ativoList;
   }
 
   get resultadoList() {
@@ -236,7 +224,7 @@ export default class FilterTrades extends Vue {
   changeShow(value: boolean) {
     this.form = this.defaultForm();
     if (value) {
-      this.listTradeFilterController.loadFilterList();
+      this.listTradeFilterController.loadAllFilterList();
       if (this.filterChips.length) {
         this.fillForm(this.filterChips);
       }

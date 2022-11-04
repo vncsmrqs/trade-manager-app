@@ -11,6 +11,7 @@ export namespace GetTradeSumBySetupUseCaseContract {
   export type Params = {
     startDate: string;
     endDate: string;
+    ativoId?: string;
   };
   export type Response = {
     items: TradeSumBySetupItem[];

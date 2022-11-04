@@ -428,7 +428,7 @@ export default class ListTrade extends Vue {
   }
 
   get today(): string {
-    return DateUtils.formatDateFieldValue(new Date());
+    return DateUtils.formatToISODateString(new Date());
   }
 
   imageToViewSrc?: string = null;
@@ -622,7 +622,7 @@ export default class ListTrade extends Vue {
       this.filter[item.field] = field.filter((f: string) => f !== item.value);
     }
 
-    this.search();
+    // this.search();
   }
 
   openFilterDialog() {

@@ -13,6 +13,7 @@ export namespace GetTradeSumUseCaseContract {
     endDate: string;
     startTime?: string;
     endTime?: string;
+    ativoId?: string;
   };
   export type Response = {
     items: ResultadoTradeValue[];

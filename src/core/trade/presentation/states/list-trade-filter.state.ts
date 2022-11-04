@@ -6,16 +6,23 @@ import { AtivoEntity } from "@/core/ativo/domain/entities/ativo.entity";
 import { TipoStopEntity } from "@/core/tipo-stop/domain/entities/tipo-stop.entity";
 import { LocalStopEntity } from "@/core/local-stop/domain/entities/local-stop.entity";
 
+type ItemListType<T> = {
+  items: T[];
+  error?: string;
+  loading: boolean;
+}
+
 export type BaseListTradeFilterState = {
-  setupList: SetupEntity[];
-  gatilhoList: GatilhoEntity[];
-  tipoEntradaList: TipoEntradaEntity[];
-  ativoList: AtivoEntity[];
-  tipoStopList: TipoStopEntity[],
-  localStopList: LocalStopEntity[],
-  filtroList: CampoCustomizavelEntity[];
+  setupList: ItemListType<SetupEntity>;
+  gatilhoList: ItemListType<GatilhoEntity>;
+  tipoEntradaList: ItemListType<TipoEntradaEntity>;
+  ativoList: ItemListType<AtivoEntity>;
+  tipoStopList: ItemListType<TipoStopEntity>,
+  localStopList: ItemListType<LocalStopEntity>,
+  filtroList: ItemListType<CampoCustomizavelEntity>;
   error?: string;
 }
+
 export type InitialListTradeFilterState = {
   kind: "InitialListTradeFilterState";
 }
@@ -42,12 +49,40 @@ export type ListTradeFilterState = (
 
 export const initialListTradeFilterState: ListTradeFilterState = {
   kind: "InitialListTradeFilterState",
-  setupList: [],
-  gatilhoList: [],
-  tipoEntradaList: [],
-  ativoList: [],
-  tipoStopList: [],
-  localStopList: [],
-  filtroList: [],
+  setupList: {
+    items: [],
+    error: undefined,
+    loading: false,
+  },
+  gatilhoList: {
+    items: [],
+    error: undefined,
+    loading: false,
+  },
+  tipoEntradaList: {
+    items: [],
+    error: undefined,
+    loading: false,
+  },
+  ativoList: {
+    items: [],
+    error: undefined,
+    loading: false,
+  },
+  tipoStopList: {
+    items: [],
+    error: undefined,
+    loading: false,
+  },
+  localStopList: {
+    items: [],
+    error: undefined,
+    loading: false,
+  },
+  filtroList: {
+    items: [],
+    error: undefined,
+    loading: false,
+  },
   error: undefined,
 };

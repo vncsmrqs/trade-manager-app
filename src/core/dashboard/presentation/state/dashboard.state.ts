@@ -18,6 +18,7 @@ export enum WeekdayEnum {
 export type DashboardSearchParams = {
   startDate: string;
   endDate: string;
+  ativoId?: string;
 }
 
 export type BaseDashboardState = {
@@ -83,6 +84,7 @@ export const initialDashboardState: DashboardState = {
   searchParams: {
     startDate: moment().startOf('month').format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
+    ativoId: undefined,
   },
   rankingOfSetups: {
     loading: false,

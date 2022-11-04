@@ -12,6 +12,7 @@ export namespace GetTradeSumByWeekdayUseCaseContract {
   export type Params = {
     startDate: string;
     endDate: string;
+    ativoId?: string;
   };
   export type Response = {
     items: TradesByWeekdayItemType[];

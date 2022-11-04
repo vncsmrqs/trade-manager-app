@@ -73,6 +73,22 @@
         </v-menu>
       </v-col>
 
+      <v-col cols="3">
+        <v-select
+            class="white"
+            v-model="filter.ativoId"
+            :items="listTradeFilterController.ativoList"
+            label="Ativo"
+            outlined
+            dense
+            clearable
+            ref="ativoId"
+            required
+            hide-details
+            :loading="listTradeFilterState.ativoList?.loading"
+        ></v-select>
+      </v-col>
+
       <v-col cols="12" sm="auto">
         <v-btn
             outlined
@@ -122,6 +138,8 @@ import { DashboardController } from "@/core/dashboard/presentation/controller/da
 import { app, TYPES } from "@/core/common/container";
 import { DashboardState } from "@/core/dashboard/presentation/state/dashboard.state";
 import DateUtils from "@/common/date.utils";
+import { ListTradeFilterController } from "@/core/trade/presentation/controllers/list-trade-filter.controller";
+import { ListTradeFilterState } from "@/core/trade/presentation/states/list-trade-filter.state";
 
 @Component({
   components: {
@@ -135,7 +153,10 @@ import DateUtils from "@/common/date.utils";
 })
 export default class DashboardView extends Vue {
   private dashboardController = app.make<DashboardController>(TYPES.DashboardController);
-  private dashboardState = this.dashboardController.state;
+  private dashboardState: DashboardState = this.dashboardController.state;
+
+  private listTradeFilterController = app.make<ListTradeFilterController>(TYPES.ListTradeFilterController);
+  private listTradeFilterState: ListTradeFilterState = this.listTradeFilterController.state;
 
   filter = Object.assign({}, this.dashboardState.searchParams);
 
@@ -147,7 +168,7 @@ export default class DashboardView extends Vue {
   }
 
   get today(): string {
-    return DateUtils.formatDateFieldValue(new Date());
+    return DateUtils.formatToISODateString(new Date());
   }
 
   get isLoading(): boolean {
@@ -167,18 +188,25 @@ export default class DashboardView extends Vue {
 
   mounted(): void {
     this.search();
+    this.listTradeFilterController.loadAtivoList();
   }
 
-  private updateState(newState: DashboardState) {
+  private updateDashboardState(newState: DashboardState) {
     this.dashboardState = newState;
   }
 
+  private updateListTradeFilterState(newState: ListTradeFilterState) {
+    this.listTradeFilterState = newState;
+  }
+
   private created() {
-    this.dashboardController.subscribe(this.updateState);
+    this.dashboardController.subscribe(this.updateDashboardState);
+    this.dashboardController.subscribe(this.updateListTradeFilterState);
   }
 
   private beforeDestroy() {
-    this.dashboardController.unsubscribe(this.updateState);
+    this.dashboardController.unsubscribe(this.updateDashboardState);
+    this.dashboardController.unsubscribe(this.updateListTradeFilterState);
   }
 }
 </script>

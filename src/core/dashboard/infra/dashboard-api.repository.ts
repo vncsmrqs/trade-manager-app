@@ -46,6 +46,7 @@ export class DashboardApiRepository extends HttpClient implements
           end_date: params.endDate,
           start_time: params.startTime,
           end_time: params.endTime,
+          ativo_id: params.ativoId,
         },
       });
       return ActionResult.success({ items });
@@ -62,6 +63,7 @@ export class DashboardApiRepository extends HttpClient implements
         params: {
           start_date: params.startDate,
           end_date: params.endDate,
+          ativo_id: params.ativoId,
         },
       });
       return ActionResult.success({ items });
@@ -78,6 +80,7 @@ export class DashboardApiRepository extends HttpClient implements
         params: {
           start_date: params.startDate,
           end_date: params.endDate,
+          ativo_id: params.ativoId,
         },
       });
       return ActionResult.success({ items });
@@ -94,6 +97,7 @@ export class DashboardApiRepository extends HttpClient implements
         params: {
           start_date: params.startDate,
           end_date: params.endDate,
+          ativo_id: params.ativoId,
         },
       });
       return ActionResult.success({ items });

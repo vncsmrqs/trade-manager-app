@@ -780,7 +780,7 @@ export default class ManageTrade extends Vue {
   }
 
   get today() {
-    return DateUtils.formatDateFieldValue(new Date());
+    return DateUtils.formatToISODateString(new Date());
   }
 
   getValorFiltro(filtro: CampoCustomizavelEntity): string {
@@ -852,49 +852,37 @@ export default class ManageTrade extends Vue {
   }
 
   get setupList() {
-    return this.listTradeFilterState.setupList.map((item) => ({
+    return this.listTradeFilterState.setupList.items.map((item) => ({
       text: item.nome,
       value: item.id,
     }));
   }
 
   get gatilhoList() {
-    return this.listTradeFilterState.gatilhoList.map((item) => ({
+    return this.listTradeFilterState.gatilhoList.items.map((item) => ({
       text: item.nome,
       value: item.id,
     }));
   }
 
   get tipoEntradaList() {
-    return this.listTradeFilterState.tipoEntradaList.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.tipoEntradaList;
   }
 
   get ativoList() {
-    return this.listTradeFilterState.ativoList.map((item) => ({
-      text: item.codigo,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.ativoList;
   }
 
   get tipoStopList() {
-    return this.listTradeFilterState.tipoStopList.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.tipoStopList;
   }
 
   get localStopList() {
-    return this.listTradeFilterState.localStopList.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.localStopList;
   }
 
   get filtroList() {
-    return this.listTradeFilterState.filtroList;
+    return this.listTradeFilterController.filtroList;
   }
 
   get isLoading(): boolean {
@@ -1086,7 +1074,7 @@ export default class ManageTrade extends Vue {
       this.fillForm(this.item);
     }
     if (show) {
-      this.listTradeFilterController.loadFilterList();
+      this.listTradeFilterController.loadAllFilterList();
     }
   }
 
