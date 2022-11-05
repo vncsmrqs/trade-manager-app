@@ -72,21 +72,21 @@
                     min-width="auto"
                 >
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                        :value="formatDateFieldValue(form.accessDeadline, false)"
-                        label="Data Limite de Acesso"
-                        ref="accessDeadline"
-                        required
-                        prepend-inner-icon="mdi-calendar"
-                        readonly
-                        outlined
-                        dense
-                        v-bind="attrs"
-                        v-on="on"
-                        hide-details
-                        clearable
-                        @click:clear="() => form.accessDeadline = null"
-                    ></v-text-field>
+                    <div v-on="on" v-bind="attrs">
+                      <v-text-field
+                          :value="formatDateFieldValue(form.accessDeadline, false)"
+                          label="Data Limite de Acesso"
+                          ref="accessDeadline"
+                          required
+                          prepend-inner-icon="mdi-calendar"
+                          readonly
+                          outlined
+                          dense
+                          hide-details
+                          clearable
+                          @click:clear="() => form.accessDeadline = null"
+                      ></v-text-field>
+                    </div>
                   </template>
                   <v-date-picker
                       :value="formatDateToISODateString(form.accessDeadline)"
