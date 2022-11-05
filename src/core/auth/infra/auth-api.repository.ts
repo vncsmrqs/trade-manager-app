@@ -3,6 +3,7 @@ import { ActionResult } from "@/core/common/domain/action-result";
 import { HttpClient } from "@/core/common/domain/http-client";
 import { GetCurrentUserRepositoryContract } from "@/core/auth/data/contracts/get-current-user.repository";
 import { UserEntity } from "@/core/auth/domain/entities/user.entity";
+import { ChangePasswordRepositoryContract } from "@/core/auth/data/contracts/change-password.repository";
 
 export type LoginResponse = {
   access_token: string,
@@ -15,7 +16,8 @@ export type GetCurrentUserResponse = {
 
 export class AuthApiRepository extends HttpClient implements
   LoginRepositoryContract,
-  GetCurrentUserRepositoryContract
+  GetCurrentUserRepositoryContract,
+  ChangePasswordRepositoryContract
 {
   constructor(baseURL: string) {
     super(baseURL);
@@ -65,6 +67,42 @@ export class AuthApiRepository extends HttpClient implements
       if (error.status === 403) {
         return ActionResult.failure(error?.data?.message || 'Usuário bloqueado ou data limite de acesso excedida!');
       }
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente em alguns instantes.');
+    }
+  }
+
+  async changePassword(
+    params: ChangePasswordRepositoryContract.Params
+  ): Promise<ActionResult<ChangePasswordRepositoryContract.Response, string>> {
+    try {
+      await this.client.get<void>('/auth/change-password', {
+        params: {
+          current_password: params.currentPassword,
+          new_password: params.newPassword,
+          confirm_new_password: params.confirmNewPassword,
+        },
+      });
+      return ActionResult.success();
+    }
+    catch (error: any) {
+      if (!error) {
+        return ActionResult.failure('Problema na conexão com o servidor. Por favor, tente mais tarde.');
+      }
+
+      const message = error?.data?.message;
+
+      if (error.status === 400) {
+        return ActionResult.failure(message || 'Foi encontrado algum problema no seu formulário. Confira e tente novamente, por favor.');
+      }
+
+      if (error.status === 401) {
+        return ActionResult.failure('Sua sessão expirou. Por favor, faça o login novamente.');
+      }
+
+      if (error.status === 403) {
+        return ActionResult.failure(message || 'Você não possúi permissão para realizar essa ação');
+      }
+
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente em alguns instantes.');
     }
   }

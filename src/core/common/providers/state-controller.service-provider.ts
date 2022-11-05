@@ -60,6 +60,7 @@ import { ListImportacaoUseCaseContract } from "@/core/importacao/domain/use-case
 import { ListImportacaoController } from "@/core/importacao/presentation/controllers/list-importacao.controller";
 import { DeleteImportacaoController } from "@/core/importacao/presentation/controllers/delete-importacao.controller";
 import { DeleteImportacaoUseCaseContract } from "@/core/importacao/domain/use-cases/delete-importacao.use-case";
+import { ChangePasswordUseCaseContract } from "@/core/auth/domain/use-cases/change-password.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -73,6 +74,7 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       container.make<LoginUseCaseContract>(TYPES.LoginUseCaseContract),
       container.make<GetCurrentUserUseCaseContract>(TYPES.GetCurrentUserUseCaseContract),
       container.make<NotificationController>(TYPES.NotificationController),
+      container.make<ChangePasswordUseCaseContract>(TYPES.ChangePasswordUseCaseContract),
     ), ['must-reset-state']);
 
     this.bootSetupControllers(container);

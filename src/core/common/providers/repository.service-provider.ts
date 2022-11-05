@@ -60,6 +60,7 @@ import { DeleteUserRepositoryContract } from "@/core/user/data/contracts/delete-
 import { ListImportacaoRepositoryContract } from "@/core/importacao/data/contracts/list-importacao.repository";
 import { DeleteImportacaoRepositoryContract } from "@/core/importacao/data/contracts/delete-importacao.repository";
 import { ManageImportacaoApiRepository } from "@/core/importacao/infra/repositories/manage-importacao-api.repository";
+import { ChangePasswordRepositoryContract } from "@/core/auth/data/contracts/change-password.repository";
 
 const apiBaseUrl = process.env.VUE_APP_API_BASE_URL;
 
@@ -68,6 +69,7 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     const authApiRepository = new AuthApiRepository(apiBaseUrl);
     container.instance<LoginRepositoryContract>(TYPES.LoginRepositoryContract, authApiRepository);
     container.instance<GetCurrentUserRepositoryContract>(TYPES.GetCurrentUserRepositoryContract, authApiRepository);
+    container.instance<ChangePasswordRepositoryContract>(TYPES.ChangePasswordRepositoryContract, authApiRepository);
 
     const manageSetupRepository = new ManageSetupApiRepository(apiBaseUrl);
     container.instance<ListSetupRepositoryContract>(TYPES.ListSetupRepositoryContract, manageSetupRepository);

@@ -4,14 +4,25 @@ import { LoginUseCaseContract } from "@/core/auth/domain/use-cases/login.use-cas
 import { GetCurrentUserUseCaseContract } from "@/core/auth/domain/use-cases/get-current-user.use-case";
 import { NotificationController } from "@/core/notification/presentation/controllers/notification.controller";
 import { app } from "@/core/common/container";
+import { ChangePasswordUseCaseContract } from "@/core/auth/domain/use-cases/change-password.use-case";
 
 export class AuthController extends Controller<AuthState> {
   constructor(
     private loginUseCase: LoginUseCaseContract,
     private getCurrentUserUseCase: GetCurrentUserUseCaseContract,
-    private notificationController: NotificationController
+    private notificationController: NotificationController,
+    private changePasswordUseCase: ChangePasswordUseCaseContract
   ) {
     super(initialAuthState);
+  }
+
+  get userInitials(): string | undefined {
+    const firstLetter = this.state.user?.name.substr(0,1);
+    const secondLetter = this.state.user?.lastname.substr(0,1);
+
+    if (firstLetter || secondLetter) {
+      return `${firstLetter}${secondLetter}`;
+    }
   }
 
   public get userHasImage(): boolean {
@@ -164,6 +175,50 @@ export class AuthController extends Controller<AuthState> {
     const controllerList = app.makeSingletonsByTag<Controller<any>>('must-reset-state');
     controllerList.forEach((controller) => controller.resetState());
     AuthController.removeSession();
+  }
+
+  public async changePassword(params: ChangePasswordUseCaseContract.Params): Promise<void> {
+    this.changeState({
+      changePassword: {
+        loading: true,
+        error: undefined,
+      },
+    });
+
+    try {
+      const result = await this.changePasswordUseCase.execute(params);
+      if (result.successful) {
+        this.changeState({
+          changePassword: {
+            loading: false,
+          },
+        });
+        return;
+      }
+
+      this.changeState({
+        changePassword: {
+          loading: false,
+          error: result.error,
+        },
+      });
+    } catch (error: any) {
+      this.changeState({
+        changePassword: {
+          loading: false,
+          error: error.message,
+        },
+      });
+    }
+  }
+
+  public resetChangePasswordState() {
+    this.changeState({
+      changePassword: {
+        loading: false,
+        error: undefined,
+      },
+    });
   }
 
   public resetState() {

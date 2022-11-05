@@ -1,9 +1,12 @@
+import { ChangePasswordRepositoryContract } from "@/core/auth/data/contracts/change-password.repository";
+
 export const TYPES = {
   /* Service Providers */
 
   /* Use Cases */
   LoginUseCaseContract: Symbol('LoginUseCaseContract'),
   GetCurrentUserUseCaseContract: Symbol('GetCurrentUserUseCaseContract'),
+  ChangePasswordUseCaseContract: Symbol('ChangePasswordUseCaseContract'),
 
   ListUserUseCaseContract: Symbol('ListUserUseCaseContract'),
   CreateUserUseCaseContract: Symbol('CreateUserUseCaseContract'),
@@ -58,6 +61,7 @@ export const TYPES = {
   /* Repositories */
   LoginRepositoryContract: Symbol('LoginRepositoryContract'),
   GetCurrentUserRepositoryContract: Symbol('GetCurrentUserRepositoryContract'),
+  ChangePasswordRepositoryContract: Symbol('ChangePasswordRepositoryContract'),
 
   ListUserRepositoryContract: Symbol('ListUserRepositoryContract'),
   CreateUserRepositoryContract: Symbol('CreateUserRepositoryContract'),

@@ -5,6 +5,11 @@ export type BaseAuthState = {
   user?: UserEntity;
   error?: string;
   getCurrentUserLoader?: Promise<void>;
+
+  changePassword: {
+    loading: boolean;
+    error?: string;
+  }
 }
 
 export type InitialAuthState = {
@@ -38,4 +43,8 @@ export const initialAuthState: AuthState = {
   user: undefined,
   token: undefined,
   error: undefined,
+  changePassword: {
+    loading: false,
+    error: undefined,
+  }
 };

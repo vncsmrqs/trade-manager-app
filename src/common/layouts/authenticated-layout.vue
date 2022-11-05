@@ -2,8 +2,12 @@
   <div>
     <logout
         :show="showLogoutDialog"
-        @close="closeLogout"
+        @close="closeLogoutDialog"
     ></logout>
+    <change-password
+        :show="showChangePasswordDialog"
+        @close="closeChangePasswordDialog"
+    ></change-password>
     <v-navigation-drawer
         v-model="systemState.navigationDrawer"
         class="elevation-3"
@@ -80,10 +84,40 @@
       </template>
     </v-navigation-drawer>
 
-    <!--    <v-app-bar app color="white" elevation="0" class="grey lighten-5">-->
-    <!--      -->
-    <!--      <v-toolbar-title>{{ systemState.pageTitle }}</v-toolbar-title>-->
-    <!--    </v-app-bar>-->
+        <v-app-bar app color="white" elevation="3">
+          <v-spacer></v-spacer>
+          <v-menu
+              offset-y
+              min-width="300px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-avatar
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  class="white--text"
+              >
+                {{ authController.userInitials }}
+              </v-avatar>
+            </template>
+
+            <v-list>
+              <v-list-item two-line>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ authState.user?.name }} {{ authState.user?.lastname }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>{{ authState.user?.email }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item nav @click="changePassword">
+                <v-list-item-content>
+                    <v-list-item-title>Alterar senha</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-app-bar>
 
     <v-main class="grey lighten-5">
       <v-container class="px-8 pt-9 pb-4">
@@ -107,9 +141,10 @@ import { AuthController } from "@/core/auth/presentation/controllers/auth.contro
 import Logout from "@/common/components/logout.vue";
 import { SystemState } from "@/core/system/presentation/states/system.state";
 import { AuthState } from "@/core/auth/presentation/states/auth.state";
+import ChangePassword from "@/common/components/change-password.vue";
 
 @Component({
-  components: { Logout },
+  components: { ChangePassword, Logout },
 })
 export default class AuthenticatedLayout extends Vue {
   private systemController: SystemController = app.make<SystemController>(TYPES.SystemController);
@@ -119,13 +154,22 @@ export default class AuthenticatedLayout extends Vue {
   private authState = this.authController.state;
 
   showLogoutDialog = false;
+  showChangePasswordDialog = false;
 
   logout() {
     this.showLogoutDialog = true;
   }
 
-  closeLogout() {
+  closeLogoutDialog() {
     this.showLogoutDialog = false;
+  }
+
+  changePassword() {
+    this.showChangePasswordDialog = true;
+  }
+
+  closeChangePasswordDialog() {
+    this.showChangePasswordDialog = false;
   }
 
   private updateSystemState(newState: SystemState) {

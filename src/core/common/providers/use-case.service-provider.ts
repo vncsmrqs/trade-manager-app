@@ -127,6 +127,9 @@ import { ListImportacaoRepositoryContract } from "@/core/importacao/data/contrac
 import { DeleteImportacaoUseCaseContract } from "@/core/importacao/domain/use-cases/delete-importacao.use-case";
 import { DeleteImportacaoUseCase } from "@/core/importacao/data/implementations/use-cases/delete-importacao.use-case";
 import { DeleteImportacaoRepositoryContract } from "@/core/importacao/data/contracts/delete-importacao.repository";
+import { ChangePasswordUseCaseContract } from "@/core/auth/domain/use-cases/change-password.use-case";
+import { ChangePasswordUseCase } from "@/core/auth/data/implementations/use-cases/change-password.use-case";
+import { ChangePasswordRepositoryContract } from "@/core/auth/data/contracts/change-password.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -155,6 +158,12 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<GetCurrentUserUseCaseContract>(TYPES.GetCurrentUserUseCaseContract, () => {
       return new GetCurrentUserUseCase(
         container.make<GetCurrentUserRepositoryContract>(TYPES.GetCurrentUserRepositoryContract),
+      );
+    });
+
+    container.bind<ChangePasswordUseCaseContract>(TYPES.ChangePasswordUseCaseContract, () => {
+      return new ChangePasswordUseCase(
+        container.make<ChangePasswordRepositoryContract>(TYPES.ChangePasswordRepositoryContract),
       );
     });
   }
