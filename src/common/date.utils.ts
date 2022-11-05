@@ -16,10 +16,12 @@ export default abstract class DateUtils {
   }
 
   public static parseDateToISODatetimeString(date: string) {
+    if (!date) return null;
     return moment(date).toISOString();
   }
 
   public static formatToISODateString(date: string) {
+    if (!date) return null;
     return moment(date).format('YYYY-MM-DD');
   }
 }

@@ -75,16 +75,17 @@
                     <v-text-field
                         :value="formatDateFieldValue(form.accessDeadline, false)"
                         label="Data Limite de Acesso"
-                        outlined
-                        dense
-                        clearable
                         ref="accessDeadline"
                         required
                         prepend-inner-icon="mdi-calendar"
+                        readonly
+                        outlined
+                        dense
                         v-bind="attrs"
                         v-on="on"
+                        hide-details
+                        clearable
                         @click:clear="() => form.accessDeadline = null"
-                        readonly
                     ></v-text-field>
                   </template>
                   <v-date-picker
