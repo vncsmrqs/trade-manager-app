@@ -1,3 +1,5 @@
+import DateUtils from "@/common/date.utils";
+
 export type ImportacaoEntityProps = {
   id: string;
   arquivoNome: string;
@@ -29,6 +31,10 @@ export class ImportacaoEntity {
 
   get createdAt(): string {
     return this.props.createdAt;
+  }
+
+  get createdAtFormatted(): string {
+    return DateUtils.formatDatetimeFieldValue(this.props.createdAt);
   }
 
   get tradeCount(): number {
