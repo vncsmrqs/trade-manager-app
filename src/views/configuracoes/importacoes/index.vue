@@ -135,17 +135,17 @@ export default class ListImportacao extends Vue {
     return [
       {
         text: 'DATA - HORA',
-        align: 'start',
+        align: 'center',
         sortable: false,
         value: 'createdAtFormatted',
-        width: '20%',
+        width: '10%',
       },
       {
         text: 'NOME DO ARQUIVO',
         align: 'start',
         sortable: false,
         value: 'arquivoNome',
-        width: '50%',
+        width: '60%',
       },
       {
         text: 'OPERAÇÕES',
