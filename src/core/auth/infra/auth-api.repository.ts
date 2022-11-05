@@ -75,12 +75,10 @@ export class AuthApiRepository extends HttpClient implements
     params: ChangePasswordRepositoryContract.Params
   ): Promise<ActionResult<ChangePasswordRepositoryContract.Response, string>> {
     try {
-      await this.client.get<void>('/auth/change-password', {
-        params: {
-          current_password: params.currentPassword,
-          new_password: params.newPassword,
-          confirm_new_password: params.confirmNewPassword,
-        },
+      await this.client.post<void>('/auth/change-password', {
+        current_password: params.currentPassword,
+        new_password: params.newPassword,
+        confirm_new_password: params.confirmNewPassword,
       });
       return ActionResult.success();
     }
