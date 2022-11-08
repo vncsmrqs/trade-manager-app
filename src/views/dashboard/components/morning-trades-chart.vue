@@ -13,7 +13,7 @@
             <template v-if="hasData">
               <apex-chart
                   width="250"
-                  type="donut"
+                  type="pie"
                   height="250px"
                   :options="options"
                   :series="series"
@@ -56,53 +56,6 @@ export default class MorningTradesChart extends Vue {
         enabled: false,
       },
     },
-    states: {
-      active: {
-        allowMultipleDataPointsSelection: false,
-        filter: {
-          type: 'none',
-          value: 0.35,
-        }
-      },
-    },
-    labels: this.availableLabels,
-    colors: ['#FBC02D', '#FF8A80', '#448AFF'],
-    plotOptions: {
-      pie: {
-        dataLabels: {
-          offset: 0,
-          minAngleToShowLabel: 3.6 * 5,
-        },
-        donut: {
-          labels: {
-            show: true,
-            name: {
-              show: false,
-            },
-            value: {
-              formatter(value: number, context: any) {
-                const total = context.globals.series.reduce((total: number, v: number) => total + v, 0);
-                return `${(value / total * 100).toFixed(0)}%`;
-              },
-              fontSize: '28px',
-            } as any,
-          },
-        },
-      },
-    },
-    dataLabels: {
-      enabled: true,
-      style: {
-        fontSize: '16px',
-        colors: ['#fff'],
-      },
-      formatter(value: string) {
-        return `${parseInt(value).toFixed(0)}%`;
-      },
-      dropShadow: {
-        enabled: false,
-      },
-    },
     tooltip: {
       custom: function({series, seriesIndex, w}) {
         const value = series[seriesIndex];
@@ -115,6 +68,38 @@ export default class MorningTradesChart extends Vue {
     },
     legend: {
       show: false,
+    },
+    labels: this.availableLabels,
+    colors: ['#FBC02D', '#FF8A80', '#448AFF'],
+    plotOptions: {
+      pie: {
+        dataLabels: {
+          offset: -20,
+          minAngleToShowLabel: 10
+        },
+      }
+    },
+    states: {
+      active: {
+        allowMultipleDataPointsSelection: false,
+        filter: {
+          type: 'none',
+          value: 0.35,
+        }
+      },
+    },
+    dataLabels: {
+      enabled: true,
+      style: {
+        fontSize: '20px',
+        colors: ['#fff'],
+      },
+      formatter(value) {
+        return `${parseInt(value).toFixed(0)}%`;
+      },
+      dropShadow: {
+        enabled: false,
+      },
     },
   };
 
