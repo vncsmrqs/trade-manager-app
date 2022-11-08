@@ -25,7 +25,7 @@
         <v-card-text class="mt-6">
 
           <div v-if="isInitialState">
-            <div class="mb-4 text-body-1 font-weight-bold black--text">
+            <div class="mb-4 text-body-1 black--text">
               Baixe a <a class="text-decoration-underline">planilha modelo</a> e preencha com os registros a serem importados.
             </div>
 
