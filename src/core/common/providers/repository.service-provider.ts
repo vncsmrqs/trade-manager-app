@@ -61,6 +61,7 @@ import { ListImportacaoRepositoryContract } from "@/core/importacao/data/contrac
 import { DeleteImportacaoRepositoryContract } from "@/core/importacao/data/contracts/delete-importacao.repository";
 import { ManageImportacaoApiRepository } from "@/core/importacao/infra/repositories/manage-importacao-api.repository";
 import { ChangePasswordRepositoryContract } from "@/core/auth/data/contracts/change-password.repository";
+import { ResetUserPasswordRepositoryContract } from "@/core/user/data/contracts/reset-user-password.repository";
 
 const apiBaseUrl = process.env.VUE_APP_API_BASE_URL;
 
@@ -82,6 +83,10 @@ export class RepositoryServiceProvider implements ServiceProviderContract {
     container.instance<CreateUserRepositoryContract>(TYPES.CreateUserRepositoryContract, manageUserRepository);
     container.instance<UpdateUserRepositoryContract>(TYPES.UpdateUserRepositoryContract, manageUserRepository);
     container.instance<DeleteUserRepositoryContract>(TYPES.DeleteUserRepositoryContract, manageUserRepository);
+    container.instance<ResetUserPasswordRepositoryContract>(
+      TYPES.ResetUserPasswordRepositoryContract,
+      manageUserRepository
+    );
 
     const manageGatilhoRepository = new ManageGatilhoApiRepository(apiBaseUrl);
     container.instance<ListGatilhoRepositoryContract>(TYPES.ListGatilhoRepositoryContract, manageGatilhoRepository);

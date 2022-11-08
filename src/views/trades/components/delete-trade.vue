@@ -67,7 +67,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
 import { DeleteTradeController } from "@/core/trade/presentation/controllers/delete-trade.controller";
 import { TradeEntity } from "@/core/trade/domain/entities/trade.entity";
@@ -106,6 +106,11 @@ export default class DeleteTrade extends Vue {
       return;
     }
     this.$emit('close');
+    this.controller.resetState();
+  }
+
+  @Watch('show')
+  resetState() {
     this.controller.resetState();
   }
 

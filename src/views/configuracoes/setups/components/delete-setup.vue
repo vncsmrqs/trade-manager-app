@@ -67,7 +67,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
 import { DeleteSetupController } from "@/core/setup/presentation/controllers/delete-setup.controller";
 import { SetupEntity } from "@/core/setup/domain/entities/setup.entity";
@@ -104,6 +104,11 @@ export default class DeleteSetup extends Vue {
       return;
     }
     this.$emit('close');
+  }
+
+  @Watch('show')
+  resetState() {
+    this.controller.resetState();
   }
 
   changeState(state) {

@@ -5,6 +5,7 @@ import { CreateUserRepositoryContract } from "@/core/user/data/contracts/create-
 import { UpdateUserRepositoryContract } from "@/core/user/data/contracts/update-user.repository";
 import { DeleteUserRepositoryContract } from "@/core/user/data/contracts/delete-user.repository";
 import { HttpClient } from "@/core/common/domain/http-client";
+import { ResetUserPasswordRepositoryContract } from "@/core/user/data/contracts/reset-user-password.repository";
 
 type ListUserRequest = {
   search?: string;
@@ -51,7 +52,8 @@ export class ManageUserApiRepository extends HttpClient implements
   ListUserRepositoryContract,
   CreateUserRepositoryContract,
   UpdateUserRepositoryContract,
-  DeleteUserRepositoryContract
+  DeleteUserRepositoryContract,
+  ResetUserPasswordRepositoryContract
 {
   constructor(baseUrl: string) {
     super(baseUrl);
@@ -144,6 +146,22 @@ export class ManageUserApiRepository extends HttpClient implements
       }
       if (error.status === 403) {
         return ActionResult.failure('Você não tem permissão para excluir esse usuário');
+      }
+      return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
+    }
+  }
+
+  async resetUserPassword(params: ResetUserPasswordRepositoryContract.Params): Promise<ActionResult<void, string>> {
+    try {
+      await this.client.post<void>(`/admin/users/${params.id}/reset-password`);
+      return ActionResult.success();
+    }
+    catch (error: any) {
+      if (error.status === 401) {
+        return ActionResult.failure('Você não está autenticado');
+      }
+      if (error.status === 403) {
+        return ActionResult.failure('Você não tem permissão para redefinir a senha desse usuário');
       }
       return ActionResult.failure('Algo inesperado aconteceu. Por favor, tente novamente.');
     }

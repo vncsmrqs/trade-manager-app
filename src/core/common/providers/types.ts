@@ -12,6 +12,7 @@ export const TYPES = {
   CreateUserUseCaseContract: Symbol('CreateUserUseCaseContract'),
   UpdateUserUseCaseContract: Symbol('UpdateUserUseCaseContract'),
   DeleteUserUseCaseContract: Symbol('DeleteUserUseCaseContract'),
+  ResetUserPasswordUseCaseContract: Symbol('ResetUserPasswordUseCaseContract'),
 
   ListSetupUseCaseContract: Symbol('ListSetupUseCaseContract'),
   CreateSetupUseCaseContract: Symbol('CreateSetupUseCaseContract'),
@@ -67,6 +68,7 @@ export const TYPES = {
   CreateUserRepositoryContract: Symbol('CreateUserRepositoryContract'),
   UpdateUserRepositoryContract: Symbol('UpdateUserRepositoryContract'),
   DeleteUserRepositoryContract: Symbol('DeleteUserRepositoryContract'),
+  ResetUserPasswordRepositoryContract: Symbol('ResetUserPasswordRepositoryContract'),
 
   ListSetupRepositoryContract: Symbol('ListSetupRepositoryContract'),
   CreateSetupRepositoryContract: Symbol('CreateSetupRepositoryContract'),
@@ -121,6 +123,7 @@ export const TYPES = {
   ListUserController: Symbol('ListUserController'),
   CreateOrUpdateUserController: Symbol('CreateOrUpdateUserController'),
   DeleteUserController: Symbol('DeleteUserController'),
+  ResetUserPasswordController: Symbol('ResetUserPasswordController'),
 
   ListSetupController: Symbol('ListSetupController'),
   CreateOrUpdateSetupController: Symbol('CreateOrUpdateSetupController'),

@@ -67,7 +67,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
 import { DeleteTipoEntradaController } from "@/core/tipo-entrada/presentation/controllers/delete-tipo-entrada.controller";
 import { TipoEntradaEntity } from "@/core/tipo-entrada/domain/entities/tipo-entrada.entity";
@@ -104,6 +104,11 @@ export default class DeleteTipoEntrada extends Vue {
       return;
     }
     this.$emit('close');
+  }
+
+  @Watch('show')
+  resetState() {
+    this.controller.resetState();
   }
 
   changeState(state) {

@@ -130,6 +130,9 @@ import { DeleteImportacaoRepositoryContract } from "@/core/importacao/data/contr
 import { ChangePasswordUseCaseContract } from "@/core/auth/domain/use-cases/change-password.use-case";
 import { ChangePasswordUseCase } from "@/core/auth/data/implementations/use-cases/change-password.use-case";
 import { ChangePasswordRepositoryContract } from "@/core/auth/data/contracts/change-password.repository";
+import { ResetUserPasswordUseCaseContract } from "@/core/user/domain/use-cases/reset-user-password.use-case";
+import { ResetUserPasswordUseCase } from "@/core/user/data/implementations/use-cases/reset-user-password.use-case";
+import { ResetUserPasswordRepositoryContract } from "@/core/user/data/contracts/reset-user-password.repository";
 
 export class UseCaseServiceProvider implements ServiceProviderContract {
   register(): void {}
@@ -190,6 +193,12 @@ export class UseCaseServiceProvider implements ServiceProviderContract {
     container.bind<DeleteSetupUseCaseContract>(TYPES.DeleteSetupUseCaseContract, () => {
       return new DeleteSetupUseCase(
         container.make<DeleteSetupRepositoryContract>(TYPES.DeleteSetupRepositoryContract),
+      );
+    });
+
+    container.bind<ResetUserPasswordUseCaseContract>(TYPES.ResetUserPasswordUseCaseContract, () => {
+      return new ResetUserPasswordUseCase(
+        container.make<ResetUserPasswordRepositoryContract>(TYPES.ResetUserPasswordRepositoryContract),
       );
     });
   }

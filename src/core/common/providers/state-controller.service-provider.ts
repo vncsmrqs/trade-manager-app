@@ -61,6 +61,8 @@ import { ListImportacaoController } from "@/core/importacao/presentation/control
 import { DeleteImportacaoController } from "@/core/importacao/presentation/controllers/delete-importacao.controller";
 import { DeleteImportacaoUseCaseContract } from "@/core/importacao/domain/use-cases/delete-importacao.use-case";
 import { ChangePasswordUseCaseContract } from "@/core/auth/domain/use-cases/change-password.use-case";
+import { ResetUserPasswordController } from "@/core/user/presentation/controllers/reset-user-password.controller";
+import { ResetUserPasswordUseCaseContract } from "@/core/user/domain/use-cases/reset-user-password.use-case";
 
 //implementations
 export class StateControllerServiceProvider implements ServiceProviderContract {
@@ -143,6 +145,13 @@ export class StateControllerServiceProvider implements ServiceProviderContract {
       return new DeleteUserController(
         container.make<DeleteUserUseCaseContract>(TYPES.DeleteUserUseCaseContract),
         container.make<ListUserController>(TYPES.ListUserController),
+        container.make<NotificationController>(TYPES.NotificationController),
+      );
+    }, ['must-reset-state']);
+
+    container.singleton(TYPES.ResetUserPasswordController, () => {
+      return new ResetUserPasswordController(
+        container.make<ResetUserPasswordUseCaseContract>(TYPES.ResetUserPasswordUseCaseContract),
         container.make<NotificationController>(TYPES.NotificationController),
       );
     }, ['must-reset-state']);

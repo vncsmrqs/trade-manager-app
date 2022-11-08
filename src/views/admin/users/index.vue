@@ -57,6 +57,11 @@
             :show="showDeleteDialog"
             @close="closeDeleteDialog"
         ></delete-user>
+        <reset-user-password
+            :item="itemToResetPassword"
+            :show="showResetPasswordDialog"
+            @close="closeResetPasswordDialog"
+        ></reset-user-password>
         <create-or-update-user
             :item="itemToUpdate"
             :show="showCreateOrUpdateDialog"
@@ -78,6 +83,13 @@
         </div>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
+        <v-icon
+            small
+            class="mr-2"
+            @click="() => resetPassword(item)"
+        >
+          mdi-lock-reset
+        </v-icon>
         <v-icon
             small
             class="mr-2"
@@ -126,9 +138,10 @@ import { ListUserState } from "@/core/user/presentation/states/list-user.state";
 import { UserEntity } from "@/core/user/domain/entities/user.entity";
 import DeleteUser from "@/views/admin/users/components/delete-user.vue";
 import CreateOrUpdateUser from "@/views/admin/users/components/create-or-update-user.vue";
+import ResetUserPassword from "@/views/admin/users/components/reset-user-password.vue";
 
 @Component({
-  components: { CreateOrUpdateUser, DeleteUser },
+  components: { ResetUserPassword, CreateOrUpdateUser, DeleteUser },
 })
 export default class ListUser extends Vue {
   private listUserController: ListUserController = app.make<ListUserController>(TYPES.ListUserController);
@@ -138,9 +151,11 @@ export default class ListUser extends Vue {
 
   itemToUpdate?: UserEntity = null;
   itemToDelete?: UserEntity = null;
+  itemToResetPassword?: UserEntity = null;
 
   showDeleteDialog = false;
   showCreateOrUpdateDialog = false;
+  showResetPasswordDialog = false;
 
   get pagination() {
     return {
@@ -168,9 +183,19 @@ export default class ListUser extends Vue {
     this.showCreateOrUpdateDialog = false;
   }
 
+  closeResetPasswordDialog() {
+    this.itemToResetPassword = undefined;
+    this.showResetPasswordDialog = false;
+  }
+
   deleteItem(item: UserEntity) {
     this.itemToDelete = item;
     this.showDeleteDialog = true;
+  }
+
+  resetPassword(item: UserEntity) {
+    this.itemToResetPassword = item;
+    this.showResetPasswordDialog = true;
   }
 
   get isLoading(): boolean {

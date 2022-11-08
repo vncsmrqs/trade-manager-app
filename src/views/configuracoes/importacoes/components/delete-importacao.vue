@@ -68,7 +68,7 @@
     </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { app, TYPES } from "@/core/common/container";
 import { DeleteImportacaoController } from "@/core/importacao/presentation/controllers/delete-importacao.controller";
 import { ImportacaoEntity } from "@/core/importacao/domain/entities/importacao.entity";
@@ -106,6 +106,11 @@ export default class DeleteImportacao extends Vue {
       return;
     }
     this.$emit('close');
+  }
+
+  @Watch('show')
+  resetState() {
+    this.deleteImportacaoController.resetState();
   }
 
   changeState(state: DeleteImportacaoState) {
