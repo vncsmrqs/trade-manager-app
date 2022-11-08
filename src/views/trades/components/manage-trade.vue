@@ -150,7 +150,7 @@
                       <v-select
                           v-else
                           :value="form.ativoId"
-                          @change="(obj) => selectItem('ativo', obj, 'Codigo')"
+                          @change="(obj) => selectItem('ativo', obj, 'Codigo', ativoList)"
                           :items="ativoList"
                           label="Ativo"
                           outlined
@@ -841,8 +841,16 @@ export default class ManageTrade extends Vue {
     return 'Novo registro';
   }
 
-  selectItem(field: string, item?: any, suffix = 'Nome') {
+  selectItem(field: string, item?: any, suffix = 'Nome', list: Record<string, any> = []) {
     if (item) {
+      if (typeof item === "string") {
+        const obj = list.find((i) => i.value === item);
+        if (!obj) {
+          this.form[field + 'Id'] = item;
+          return;
+        }
+        item = obj;
+      }
       this.form[field + 'Id'] = item.value;
       this.form[field + suffix] = item.text;
       return;
@@ -852,17 +860,11 @@ export default class ManageTrade extends Vue {
   }
 
   get setupList() {
-    return this.listTradeFilterState.setupList.items.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.setupList;
   }
 
   get gatilhoList() {
-    return this.listTradeFilterState.gatilhoList.items.map((item) => ({
-      text: item.nome,
-      value: item.id,
-    }));
+    return this.listTradeFilterController.gatilhoList;
   }
 
   get tipoEntradaList() {
