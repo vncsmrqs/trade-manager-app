@@ -17,11 +17,7 @@
       <template v-slot:prepend>
         <v-row justify="center" class="my-8">
           <v-avatar size="128">
-            <v-img
-              v-if="authController.userHasImage"
-              :src="authState.user.imageUrl"
-            ></v-img>
-            <v-img v-else :src="systemController.iconSrc"></v-img>
+            <v-img :src="systemController.iconSrc"></v-img>
           </v-avatar>
         </v-row>
       </template>
@@ -67,57 +63,51 @@
           </template>
         </div>
       </v-list>
-
-      <template v-slot:append>
-        <div class="pa-2">
-          <v-list dense nav>
-            <v-list-item @click="logout">
-              <v-list-item-icon>
-                <v-icon>mdi-logout</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>
-                <v-list-item-title>Sair</v-list-item-title>
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </div>
-      </template>
     </v-navigation-drawer>
 
-        <v-app-bar app color="white" elevation="3">
-          <v-spacer></v-spacer>
-          <v-menu
-              offset-y
-              min-width="300px"
+    <v-app-bar app color="white" elevation="3">
+      <v-spacer></v-spacer>
+      <v-menu
+          offset-y
+          min-width="300px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-avatar
+              color="grey lighten-3"
+              v-bind="attrs"
+              v-on="on"
+              class="white--text"
           >
-            <template v-slot:activator="{ on, attrs }">
-              <v-avatar
-                  color="primary"
-                  v-bind="attrs"
-                  v-on="on"
-                  class="white--text"
-              >
-                {{ authController.userInitials }}
-              </v-avatar>
-            </template>
+            <v-img
+                v-if="authController.userHasImage"
+                :src="authState.user.imageUrl"
+            ></v-img>
+            <v-icon v-else large>mdi-account</v-icon>
+          </v-avatar>
+        </template>
 
-            <v-list>
-              <v-list-item two-line>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ authState.user?.name }} {{ authState.user?.lastname }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>{{ authState.user?.email }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item nav @click="changePassword">
-                <v-list-item-content>
-                    <v-list-item-title>Alterar senha</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-app-bar>
+        <v-list>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ authState.user?.name }} {{ authState.user?.lastname }}
+              </v-list-item-title>
+              <v-list-item-subtitle>{{ authState.user?.email }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item nav @click="changePassword">
+            <v-list-item-content>
+                <v-list-item-title>Alterar senha</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item nav @click="logout">
+            <v-list-item-content>
+              <v-list-item-title>Sair</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
 
     <v-main class="grey lighten-5">
       <v-container class="px-8 pt-9 pb-4">
